@@ -11,6 +11,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { ACCESSTOKEN } from './axios';
 import { checkTokenThunk } from './redux/thunk';
 import { useDispatch } from 'react-redux';
+import LayoutMain from './layout/LayoutMain';
 
 function App() {
     const dispatch = useDispatch();
@@ -46,7 +47,9 @@ function App() {
                     path="/"
                     element={
                         <ProtectedRoute>
-                            <HomeScreen />
+                            <LayoutMain>
+                                <HomeScreen />
+                            </LayoutMain>
                         </ProtectedRoute>
                     }
                 />
