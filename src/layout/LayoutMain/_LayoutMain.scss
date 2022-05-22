@@ -12,7 +12,7 @@
 }
 
 #components-layout-demo-custom-trigger .logo {
-    height: 32px;
+    min-height: 100%;
     margin: 16px;
     background: rgba(255, 255, 255, 0.3);
     font-size: 1.6rem;
@@ -21,6 +21,8 @@
 .site-layout .site-layout-background {
     background: #fff;
     font-size: 1.6rem;
+}
+.ant-layout-content {
 }
 
 aside {

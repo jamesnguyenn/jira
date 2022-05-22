@@ -46,7 +46,7 @@ function App() {
                         </Auth>
                     }
                 ></Route>
-                {/* App */}
+                {/* Screens */}
                 <Route
                     path="/"
                     element={
@@ -77,6 +77,7 @@ function App() {
                         </ProtectedRoute>
                     }
                 />
+                {/* Detail Screens */}
             </Routes>
             <ToastContainer />
         </div>

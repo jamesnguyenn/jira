@@ -31,4 +31,6 @@ Link dac ta du an: https://drive.google.com/drive/folders/1WUpiEhcBU1raigfMNgew3
     + RemoveMembers : /api/Project/removeUserFromProject
     + SearchMember: /api/Users/getUser
     + AddMembersToProject: /api/Project/assignUserProject
- -->
+- Create Project:
+    + CreateProject: /api/Project/createProject
+-->

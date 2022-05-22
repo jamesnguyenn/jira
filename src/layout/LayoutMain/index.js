@@ -8,11 +8,12 @@ import {
     SettingOutlined,
 } from '@ant-design/icons';
 import { Layout, Menu } from 'antd';
-import React, { useCallback, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { memo, useCallback, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { ACCESSTOKEN } from '../../axios';
 import { logOut } from '../../redux/reducer/userSlice';
+import { getUserInfo } from '../../redux/selectors';
 
 const { Header, Sider, Content } = Layout;
 
@@ -20,6 +21,7 @@ function LayoutMain({ children }) {
     const [collapsed, setCollapsed] = useState(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const { avatar } = useSelector(getUserInfo);
 
     const handleSignOut = useCallback(() => {
         dispatch(logOut());
@@ -31,9 +33,7 @@ function LayoutMain({ children }) {
                 breakpoint="lg"
                 collapsedWidth="0"
                 trigger={null}
-                onBreakpoint={(broken) => {
-                    console.log(broken);
-                }}
+                onBreakpoint={(broken) => {}}
                 collapsible
                 collapsed={collapsed}
                 style={{
@@ -82,7 +82,16 @@ function LayoutMain({ children }) {
                         },
                         {
                             key: '5',
-                            icon: <LogoutOutlined />,
+                            icon: (
+                                <img
+                                    src={avatar}
+                                    alt="user-avatar"
+                                    style={{
+                                        width: '10%',
+                                        borderRadius: '100%',
+                                    }}
+                                />
+                            ),
                             label: 'Logout',
                             onClick: () => {
                                 handleSignOut();
@@ -117,7 +126,8 @@ function LayoutMain({ children }) {
                     className="site-layout-background"
                     style={{
                         padding: 24,
-                        margin: '24px 16px 0',
+                        margin: '24px 16px ',
+                        minHeight: '100vh',
                         overflow: 'initial',
                     }}
                 >
@@ -128,4 +138,4 @@ function LayoutMain({ children }) {
     );
 }
 
-export default LayoutMain;
+export default memo(LayoutMain);
