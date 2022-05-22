@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 function Loading() {
     return <div className="spinning"></div>;
 }
 
-export default Loading;
+export default memo(Loading);

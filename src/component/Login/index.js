@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import FacebookLogin from 'react-facebook-login';
 import { useDispatch, useSelector } from 'react-redux';
@@ -132,4 +132,4 @@ function Login() {
     );
 }
 
-export default Login;
+export default memo(Login);

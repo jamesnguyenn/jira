@@ -21,7 +21,7 @@ export const loginThunk = (userInfo, navigate) => {
 
             localStorage.setItem(ACCESSTOKEN, JSON.stringify(content));
             dispatch(loginSuccess(content));
-            toast.success(message, {
+            toast.success('Login Successfully', {
                 position: 'top-right',
                 autoClose: 2000,
                 hideProgressBar: false,
@@ -47,7 +47,6 @@ export const loginThunk = (userInfo, navigate) => {
 
 export const signInFacebook = (facebookToken) => {
     return async (dispatch) => {
-        console.log('🚀 ~ facebookToken', facebookToken);
         try {
             const getUser = await http.post(signInWithFacebook, {
                 facebookToken: facebookToken,
@@ -67,7 +66,7 @@ export const registerThunk = (userInfo, navigate) => {
 
             const { email } = content;
             dispatch(registerUserSuccess(email));
-            toast.success(message, {
+            toast.success('Register Successfully', {
                 position: 'top-right',
                 autoClose: 2000,
                 hideProgressBar: false,
@@ -96,7 +95,6 @@ export const checkTokenThunk = (userData) => {
     return async (dispatch) => {
         try {
             const response = await http.post(checkToken);
-            console.log('🚀 ~ response', response);
         } catch (err) {
             if (err.response?.data?.message === 'Đăng nhập thành công!') {
                 dispatch(loginSuccess(userData));

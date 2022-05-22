@@ -24,6 +24,7 @@ function App() {
     return (
         <div className="App">
             <Routes>
+                {/* Authentication */}
                 <Route
                     path="/auth/login"
                     element={
@@ -40,7 +41,7 @@ function App() {
                         </Auth>
                     }
                 ></Route>
-
+                {/* App */}
                 <Route
                     path="/"
                     element={
