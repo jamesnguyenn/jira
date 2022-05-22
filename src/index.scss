@@ -3,6 +3,9 @@
 @import './assets/sass/mixin';
 @import './assets/sass/base';
 
+//Layout
+@import './layout/LayoutMain/LayoutMain';
+
 //Page
 @import './page/Auth/Auth';
 

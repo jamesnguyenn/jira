@@ -1,7 +1,7 @@
 import React from 'react';
 
 function HomeScreen() {
-    return <div>HomeScreen</div>;
+    return <div>Project Lists</div>;
 }
 
 export default HomeScreen;

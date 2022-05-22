@@ -13,6 +13,7 @@ import {
     registerUserSuccess,
 } from '../reducer/userSlice';
 
+//Login
 export const loginThunk = (userInfo, navigate) => {
     return async (dispatch) => {
         try {
@@ -45,6 +46,7 @@ export const loginThunk = (userInfo, navigate) => {
     };
 };
 
+//SignInFacebook
 export const signInFacebook = (facebookToken) => {
     return async (dispatch) => {
         try {
@@ -58,6 +60,7 @@ export const signInFacebook = (facebookToken) => {
     };
 };
 
+//Register Account
 export const registerThunk = (userInfo, navigate) => {
     return async (dispatch) => {
         try {
@@ -91,6 +94,7 @@ export const registerThunk = (userInfo, navigate) => {
     };
 };
 
+//Check if user is logged in
 export const checkTokenThunk = (userData) => {
     return async (dispatch) => {
         try {

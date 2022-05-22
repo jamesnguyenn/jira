@@ -50,6 +50,12 @@ const userReducers = createSlice({
                 isLoading: false,
             };
         },
+        logOut: (state, action) => {
+            return {
+                ...initialState,
+                email: state.email,
+            };
+        },
     },
 });
 
@@ -60,6 +66,7 @@ export const {
     loginRequest,
     loginSuccess,
     loginFailed,
+    logOut,
 } = userReducers.actions;
 
 export default userReducers.reducer;

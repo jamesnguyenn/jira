@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Login from './component/Login';
 import Register from './component/Register';
@@ -13,9 +13,13 @@ import { checkTokenThunk } from './redux/thunk';
 import { useDispatch } from 'react-redux';
 import LayoutMain from './layout/LayoutMain';
 
+import 'antd/dist/antd.css';
+import CreateProject from './page/CreateProject';
+import UserManagement from './page/UserManagement';
+
 function App() {
     const dispatch = useDispatch();
-    useEffect(() => {
+    useLayoutEffect(() => {
         const userData = JSON.parse(localStorage.getItem(ACCESSTOKEN));
         if (userData) {
             const checkToken = checkTokenThunk(userData);
@@ -49,6 +53,26 @@ function App() {
                         <ProtectedRoute>
                             <LayoutMain>
                                 <HomeScreen />
+                            </LayoutMain>
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/create-project"
+                    element={
+                        <ProtectedRoute>
+                            <LayoutMain>
+                                <CreateProject />
+                            </LayoutMain>
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/user-management"
+                    element={
+                        <ProtectedRoute>
+                            <LayoutMain>
+                                <UserManagement />
                             </LayoutMain>
                         </ProtectedRoute>
                     }
