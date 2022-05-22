@@ -1,25 +1,58 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from 'react';
+import { Routes, Route } from 'react-router-dom';
+import Login from './component/Login';
+import Register from './component/Register';
+import Auth from './page/Auth';
+import ProtectedRoute from './page/ProtectedRoute';
+import HomeScreen from './page/HomeScreen';
+
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { ACCESSTOKEN } from './axios';
+import { checkTokenThunk } from './redux/thunk';
+import { useDispatch } from 'react-redux';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const dispatch = useDispatch();
+    useEffect(() => {
+        const userData = JSON.parse(localStorage.getItem(ACCESSTOKEN));
+        if (userData) {
+            const checkToken = checkTokenThunk(userData);
+            dispatch(checkToken);
+        }
+    }, [dispatch]);
+    return (
+        <div className="App">
+            <Routes>
+                <Route
+                    path="/auth/login"
+                    element={
+                        <Auth>
+                            <Login></Login>
+                        </Auth>
+                    }
+                ></Route>
+                <Route
+                    path="/auth/register"
+                    element={
+                        <Auth>
+                            <Register></Register>
+                        </Auth>
+                    }
+                ></Route>
+
+                <Route
+                    path="/"
+                    element={
+                        <ProtectedRoute>
+                            <HomeScreen />
+                        </ProtectedRoute>
+                    }
+                />
+            </Routes>
+            <ToastContainer />
+        </div>
+    );
 }
 
 export default App;

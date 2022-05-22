@@ -1,0 +1,81 @@
+.login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    .login__container {
+        width: 40%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 13px;
+        h2 {
+            @include render-text($fz-md, $fw-semiBold, $c-1);
+            margin-bottom: $m-1;
+        }
+        .login__field {
+            width: 100%;
+            position: relative;
+            .login__field__input {
+                width: 100%;
+                position: relative;
+                label {
+                    display: inline-block;
+                    font-weight: 600;
+                    cursor: pointer;
+                    position: absolute;
+                    top: 0;
+                    left: 10px;
+                    background-color: $c-3;
+                    padding: 1px 5px;
+                    font-size: 12px;
+                    transform: translateY(-50%);
+                    color: $bg-1;
+                }
+
+                input {
+                    padding: 15px;
+                    display: block;
+                    width: 100%;
+                    font-size: 14px;
+                    border: 1px solid $bg-1;
+                    border-radius: 4px;
+                    background-color: transparent;
+                    color: $c-4;
+                }
+            }
+            .login__field-error {
+                font-size: $fz-xxs;
+                margin: 5px 0;
+                color: red;
+            }
+        }
+        .forgotPassword {
+            text-align: right;
+            cursor: pointer;
+            width: 100%;
+            @include render-text($fz-xxs, $fw-light, $c-2);
+            transition: all 0.2s ease-in-out;
+            &:hover {
+                text-decoration: underline;
+                color: $c-1;
+            }
+        }
+        .login__social {
+            width: 100%;
+            .my-facebook-button-class {
+                @include render-button(
+                    #1877f2,
+                    #1877f2,
+                    $c-3,
+                    $ptb: 8px,
+                    $plr: 10px
+                );
+            }
+            .fa {
+                margin-right: $m-1;
+            }
+        }
+    }
+}

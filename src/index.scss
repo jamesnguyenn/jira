@@ -1,0 +1,12 @@
+@import './assets/sass/reset';
+@import './assets/sass/variable';
+@import './assets/sass/mixin';
+@import './assets/sass/base';
+
+//Page
+@import './page/Auth/Auth';
+
+//Component
+@import './component/Login/Login';
+@import './component/Register/Register';
+@import './component/Loading/Loading';

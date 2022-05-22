@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+* {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 62.5%;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    color: $c-4;
+    background-color: $bg-2;
+    font-size: 1.6rem;
+    font-weight: $fw-regular;
+}
+
+.container {
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+.btn {
+    &.btn-primary {
+        @include render-button($ptb: 8px, $plr: 10px);
+    }
+    &.btn-secondary {
+        @include render-button(transparent, $c-1, $c-1, $ptb: 8px, $plr: 10px);
+    }
+}
+
+.Toastify__toast-container {
+    font-size: $fz-xs;
+    line-height: 1.3;
+}
