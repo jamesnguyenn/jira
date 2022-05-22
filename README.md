@@ -9,16 +9,17 @@ Link dac ta du an: https://drive.google.com/drive/folders/1WUpiEhcBU1raigfMNgew3
 
 <!-- //Screen
 
-    - Login, Register (Done) ;
-    - Project Management (Add/Remove User , Edit/Delete Project);
-    - Create Project;
-    - Project Details (use Drag & Drop to move task)
-    - Create Task, Edit Task;
-    - Task Details (Comment, Status, Members, Priority...)
-    *Lưu ý: Pop up Edit Task và Create Task đều giống nhau là hiện ra từ bên phải vào(sử dụng thư viện Ant Design) chỉ khác nhau về nội dung nên mình sẽ tạo 1 HOC dùng chung cho 2 component này.
+       - Login, Register (Done) ;
+       - LayoutMain & NavLink (Done);
+(Khoa) - Project Management (Add/Remove User , Edit/Delete Project);
+(Thien)- Create Project;
+       - Project Details (use Drag & Drop to move task)
+       - Create Task, Edit Task;
+       - Task Details (Comment, Status, Members, Priority...)
+        *Lưu ý: Pop up Edit Task và Create Task đều giống nhau là hiện ra từ bên phải vào(sử dụng thư viện Ant Design) chỉ khác nhau về nội dung nên mình sẽ tạo 1 HOC dùng chung cho 2 component này.
 
-    - User Management (Giống Project Management, thêm xóa sửa user)
-    Deadline : (2 weeks)
+       - User Management (Giống Project Management, thêm xóa sửa user)
+Deadline : (2 weeks)
     -->
 
 <!-- API
