@@ -44,14 +44,14 @@ function CreateProject() {
             const dataSubmit = {
                 projectName,
                 description,
-                categoryId,
+                categoryId: Number(categoryId),
                 alias: '',
             };
             const response = await http.post(createProject, dataSubmit);
             toast.success('Create Project Successfully');
             navigate('/');
         } catch (e) {
-            toast.error('Cannot Create Project!');
+            toast.error(e.response.data.content);
         }
     };
 
