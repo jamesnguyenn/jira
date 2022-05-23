@@ -127,7 +127,7 @@ function LayoutMain({ children }) {
                     style={{
                         padding: 24,
                         margin: '24px 16px ',
-                        minHeight: '100vh',
+                        minHeight: '150px',
                         overflow: 'initial',
                     }}
                 >
