@@ -51,6 +51,7 @@ function LayoutMain({ children }) {
                 <Menu
                     theme="dark"
                     mode="inline"
+                    selectedKeys={location.pathname}
                     defaultSelectedKeys={location.pathname}
                     items={[
                         {
