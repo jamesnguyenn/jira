@@ -62,7 +62,7 @@ function App() {
                     />
                     {/* Detail Screens */}
                     <Route
-                        path="/project-detail"
+                        path="/project-detail/:id"
                         element={
                             <LayoutMain>
                                 <ProjectDetail />
