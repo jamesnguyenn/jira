@@ -4,3 +4,4 @@ export const register = '/Users/signup';
 export const checkToken = '/Users/TestToken';
 export const getProjectCategory = '/ProjectCategory';
 export const createProject = '/Project/createProjectAuthorize';
+export const getAllProject = '/Project/getAllProject';
