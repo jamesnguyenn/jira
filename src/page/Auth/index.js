@@ -1,12 +1,24 @@
 import React, { useCallback, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import Login from '../../component/Login';
 import Register from '../../component/Register';
+import { getUserInfo } from '../../redux/selectors';
 
 function Auth() {
     const [auth, setAuth] = useState(true);
+
+    let location = useLocation();
+    let from = location.state?.from?.pathname || '/';
+
+    const { accessToken } = useSelector(getUserInfo);
+
     const handleOnClick = useCallback(() => {
         setAuth(!auth);
     }, [auth]);
+    if (accessToken) {
+        return <Navigate to={from} replace />;
+    }
 
     return (
         <div className="auth">

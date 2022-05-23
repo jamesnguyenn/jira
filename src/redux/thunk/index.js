@@ -33,6 +33,7 @@ export const loginThunk = (userInfo, navigate) => {
                 draggable: true,
                 progress: undefined,
             });
+            navigate('/');
         } catch (err) {
             dispatch(loginFailed());
             toast.error(err.response.data.message, {

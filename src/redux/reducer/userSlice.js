@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
     email: '',
     isLoading: false,
+    isCheckToken: false,
 };
 
 const userReducers = createSlice({
@@ -42,18 +43,26 @@ const userReducers = createSlice({
                 ...state,
                 ...payload,
                 isLoading: false,
+                isCheckToken: false,
             };
         },
         loginFailed: (state, action) => {
             return {
                 ...state,
                 isLoading: false,
+                isCheckToken: false,
             };
         },
         logOut: (state, action) => {
             return {
                 ...initialState,
                 email: state.email,
+            };
+        },
+        checkTokenRequest: (state, action) => {
+            return {
+                ...state,
+                isCheckToken: true,
             };
         },
     },
@@ -67,6 +76,7 @@ export const {
     loginSuccess,
     loginFailed,
     logOut,
+    checkTokenRequest,
 } = userReducers.actions;
 
 export default userReducers.reducer;

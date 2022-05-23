@@ -1,7 +1,12 @@
 import React, { memo } from 'react';
 
-function Loading() {
-    return <div className="spinning"></div>;
+function Loading({ color = '#fff' }) {
+    return (
+        <div
+            className="spinning"
+            style={{ borderColor: color, borderLeftColor: 'transparent' }}
+        ></div>
+    );
 }
 
 export default memo(Loading);

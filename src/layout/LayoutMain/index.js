@@ -10,7 +10,7 @@ import {
 import { Layout, Menu } from 'antd';
 import React, { memo, useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Outlet } from 'react-router-dom';
 import { ACCESSTOKEN } from '../../axios';
 import { logOut } from '../../redux/reducer/userSlice';
 import { getUserInfo } from '../../redux/selectors';
@@ -134,7 +134,7 @@ function LayoutMain({ children }) {
                         overflow: 'initial',
                     }}
                 >
-                    {children}
+                    <Outlet />
                 </Content>
             </Layout>
         </Layout>
