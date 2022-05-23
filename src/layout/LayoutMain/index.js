@@ -22,7 +22,7 @@ function LayoutMain({ children }) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const location = useLocation();
-    console.log('🚀 ~ location', location);
+
     const { avatar } = useSelector(getUserInfo);
 
     const handleSignOut = useCallback(() => {
