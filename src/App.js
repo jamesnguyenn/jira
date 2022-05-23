@@ -13,9 +13,10 @@ import { checkTokenThunk } from './redux/thunk';
 import { useDispatch } from 'react-redux';
 import LayoutMain from './layout/LayoutMain';
 
-import 'antd/dist/antd.css';
 import CreateProject from './page/CreateProject';
 import UserManagement from './page/UserManagement';
+
+import 'antd/dist/antd.min.css';
 
 function App() {
     const dispatch = useDispatch();
