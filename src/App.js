@@ -17,6 +17,7 @@ import CreateProject from './page/CreateProject';
 import UserManagement from './page/UserManagement';
 
 import 'antd/dist/antd.min.css';
+import NotFoundPage from './page/NotFoundPage';
 
 function App() {
     const dispatch = useDispatch();
@@ -79,6 +80,9 @@ function App() {
                     }
                 />
                 {/* Detail Screens */}
+
+                {/* Not Found Page */}
+                <Route path="*" element={<NotFoundPage />} />
             </Routes>
             <ToastContainer />
         </div>
