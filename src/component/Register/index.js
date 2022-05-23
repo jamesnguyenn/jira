@@ -30,7 +30,7 @@ const schemaValidations = Yup.object({
         .oneOf([Yup.ref('passWord')], 'Passwords must match'),
 });
 
-function Register() {
+function Register({ onClick }) {
     const [eyePassword, setEyePassword] = useState({
         passWord: true,
         confirmPassword: true,
@@ -66,7 +66,7 @@ function Register() {
                 name,
                 phoneNumber,
             },
-            navigate
+            onClick
         );
         dispatch(registerUserRequest());
         dispatch(registerApi);
@@ -188,10 +188,7 @@ function Register() {
                 >
                     {isLoading ? <Loading /> : 'Register'}
                 </button>
-                <button
-                    className="btn btn-secondary"
-                    onClick={() => navigate('/auth/login')}
-                >
+                <button className="btn btn-secondary" onClick={onClick}>
                     Back to login
                 </button>
             </div>

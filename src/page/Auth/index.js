@@ -1,15 +1,13 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
-import { Navigate } from 'react-router-dom';
-import loginLogo from '../../assets/img/Brazuca.png';
-import { getUserInfo } from '../../redux/selectors';
+import React, { useCallback, useState } from 'react';
+import Login from '../../component/Login';
+import Register from '../../component/Register';
 
-function Auth({ children }) {
-    const { accessToken } = useSelector(getUserInfo);
+function Auth() {
+    const [auth, setAuth] = useState(true);
+    const handleOnClick = useCallback(() => {
+        setAuth(!auth);
+    }, [auth]);
 
-    if (accessToken) {
-        return <Navigate to="/" />;
-    }
     return (
         <div className="auth">
             <div className="auth__left">
@@ -26,7 +24,13 @@ function Auth({ children }) {
                     />
                 </div>
             </div>
-            <div className="auth__right">{children}</div>
+            <div className="auth__right">
+                {auth ? (
+                    <Login onClick={handleOnClick} />
+                ) : (
+                    <Register onClick={handleOnClick} />
+                )}
+            </div>
         </div>
     );
 }

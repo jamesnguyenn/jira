@@ -143,8 +143,8 @@ function HomeScreen() {
     const { project } = useSelector(getAllProject);
 
     useEffect(() => {
-        const action = getAllProjectAction;
-        dispatch(action);
+        // const action = getAllProjectAction;
+        // dispatch(action);
     }, []);
     return (
         <div>

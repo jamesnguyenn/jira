@@ -18,7 +18,7 @@ const schemaValidations = Yup.object({
     passWord: Yup.string().required('Password is require !'),
 });
 
-function Login() {
+function Login({ onClick }) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const user = useSelector(getUserInfo);
@@ -109,10 +109,7 @@ function Login() {
                 >
                     {isLoading ? <Loading /> : 'Log in'}
                 </button>
-                <button
-                    className="btn btn-secondary"
-                    onClick={() => navigate('/auth/register')}
-                >
+                <button className="btn btn-secondary" onClick={onClick}>
                     Register account
                 </button>
 
