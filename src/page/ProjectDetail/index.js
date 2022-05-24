@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useParams } from 'react-router-dom';
 
 import { getProjectDetailThunk } from '../../redux/thunk';
-import { getProjectDetail } from '../../redux/selectors';
+import { getProjectDetail, getUserInfo } from '../../redux/selectors';
 import { getProjectDetailRequest } from '../../redux/reducer/projectDetailSlice';
 
 import ProjectDetailHeader from '../../component/ProjectDetailHeader';
@@ -13,10 +13,15 @@ import Loading from '../../component/Loading';
 import { Breadcrumb } from 'antd';
 
 function ProjectDetail() {
+    const [isMemberInProject, setIsMemberInProject] = useState(false);
+    console.log('🚀 ~ isMemberInProject', isMemberInProject);
+    const { id: userId } = useSelector(getUserInfo);
     const { id: projectId } = useParams();
+    const dispatch = useDispatch();
     const projectDetail = useSelector(getProjectDetail);
     const { data, isLoading } = projectDetail;
     console.log('🚀 ~ data', data);
+
     const {
         projectName,
         description,
@@ -28,7 +33,19 @@ function ProjectDetail() {
         members,
     } = data;
 
-    const dispatch = useDispatch();
+    //Check member is logged in belonging to projectDetail or not
+    useEffect(() => {
+        if (members || creator) {
+            const allMemberInProject = [
+                ...members.map((member) => member.userId),
+
+                creator.id,
+            ];
+            setIsMemberInProject(
+                Boolean(allMemberInProject.find((item) => item === userId))
+            );
+        }
+    }, [creator, members, userId]);
 
     useEffect(() => {
         dispatch(getProjectDetailRequest());
@@ -61,7 +78,11 @@ function ProjectDetail() {
                                 : 'Project Not Found'}
                         </h2>
                         <div className="projectDetail__header">
-                            <ProjectDetailHeader listMember={members} id={id} />
+                            <ProjectDetailHeader
+                                listMember={members}
+                                id={id}
+                                isMemberInProject={isMemberInProject}
+                            />
                         </div>
                         <div className="projectDetail__body">
                             <ProjectDetailBody lstTask={lstTask} />

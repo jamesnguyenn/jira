@@ -51,8 +51,11 @@
     border: 1px solid red;
 }
 .projectDetail__header-text {
+    display: inline-block;
     flex: 1 1 280px;
-    @include render-button();
+    padding: 10px 20px;
+    height: 100%;
+    border: 1px solid $bg-1;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -60,4 +63,10 @@
     font-weight: $fw-medium;
     text-transform: uppercase;
     cursor: pointer;
+    opacity: 0.6;
+    transition: all 0.3s ease-in-out;
+    border-radius: 10px;
+    &:hover {
+        opacity: 1;
+    }
 }

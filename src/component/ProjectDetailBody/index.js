@@ -6,6 +6,7 @@ function ProjectDetailBody({ lstTask = [] }) {
     return (
         <>
             <div className="cards">
+                {/* Load Log */}
                 {lstTask.length > 0 &&
                     lstTask.map((lstItem) => {
                         const { lstTaskDeTail, statusId } = lstItem;
@@ -15,6 +16,7 @@ function ProjectDetailBody({ lstTask = [] }) {
                                     {lstItem.statusName}
                                 </div>
                                 <ul className="task__lists">
+                                    {/* Load Task Item in Log */}
                                     {lstTaskDeTail.length > 0
                                         ? lstTaskDeTail.map(
                                               (lstTaskDeTailItem) => {

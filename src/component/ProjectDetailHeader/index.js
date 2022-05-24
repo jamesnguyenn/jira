@@ -3,7 +3,7 @@ import React, { memo, useRef } from 'react';
 import { Avatar, Result, Tooltip } from 'antd';
 import { NavLink } from 'react-router-dom';
 
-function ProjectDetailHeader({ listMember = [], id }) {
+function ProjectDetailHeader({ listMember = [], id, isMemberInProject }) {
     const inputSearch = useRef(null);
 
     return (
@@ -46,9 +46,12 @@ function ProjectDetailHeader({ listMember = [], id }) {
                                 })}
                         </Avatar.Group>
                     </div>
-                    <span className="projectDetail__header-text">
-                        Only My Issues
-                    </span>
+                    {isMemberInProject && (
+                        <span className="projectDetail__header-text">
+                            Only My Issues
+                        </span>
+                    )}
+
                     <span className="projectDetail__header-text">
                         Recently Updated
                     </span>
