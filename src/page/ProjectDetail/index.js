@@ -44,16 +44,24 @@ function ProjectDetail() {
                         <Breadcrumb.Item>
                             <NavLink to="/">Project Management</NavLink>
                         </Breadcrumb.Item>
-                        <Breadcrumb.Item>{`Project ${projectName}`}</Breadcrumb.Item>
+                        <Breadcrumb.Item>
+                            {id
+                                ? `Project ${projectName}`
+                                : 'Project Not Found'}
+                        </Breadcrumb.Item>
                     </Breadcrumb>
                 </div>
                 {isLoading ? (
                     <Loading color="#000" />
                 ) : (
                     <>
-                        <h2>{`Project ${projectName}`}</h2>
+                        <h2>
+                            {id
+                                ? `Project ${projectName}`
+                                : 'Project Not Found'}
+                        </h2>
                         <div className="projectDetail__header">
-                            <ProjectDetailHeader listMember={members} />
+                            <ProjectDetailHeader listMember={members} id={id} />
                         </div>
                         <div className="projectDetail__body">
                             <ProjectDetailBody lstTask={lstTask} />

@@ -52,8 +52,8 @@
     border: 1px solid red;
 }
 .projectDetail__header-text {
-    width: 130px;
-    flex: 1 1 150px;
+    max-width: 280px;
+    flex: 1 1 280px;
     @include render-button();
     display: flex;
     justify-content: center;
