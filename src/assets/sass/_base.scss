@@ -38,6 +38,14 @@ body {
     align-items: center;
 }
 
+.center__column {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 .Toastify__toast-container {
     font-size: $fz-xs;
     line-height: 1.3;

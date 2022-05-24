@@ -34,7 +34,10 @@ function ProjectDetailHeader({
                                 backgroundColor: '#fde3cf',
                             }}
                         >
-                            <Tooltip title={creator.name} placement="top">
+                            <Tooltip
+                                title={`Creator: ${creator.name}`}
+                                placement="top"
+                            >
                                 <Avatar style={{ backgroundColor: '#f56a00' }}>
                                     {creator.name[0]}
                                 </Avatar>
@@ -68,15 +71,7 @@ function ProjectDetailHeader({
                 </>
             ) : (
                 <>
-                    <div
-                        style={{
-                            width: '100%',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                        }}
-                    >
+                    <div className="center__column">
                         <Result
                             status="404"
                             extra={
@@ -84,10 +79,12 @@ function ProjectDetailHeader({
                                     to="/"
                                     className="projectDetail__header-text"
                                     style={{
+                                        backgroundColor: '#000',
+                                        color: '#fff',
                                         textDecoration: 'none',
                                     }}
                                 >
-                                    Back to Project Management
+                                    Back To Home
                                 </NavLink>
                             }
                         />

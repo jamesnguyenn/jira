@@ -19,7 +19,6 @@ function ProjectDetail() {
     const dispatch = useDispatch();
     const projectDetail = useSelector(getProjectDetail);
     const { data, isLoading } = projectDetail;
-    console.log('🚀 ~ data', data);
 
     const {
         projectName,
