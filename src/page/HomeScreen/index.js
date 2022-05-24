@@ -193,6 +193,7 @@ function HomeScreen(props) {
                     projectName="Hello Khoa"
                     category={2}
                     desc="Hello Khoa"
+                    textButton="Edit Project"
                 ></FormCreateEditProject>
             </LayoutModal>
         </div>

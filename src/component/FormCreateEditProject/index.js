@@ -20,6 +20,7 @@ function CreateProject({
     projectName,
     desc,
     category = 0,
+    textButton = 'Create Project',
 }) {
     const { register, formState, handleSubmit } = useForm({
         mode: 'all',
@@ -113,7 +114,7 @@ function CreateProject({
                     className="btn btn-primary"
                     disabled={isSubmitting}
                 >
-                    {isSubmitting ? <Loading /> : ' Create Project'}
+                    {isSubmitting ? <Loading /> : { textButton }}
                 </button>
             </form>
         </section>
