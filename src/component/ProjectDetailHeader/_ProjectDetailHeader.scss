@@ -1,4 +1,5 @@
 .searchContainer {
+    flex: 1 1 150px;
     width: 250px;
     height: 40px;
     background-color: $bg-3;
@@ -7,50 +8,58 @@
     display: flex;
     align-items: center;
     position: relative;
-}
+    .search__box {
+        width: 0;
+        background: none;
+        color: $c-4;
+        font-size: 0.8rem;
+        border-radius: 2rem;
+        outline: none;
+        border: none;
+        position: relative;
+        opacity: 1;
+        transition: all 0.75s ease-in;
+        cursor: pointer;
+    }
 
-.search__box {
-    width: 0;
-    /*   display: inline; */
-    background: none;
-    color: $c-4;
-    font-size: 0.8rem;
-    border-radius: 2rem;
-    outline: none;
-    border: none;
-    position: relative;
-    opacity: 1;
-    transition: all 0.75s ease-in;
-    cursor: pointer;
-}
-
-.search__icon {
-    box-sizing: border-box;
-    font-size: 0.8rem;
-    display: inline-block;
-    cursor: pointer;
-    position: absolute;
-    top: 50%;
-    left: 0;
-    transform: translate(0, -50%);
-    color: $c-1;
-    transition: all 0.7s ease-in;
-    padding: 0.6rem;
-    border-radius: 50%;
-}
-
-.searchContainer:hover > .search__box {
-    width: 85%;
-}
-
-.searchContainer:hover > .search__icon {
-    background-color: $bg-1;
-    color: #fff;
-    left: 97%;
-    transform: translate(-97%, -50%);
+    .search__icon {
+        box-sizing: border-box;
+        font-size: 0.8rem;
+        display: inline-block;
+        cursor: pointer;
+        position: absolute;
+        top: 50%;
+        left: 0;
+        transform: translate(0, -50%);
+        color: $c-1;
+        transition: all 0.7s ease-in;
+        padding: 0.6rem;
+        border-radius: 50%;
+    }
+    &:hover > .search__box {
+        width: 85%;
+    }
+    &:hover > .search__icon {
+        background-color: $bg-1;
+        color: #fff;
+        left: 97%;
+        transform: translate(-97%, -50%);
+    }
 }
 
 .show {
     width: 85%;
     border: 1px solid red;
+}
+.projectDetail__header-text {
+    width: 130px;
+    flex: 1 1 150px;
+    @include render-button();
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: $fz-xs;
+    font-weight: $fw-medium;
+    text-transform: uppercase;
+    cursor: pointer;
 }

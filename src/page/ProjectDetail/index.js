@@ -14,6 +14,7 @@ function ProjectDetail() {
     const { id: projectId } = useParams();
     const projectDetail = useSelector(getProjectDetail);
     const { data, isLoading } = projectDetail;
+    console.log('🚀 ~ data', data);
     const {
         projectName,
         description,
@@ -50,10 +51,10 @@ function ProjectDetail() {
                     <>
                         <h2>{`Project ${projectName}`}</h2>
                         <div className="projectDetail__header">
-                            <ProjectDetailHeader />
+                            <ProjectDetailHeader listMember={members} />
                         </div>
                         <div className="projectDetail__body">
-                            <ProjectDetailBody />
+                            <ProjectDetailBody lstTask={lstTask} />
                         </div>
                     </>
                 )}

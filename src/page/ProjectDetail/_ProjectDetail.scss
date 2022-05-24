@@ -10,6 +10,10 @@
     }
     .projectDetail__header {
         margin-bottom: $m-4;
+        display: flex;
+        gap: $m-2;
+        align-items: center;
+        flex-wrap: wrap;
     }
     .projectDetail__body {
     }
