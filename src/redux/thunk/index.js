@@ -43,7 +43,7 @@ export const loginThunk = (userInfo, navigate) => {
             navigate('/');
         } catch (err) {
             dispatch(loginFailed());
-            toast.error(err.response.data.message, {
+            toast.error('Email/Password Not Correct!', {
                 position: 'top-right',
                 autoClose: 1000,
                 hideProgressBar: false,

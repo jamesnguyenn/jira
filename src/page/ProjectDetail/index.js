@@ -14,7 +14,6 @@ import { Breadcrumb } from 'antd';
 
 function ProjectDetail() {
     const [isMemberInProject, setIsMemberInProject] = useState(false);
-    console.log('🚀 ~ isMemberInProject', isMemberInProject);
     const { id: userId } = useSelector(getUserInfo);
     const { id: projectId } = useParams();
     const dispatch = useDispatch();
@@ -38,7 +37,6 @@ function ProjectDetail() {
         if (members || creator) {
             const allMemberInProject = [
                 ...members.map((member) => member.userId),
-
                 creator.id,
             ];
             setIsMemberInProject(
@@ -82,6 +80,7 @@ function ProjectDetail() {
                                 listMember={members}
                                 id={id}
                                 isMemberInProject={isMemberInProject}
+                                creator={creator}
                             />
                         </div>
                         <div className="projectDetail__body">

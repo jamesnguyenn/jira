@@ -3,7 +3,12 @@ import React, { memo, useRef } from 'react';
 import { Avatar, Result, Tooltip } from 'antd';
 import { NavLink } from 'react-router-dom';
 
-function ProjectDetailHeader({ listMember = [], id, isMemberInProject }) {
+function ProjectDetailHeader({
+    listMember = [],
+    id,
+    isMemberInProject,
+    creator,
+}) {
     const inputSearch = useRef(null);
 
     return (
@@ -29,6 +34,11 @@ function ProjectDetailHeader({ listMember = [], id, isMemberInProject }) {
                                 backgroundColor: '#fde3cf',
                             }}
                         >
+                            <Tooltip title={creator.name} placement="top">
+                                <Avatar style={{ backgroundColor: '#f56a00' }}>
+                                    {creator.name[0]}
+                                </Avatar>
+                            </Tooltip>
                             {listMember.length > 0 &&
                                 listMember.map((member) => {
                                     return (
