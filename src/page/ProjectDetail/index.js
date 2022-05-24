@@ -31,6 +31,13 @@ function ProjectDetail() {
         members,
     } = data;
 
+    //Load Api Project Detail
+    useEffect(() => {
+        dispatch(getProjectDetailRequest());
+        const getProjectDetail = getProjectDetailThunk(projectId);
+        dispatch(getProjectDetail);
+    }, [dispatch, projectId]);
+
     //Check member is logged in belonging to projectDetail or not
     useEffect(() => {
         if (members || creator) {
@@ -43,12 +50,6 @@ function ProjectDetail() {
             );
         }
     }, [creator, members, userId]);
-
-    useEffect(() => {
-        dispatch(getProjectDetailRequest());
-        const getProjectDetail = getProjectDetailThunk(projectId);
-        dispatch(getProjectDetail);
-    }, [dispatch, projectId]);
 
     return (
         <>
