@@ -1,14 +1,16 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useParams } from 'react-router-dom';
-import { getProjectDetailThunk } from '../../redux/thunk';
 
-import { Breadcrumb } from 'antd';
+import { getProjectDetailThunk } from '../../redux/thunk';
 import { getProjectDetail } from '../../redux/selectors';
 import { getProjectDetailRequest } from '../../redux/reducer/projectDetailSlice';
+
 import ProjectDetailHeader from '../../component/ProjectDetailHeader';
 import ProjectDetailBody from '../../component/ProjectDetailBody';
 import Loading from '../../component/Loading';
+
+import { Breadcrumb } from 'antd';
 
 function ProjectDetail() {
     const { id: projectId } = useParams();
