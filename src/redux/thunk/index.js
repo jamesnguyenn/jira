@@ -1,10 +1,11 @@
 import { ACCESSTOKEN, DOMAIN, http } from '../../axios/index';
 import {
   checkToken,
-  getAllProject,
   register,
   signInURL,
   signInWithFacebook,
+  getAllProject,
+  deleteProject,
 } from '../../axios/apiURL';
 import { toast } from 'react-toastify';
 import {
@@ -14,6 +15,7 @@ import {
   registerUserSuccess,
 } from '../reducer/userSlice';
 import axios from 'axios';
+import { delProject, gettAllProject } from '../reducer/projectSlice';
 
 //Login
 export const loginThunk = (userInfo, navigate) => {
@@ -112,20 +114,35 @@ export const checkTokenThunk = (userData) => {
 };
 
 //Call api for project management
+export const getListProjectAction = () => {
+  return async (dispatch) => {
+    try {
+      let result = await http.get(getAllProject);
+      const action = gettAllProject(result.data.content);
+      dispatch(action);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
 
-export const getAllProjectAction = async (dispatch) => {
-  try {
-    let result = await axios({
-      url: `${DOMAIN}/Project/getAllProject`,
-      method: 'GET',
-      headers: { Authorization: 'Bearer ' + ACCESSTOKEN },
-    });
-    console.log('All_project', result);
-    dispatch({
-      type: 'GET_PROJECTS',
-      content: result.content,
-    });
-  } catch (error) {
-    console.log(error);
-  }
+//Delete project in project management
+export const delProjectAction = (projectId) => {
+  return async (dispatch) => {
+    try {
+      let result = await http.delete(deleteProject);
+
+      alert(result);
+
+      const actionDel = delProject(projectId);
+      dispatch(actionDel);
+
+      const action = getListProjectAction();
+      dispatch(action);
+
+      console.log(result);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
 };
