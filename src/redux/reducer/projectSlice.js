@@ -9,25 +9,17 @@ const projectReducer = createSlice({
   initialState,
   reducers: {
     gettAllProject: (state, action) => {
-      switch (action.type) {
-        case 'GET_TASKS':
-          {
-            state.project = action.content;
-            console.log(action.content);
-
-            return { ...state };
-          }
-
-          break;
-
-        default:
-          return { ...state };
-          break;
-      }
+      state.project = action.payload;
+    },
+    delProject: (state, action) => {
+      console.log('DEL', action);
+      state.project = state.project.filter(
+        (item) => item.id !== action.payload
+      );
     },
   },
 });
 
-export const { gettAllProject } = projectReducer.actions;
+export const { gettAllProject, delProject } = projectReducer.actions;
 
 export default projectReducer.reducer;

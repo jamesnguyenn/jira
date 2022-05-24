@@ -6,6 +6,12 @@ import {
     register,
     signInURL,
     signInWithFacebook,
+  checkToken,
+  register,
+  signInURL,
+  signInWithFacebook,
+  getAllProject,
+  deleteProject,
 } from '../../axios/apiURL';
 import { toast } from 'react-toastify';
 import {
@@ -19,6 +25,7 @@ import {
     getProjectDetailFailure,
     getProjectDetailSuccess,
 } from '../reducer/projectDetailSlice';
+import { delProject, gettAllProject } from '../reducer/projectSlice';
 
 //Login
 export const loginThunk = (userInfo, navigate) => {
@@ -118,6 +125,17 @@ export const checkTokenThunk = (userData) => {
 };
 
 //Call api for project management
+export const getListProjectAction = () => {
+  return async (dispatch) => {
+    try {
+      let result = await http.get(getAllProject);
+      const action = gettAllProject(result.data.content);
+      dispatch(action);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
 
 export const getAllProjectAction = async (dispatch) => {
     try {
@@ -158,4 +176,23 @@ export const getProjectDetailThunk = (projectID) => {
             dispatch(getProjectDetailFailure());
         }
     };
+//Delete project in project management
+export const delProjectAction = (projectId) => {
+  return async (dispatch) => {
+    try {
+      let result = await http.delete(deleteProject);
+
+      alert(result);
+
+      const actionDel = delProject(projectId);
+      dispatch(actionDel);
+
+      const action = getListProjectAction();
+      dispatch(action);
+
+      console.log(result);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
 };
