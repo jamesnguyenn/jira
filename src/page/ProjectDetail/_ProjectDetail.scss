@@ -1,0 +1,16 @@
+.projectDetail {
+    .projectDetail__breadCrumb {
+        margin-bottom: $m-2;
+    }
+    h2 {
+        margin-bottom: $m-3;
+        text-transform: uppercase;
+        font-size: $fz-md;
+        font-weight: $fw-semiBold;
+    }
+    .projectDetail__header {
+        margin-bottom: $m-4;
+    }
+    .projectDetail__body {
+    }
+}

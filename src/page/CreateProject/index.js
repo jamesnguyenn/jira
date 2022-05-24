@@ -56,7 +56,7 @@ function CreateProject() {
     };
 
     return (
-        <div className="createProject">
+        <section className="createProject">
             <h2>Create Project</h2>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="text-field">
@@ -109,7 +109,7 @@ function CreateProject() {
                     {isSubmitting ? <Loading /> : ' Create Project'}
                 </button>
             </form>
-        </div>
+        </section>
     );
 }
 

@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 function NotFoundPage() {
     const navigate = useNavigate();
     return (
-        <div
+        <section
             style={{
                 width: '100%',
                 height: '100vh',
@@ -27,7 +27,7 @@ function NotFoundPage() {
                     </span>
                 }
             />
-        </div>
+        </section>
     );
 }
 

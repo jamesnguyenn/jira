@@ -2,6 +2,7 @@ import { ACCESSTOKEN, DOMAIN, http } from '../../axios/index';
 import {
     checkToken,
     getAllProject,
+    getProjectDetailURL,
     register,
     signInURL,
     signInWithFacebook,
@@ -14,6 +15,10 @@ import {
     registerUserSuccess,
 } from '../reducer/userSlice';
 import axios from 'axios';
+import {
+    getProjectDetailFailure,
+    getProjectDetailSuccess,
+} from '../reducer/projectDetailSlice';
 
 //Login
 export const loginThunk = (userInfo, navigate) => {
@@ -26,7 +31,7 @@ export const loginThunk = (userInfo, navigate) => {
             dispatch(loginSuccess(content));
             toast.success('Login Successfully', {
                 position: 'top-right',
-                autoClose: 2000,
+                autoClose: 1000,
                 hideProgressBar: false,
                 closeOnClick: true,
                 pauseOnHover: true,
@@ -38,7 +43,7 @@ export const loginThunk = (userInfo, navigate) => {
             dispatch(loginFailed());
             toast.error(err.response.data.message, {
                 position: 'top-right',
-                autoClose: 2000,
+                autoClose: 1000,
                 hideProgressBar: false,
                 closeOnClick: true,
                 pauseOnHover: true,
@@ -129,4 +134,28 @@ export const getAllProjectAction = async (dispatch) => {
     } catch (error) {
         console.log(error);
     }
+};
+
+//Get Project Detail
+
+export const getProjectDetailThunk = (projectID) => {
+    return async (dispatch) => {
+        try {
+            const response = await http.get(
+                getProjectDetailURL + `?id=${projectID}`
+            );
+            dispatch(getProjectDetailSuccess(response.data.content));
+        } catch (err) {
+            toast.error(err.response.data.message, {
+                position: 'top-right',
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+            dispatch(getProjectDetailFailure());
+        }
+    };
 };
