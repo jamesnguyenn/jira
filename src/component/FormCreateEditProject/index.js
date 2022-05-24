@@ -114,7 +114,7 @@ function CreateProject({
                     className="btn btn-primary"
                     disabled={isSubmitting}
                 >
-                    {isSubmitting ? <Loading /> : { textButton }}
+                    {isSubmitting ? <Loading /> : textButton}
                 </button>
             </form>
         </section>
