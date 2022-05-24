@@ -4,7 +4,8 @@ Project Owner: Nguyen Quang Thien & Hoang Minh Khoa
 (BC23 - CyberSoft)
 </p>
 
-<img src="./src/assets/img/readme-login.png" width="350" title="readme-login">
+<img src="./src/assets/img/readme-login.png" title="readme-login">
+<img src="./src/assets/img/readme-projectDetail.png" title="readme-projectDetail">
 
 <!-- //Screen
 
