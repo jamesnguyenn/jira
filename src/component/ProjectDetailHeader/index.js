@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { memo, useRef } from 'react';
 
 import { Avatar, Result, Tooltip } from 'antd';
 import { NavLink } from 'react-router-dom';
@@ -85,4 +85,4 @@ function ProjectDetailHeader({ listMember = [], id }) {
     );
 }
 
-export default ProjectDetailHeader;
+export default memo(ProjectDetailHeader);

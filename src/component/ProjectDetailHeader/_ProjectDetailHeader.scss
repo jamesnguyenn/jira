@@ -1,6 +1,5 @@
 .searchContainer {
     flex: 1 1 150px;
-    width: 250px;
     height: 40px;
     background-color: $bg-3;
     border-radius: 4rem;
@@ -52,7 +51,6 @@
     border: 1px solid red;
 }
 .projectDetail__header-text {
-    max-width: 280px;
     flex: 1 1 280px;
     @include render-button();
     display: flex;
