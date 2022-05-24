@@ -1,8 +1,11 @@
-import React, { memo } from 'react';
+import React, { memo, useCallback } from 'react';
 
 import TaskLists from './TaskLists';
 
 function ProjectDetailBody({ lstTask = [] }) {
+    const handleOnDragStart = useCallback((e) => {
+        console.log(e);
+    }, []);
     return (
         <>
             <div className="cards">
@@ -32,6 +35,10 @@ function ProjectDetailBody({ lstTask = [] }) {
 
                                                   return (
                                                       <li
+                                                          onDragStart={
+                                                              handleOnDragStart
+                                                          }
+                                                          draggable={true}
                                                           className="task__item"
                                                           key={id}
                                                       >
