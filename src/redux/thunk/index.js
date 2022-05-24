@@ -132,23 +132,6 @@ export const getListProjectAction = () => {
     };
 };
 
-export const getAllProjectAction = async (dispatch) => {
-    try {
-        let result = await axios({
-            url: `${DOMAIN}/Project/getAllProject`,
-            method: 'GET',
-            headers: { Authorization: 'Bearer ' + ACCESSTOKEN },
-        });
-        console.log('All_project', result);
-        dispatch({
-            type: 'GET_PROJECTS',
-            content: result.content,
-        });
-    } catch (error) {
-        console.log(error);
-    }
-};
-
 //Get Project Detail
 
 export const getProjectDetailThunk = (projectID) => {
@@ -173,22 +156,3 @@ export const getProjectDetailThunk = (projectID) => {
     };
 };
 //Delete project in project management
-export const delProjectAction = (projectId) => {
-    return async (dispatch) => {
-        try {
-            let result = await http.delete(deleteProject);
-
-            alert(result);
-
-            const actionDel = delProject(projectId);
-            dispatch(actionDel);
-
-            const action = getListProjectAction();
-            dispatch(action);
-
-            console.log(result);
-        } catch (error) {
-            console.log(error.message);
-        }
-    };
-};

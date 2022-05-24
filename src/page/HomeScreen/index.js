@@ -23,6 +23,8 @@ import {
 } from '../../redux/thunk';
 import { delProject } from '../../redux/reducer/projectSlice';
 import ReactHtmlParser from 'react-html-parser';
+import { openModal } from '../../redux/reducer/modalAdjustSlice';
+import { useNavigate } from 'react-router-dom';
 
 const data = [
   {
@@ -151,15 +153,14 @@ function HomeScreen(props) {
       render: (_, record, index) => (
         <Space size="middle">
           <DeleteOutlined
-            onClick={() => {
-              console.log('PROJECT_ID', record.id);
-              delProject(record.id);
-            }}
             className="btn btn-danger font-weight-light"
             style={{ fontSize: 25 }}
           />
 
           <EditOutlined
+            onClick={() => {
+              dispatch(openModal());
+            }}
             className="btn btn-primary"
             style={{ fontSize: 25 }}
           />
@@ -170,6 +171,7 @@ function HomeScreen(props) {
 
   // ---------------------------------------
   const dispatch = useDispatch();
+  const Navigate = useNavigate();
   const { project } = useSelector(getAllProject);
   console.log(project);
 
@@ -178,33 +180,6 @@ function HomeScreen(props) {
     dispatch(actionThunk);
   }, []);
 
-  const delProject = (projectId) => {
-    const actionThunk = delProjectAction(projectId);
-    dispatch(actionThunk);
-  };
-
-    useEffect(() => {
-        // const action = getAllProjectAction;
-        // dispatch(action);
-    }, []);
-    return (
-        <div>
-            <Space
-                style={{
-                    marginBottom: 16,
-                }}
-            >
-                <Button onClick={setAgeSort}>Sort age</Button>
-                <Button onClick={clearFilters}>Clear filters</Button>
-                <Button onClick={clearAll}>Clear filters and sorters</Button>
-            </Space>
-            <Table
-                columns={columns}
-                dataSource={project}
-                onChange={handleChange}
-            />
-        </div>
-    );
   return (
     <div>
       <Space
