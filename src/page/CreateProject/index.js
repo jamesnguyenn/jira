@@ -57,7 +57,7 @@ function CreateProject() {
 
     return (
         <section className="createProject">
-            <h2>Create Project</h2>
+            <h2>Create New Project</h2>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="text-field">
                     <label htmlFor="name">Project Name</label>
