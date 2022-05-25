@@ -10,6 +10,7 @@ import { toast } from 'react-toastify';
 import Loading from '../Loading';
 import Input from '../../utils/Input';
 import Select from '../../utils/Select';
+import Editor from '../Editor';
 
 const schemaValidations = Yup.object({
     projectName: Yup.string().required('Project name is required'),
@@ -78,12 +79,15 @@ function FormCreateEditProject({
 
                 <ReactQuill
                     theme="snow"
-                    defaultValue={description || ''}
+                    defaultValue={description}
                     value={description}
                     onChange={setDescription}
                     modules={modules}
                     formats={formats}
-                />
+                >
+                    <div className="my-editing-area" />
+                </ReactQuill>
+
                 <Select
                     register={register}
                     registerName="categoryId"
@@ -117,28 +121,21 @@ function FormCreateEditProject({
 }
 
 export default memo(FormCreateEditProject);
-const modules = {
-    toolbar: {
-        container: [
-            [{ header: [1, 2, 3, 4, false] }],
-            ['bold', 'italic', 'underline', 'color', 'strike'],
-            ['link', 'image', 'video'],
-            [
-                { list: 'ordered' },
-                { list: 'bullet' },
-                { indent: '-1' },
-                { indent: '+1' },
-            ],
-            ['clean'],
-        ],
-    },
+let modules = {
+    toolbar: [
+        [{ header: [1, 2, false] }],
+        ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+        [{ list: 'ordered' }, { list: 'bullet' }],
+        ['link', 'image'],
+        [{ color: [] }, { background: [] }],
+    ],
 };
-const formats = [
+
+let formats = [
     'header',
     'bold',
     'italic',
     'underline',
-    'color',
     'strike',
     'blockquote',
     'list',
@@ -146,5 +143,6 @@ const formats = [
     'indent',
     'link',
     'image',
-    'video',
+    'color',
+    'background',
 ];
