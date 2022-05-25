@@ -7,3 +7,4 @@ export const createProject = '/Project/createProjectAuthorize';
 export const getAllProject = '/Project/getAllProject';
 export const getProjectDetailURL = '/Project/getProjectDetail';
 export const deleteProject = '/Project/deleteProject';
+export const updateProject = '/Project/updateProject';
