@@ -81,8 +81,9 @@ function FormCreateEditProject({
                     defaultValue={description || ''}
                     value={description}
                     onChange={setDescription}
+                    modules={modules}
+                    formats={formats}
                 />
-                {console.log(categoryID)}
                 <Select
                     register={register}
                     registerName="categoryId"
@@ -116,3 +117,43 @@ function FormCreateEditProject({
 }
 
 export default memo(FormCreateEditProject);
+const modules = {
+    toolbar: {
+        container: [
+            [{ header: [1, 2, 3, 4, false] }],
+            ['bold', 'italic', 'underline', 'strike'],
+            [
+                {
+                    color: [],
+                },
+                {
+                    background: [],
+                },
+            ],
+            ['link', 'image', 'video'],
+            [
+                { list: 'ordered' },
+                { list: 'bullet' },
+                { indent: '-1' },
+                { indent: '+1' },
+            ],
+            ['clean'],
+        ],
+    },
+};
+const formats = [
+    'header',
+    'display',
+    'bold',
+    'italic',
+    'underline',
+    'strike',
+    'blockquote',
+    'list',
+    'bullet',
+    'indent',
+    'link',
+    'image',
+    'color',
+    'video',
+];

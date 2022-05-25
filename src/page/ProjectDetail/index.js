@@ -106,7 +106,7 @@ function ProjectDetail() {
                     className="projectDetail__addTaskButton"
                     onClick={handleOpenLayoutModal}
                 >
-                    <Tooltip title="Add Task">
+                    <Tooltip title="Create Task">
                         <Button
                             shape="circle"
                             icon={<PlusOutlined style={{ color: '#fff' }} />}

@@ -18,4 +18,12 @@
             flex-direction: column;
         }
     }
+    .formCreateEditTask__column {
+        .formCreateEditTask__fieldTitle {
+            display: inline-block;
+            margin-bottom: 5px;
+            font-weight: $fw-medium;
+            font-size: $fz-xs;
+        }
+    }
 }

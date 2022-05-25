@@ -6,8 +6,10 @@ import * as Yup from 'yup';
 
 import Input from '../../utils/Input';
 import Select from '../../utils/Select';
-import { toast } from 'react-toastify';
+
 import { http } from '../../axios';
+import { toast } from 'react-toastify';
+
 import {
     getAllPriorityURL,
     getAllStatusURL,
@@ -38,7 +40,6 @@ function FormCreateEditTask({
         priority: [],
         taskType: [],
     });
-    console.log('🚀 ~ dataField', dataField);
 
     //Load All API Input fields
     useEffect(() => {
@@ -80,7 +81,7 @@ function FormCreateEditTask({
         <section className="formCreateEditTask">
             <h2>{title}</h2>
             <form onSubmit={handleSubmit(onSubmit)}>
-                <div className="text-field" style={{ opacity: '0.6' }}>
+                <div className="text-field" style={{ opacity: '0.4' }}>
                     <label htmlFor={projectName}>Project Name</label>
                     <input
                         defaultValue={projectName || ''}
@@ -100,91 +101,85 @@ function FormCreateEditTask({
                     errors={errors?.taskName}
                     errorsMessage={errors?.taskName?.message}
                 />
-                <Select
-                    register={register}
-                    registerName="statusId"
-                    id="status"
-                    name="status"
-                    defaultValue={statusDefaultValue}
-                >
-                    {dataField?.status.length > 0 &&
-                        dataField?.status.map((item) => {
-                            return (
-                                <option
-                                    key={item.statusId}
-                                    className="selectCategory__option"
-                                    value={item.statusId}
-                                >
-                                    {item.statusName}
-                                </option>
-                            );
-                        })}
-                </Select>
-                <div className="formCreateEditTask-flex">
-                    <div className="formCreateEditTask-flexItem">
-                        <Select
-                            register={register}
-                            registerName="priorityId"
-                            id="priorityId"
-                            name="priorityId"
-                            defaultValue={priorityDefaultValue}
-                        >
-                            {dataField?.priority.length > 0 &&
-                                dataField?.priority.map((item) => {
-                                    return (
-                                        <option
-                                            key={item.priorityId}
-                                            className="selectCategory__option"
-                                            value={item.priorityId}
-                                        >
-                                            {item.priority}
-                                        </option>
-                                    );
-                                })}
-                        </Select>
-                    </div>
-                    <div className="formCreateEditTask-flexItem">
-                        <Select
-                            register={register}
-                            registerName="typeId"
-                            id="taskType"
-                            name="taskType"
-                            defaultValue={taskTypeDefaultValue}
-                        >
-                            {dataField?.taskType.length > 0 &&
-                                dataField?.taskType.map((item) => {
-                                    return (
-                                        <option
-                                            key={item.id}
-                                            className="selectCategory__option"
-                                            value={item.id}
-                                        >
-                                            {item.taskType}
-                                        </option>
-                                    );
-                                })}
-                        </Select>
-                    </div>
+                <div className="formCreateEditTask__column">
+                    <span className="formCreateEditTask__fieldTitle">
+                        Status
+                    </span>
+                    <Select
+                        register={register}
+                        registerName="statusId"
+                        id="status"
+                        name="status"
+                        defaultValue={statusDefaultValue}
+                    >
+                        {dataField?.status.length > 0 &&
+                            dataField?.status.map((item) => {
+                                return (
+                                    <option
+                                        key={item.statusId}
+                                        className="selectCategory__option"
+                                        value={item.statusId}
+                                    >
+                                        {item.statusName}
+                                    </option>
+                                );
+                            })}
+                    </Select>
                 </div>
                 <div className="formCreateEditTask-flex">
                     <div className="formCreateEditTask-flexItem">
-                        <Input
-                            labelName="Assignees"
-                            placeholder="Search..."
-                            register={register}
-                            registerName="listUserAsign"
-                            id="assigness"
-                            type="text"
-                        />
+                        <div className="formCreateEditTask__column">
+                            <span className="formCreateEditTask__fieldTitle">
+                                Priority
+                            </span>
+                            <Select
+                                register={register}
+                                registerName="priorityId"
+                                id="priorityId"
+                                name="priorityId"
+                                defaultValue={priorityDefaultValue}
+                            >
+                                {dataField?.priority.length > 0 &&
+                                    dataField?.priority.map((item) => {
+                                        return (
+                                            <option
+                                                key={item.priorityId}
+                                                className="selectCategory__option"
+                                                value={item.priorityId}
+                                            >
+                                                {item.priority}
+                                            </option>
+                                        );
+                                    })}
+                            </Select>
+                        </div>
                     </div>
                     <div className="formCreateEditTask-flexItem">
-                        <div className="formCreateEditTask-flexItem__title">
-                            Time tracking
+                        <div className="formCreateEditTask__column">
+                            <span className="formCreateEditTask__fieldTitle">
+                                Task Type
+                            </span>
+                            <Select
+                                register={register}
+                                registerName="typeId"
+                                id="taskType"
+                                name="taskType"
+                                defaultValue={taskTypeDefaultValue}
+                            >
+                                {dataField?.taskType.length > 0 &&
+                                    dataField?.taskType.map((item) => {
+                                        return (
+                                            <option
+                                                key={item.id}
+                                                className="selectCategory__option"
+                                                value={item.id}
+                                            >
+                                                {item.taskType}
+                                            </option>
+                                        );
+                                    })}
+                            </Select>
                         </div>
-                        <input
-                            type="range"
-                            className="formCreateEditTask-rangeInput"
-                        />
                     </div>
                 </div>
             </form>

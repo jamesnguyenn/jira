@@ -93,7 +93,7 @@ body {
 }
 .quill {
     margin-bottom: $m-2;
-    .ql-toolbar:first-child {
+    .ql-toolbar:nth-child(2) {
         display: none;
     }
     .ql-container {
@@ -101,13 +101,13 @@ body {
     }
 }
 .selectCategory {
-    margin-bottom: $m-2;
+    margin-bottom: $m-1;
 
     .selectCategory__select {
         width: 100%;
         border: 1px solid #000;
-        padding: 11px;
-        font-size: $fz-sm;
+        padding: 10px;
+        font-size: 14px;
         outline: none;
         border-radius: 4px;
     }
