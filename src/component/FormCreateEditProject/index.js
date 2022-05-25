@@ -117,6 +117,8 @@ function FormCreateEditProject({
 }
 
 export default memo(FormCreateEditProject);
+
+//Quill Config
 const modules = {
     toolbar: {
         container: [

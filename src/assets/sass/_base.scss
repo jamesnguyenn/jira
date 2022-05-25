@@ -22,6 +22,7 @@ body {
 }
 
 .btn {
+    margin-top: $m-1;
     &.btn-primary {
         @include render-button($ptb: 8px, $plr: 10px);
     }

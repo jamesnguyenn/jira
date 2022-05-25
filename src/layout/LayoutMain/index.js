@@ -132,6 +132,7 @@ function LayoutMain({ children }) {
                         margin: '24px 16px ',
                         minHeight: '600px',
                         overflow: 'initial',
+                        borderRadius: '10px',
                     }}
                 >
                     <Outlet />
