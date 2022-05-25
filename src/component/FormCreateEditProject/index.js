@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useState } from 'react';
-import ReactQuill from 'react-quill';
+import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { http } from '../../axios';
 import { getProjectCategory } from '../../axios/apiURL';
@@ -25,7 +25,9 @@ function FormCreateEditProject({
         mode: 'all',
         resolver: yupResolver(schemaValidations),
     });
-    const [description, setDescription] = useState(desc || '');
+
+    const [description, setDescription] = useState('');
+
     const [projectCategory, setProjectCategory] = useState([]);
 
     const { errors, isSubmitting } = formState;
@@ -42,6 +44,12 @@ function FormCreateEditProject({
         fetchProjectCategory();
         return () => {};
     }, []);
+
+    useEffect(() => {
+        if (desc) {
+            setDescription(desc);
+        }
+    }, [desc]);
 
     return (
         <section className="createProject">
@@ -68,8 +76,9 @@ function FormCreateEditProject({
                     )}
                 </div>
                 <div className="textEditor">Description</div>
+
                 <ReactQuill
-                    theme="snow"
+                    theme={'snow'}
                     defaultValue={description || ''}
                     value={description}
                     onChange={setDescription}

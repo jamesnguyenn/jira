@@ -10,7 +10,11 @@ import ProjectDetailHeader from '../../component/ProjectDetailHeader';
 import ProjectDetailBody from '../../component/ProjectDetailBody';
 import Loading from '../../component/Loading';
 
-import { Breadcrumb } from 'antd';
+import { Breadcrumb, Button, Tooltip } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
+import LayoutModal from '../../layout/LayoutModal/LayoutModal';
+import { openModal } from '../../redux/reducer/modalAdjustSlice';
+import FormCreateEditTask from '../../component/FormCreateEditTask';
 
 function ProjectDetail() {
     const [isMemberInProject, setIsMemberInProject] = useState(false);
@@ -51,9 +55,15 @@ function ProjectDetail() {
         }
     }, [creator, members, userId]);
 
+    //Open Layout Modal to add Task
+    const handleOpenLayoutModal = () => {
+        dispatch(openModal());
+    };
+
     return (
         <>
             <section className="projectDetail">
+                {/* NavLink */}
                 <div className="projectDetail__breadCrumb">
                     <Breadcrumb>
                         <Breadcrumb.Item>
@@ -66,6 +76,8 @@ function ProjectDetail() {
                         </Breadcrumb.Item>
                     </Breadcrumb>
                 </div>
+
+                {/* Project Detail */}
                 {isLoading ? (
                     <Loading color="#000" />
                 ) : (
@@ -88,6 +100,30 @@ function ProjectDetail() {
                         </div>
                     </>
                 )}
+
+                {/* Add Task Button */}
+                <div
+                    className="projectDetail__addTaskButton"
+                    onClick={handleOpenLayoutModal}
+                >
+                    <Tooltip title="Add Task">
+                        <Button
+                            shape="circle"
+                            icon={<PlusOutlined style={{ color: '#fff' }} />}
+                            size="large"
+                            style={{
+                                backgroundColor: '#001529',
+                                border: 'none',
+                                outline: 'none',
+                            }}
+                        />
+                    </Tooltip>
+                </div>
+
+                {/* Modal Create Task */}
+                <LayoutModal>
+                    <FormCreateEditTask />
+                </LayoutModal>
             </section>
         </>
     );

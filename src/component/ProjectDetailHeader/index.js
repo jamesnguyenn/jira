@@ -39,7 +39,7 @@ function ProjectDetailHeader({
                                 placement="top"
                             >
                                 <Avatar style={{ backgroundColor: '#f56a00' }}>
-                                    {creator.name[0]}
+                                    {creator.name[0].toUpperCase()}
                                 </Avatar>
                             </Tooltip>
                             {listMember.length > 0 &&
@@ -50,10 +50,22 @@ function ProjectDetailHeader({
                                             title={member.name}
                                             placement="top"
                                         >
-                                            <Avatar
-                                                src={member.avatar}
-                                                style={{ cursor: 'pointer' }}
-                                            />
+                                            {member.avatar ? (
+                                                <Avatar
+                                                    src={member.avatar}
+                                                    style={{
+                                                        cursor: 'pointer',
+                                                    }}
+                                                />
+                                            ) : (
+                                                <Avatar
+                                                    style={{
+                                                        backgroundColor: '#000',
+                                                    }}
+                                                >
+                                                    {creator.name[0].toUpperCase()}
+                                                </Avatar>
+                                            )}
                                         </Tooltip>
                                     );
                                 })}

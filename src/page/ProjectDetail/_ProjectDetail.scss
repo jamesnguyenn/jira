@@ -12,4 +12,10 @@
         align-items: center;
         flex-wrap: wrap;
     }
+    .projectDetail__addTaskButton {
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        margin: $m-4;
+    }
 }
