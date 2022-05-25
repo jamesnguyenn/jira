@@ -8,7 +8,7 @@ import ProtectRoute from './page/ProtectRoute';
 import Auth from './page/Auth';
 import HomeScreen from './page/HomeScreen';
 import LayoutMain from './layout/LayoutMain';
-import CreateProject from './component/FormCreateEditProject';
+import CreateProject from './page/CreateProject';
 import UserManagement from './page/UserManagement';
 import NotFoundPage from './page/NotFoundPage';
 import ProjectDetail from './page/ProjectDetail';

@@ -8,6 +8,7 @@ import FormCreateEditProject from '../../component/FormCreateEditProject';
 
 function CreateProject() {
     const navigate = useNavigate();
+
     const onSubmit = useCallback(
         async (data, description) => {
             try {
@@ -27,6 +28,7 @@ function CreateProject() {
         },
         [navigate]
     );
+
     return (
         <FormCreateEditProject
             title="Create New Project"

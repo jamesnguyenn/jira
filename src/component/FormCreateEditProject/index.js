@@ -14,7 +14,7 @@ const schemaValidations = Yup.object({
     projectName: Yup.string().required('Project name is required'),
 });
 
-function CreateProject({
+function FormCreateEditProject({
     title,
     onSubmiting,
     projectName,
@@ -31,6 +31,8 @@ function CreateProject({
 
     const { errors, isSubmitting } = formState;
     const navigate = useNavigate();
+
+    console.log(title);
 
     useEffect(() => {
         const fetchProjectCategory = async () => {
@@ -121,4 +123,4 @@ function CreateProject({
     );
 }
 
-export default memo(CreateProject);
+export default memo(FormCreateEditProject);
