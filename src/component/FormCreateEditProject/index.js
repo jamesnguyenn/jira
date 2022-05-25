@@ -2,12 +2,11 @@ import React, { memo, useEffect, useState } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { http } from '../../axios';
-import { createProject, getProjectCategory } from '../../axios/apiURL';
+import { getProjectCategory } from '../../axios/apiURL';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
 import Loading from '../Loading';
 
 const schemaValidations = Yup.object({
@@ -30,9 +29,6 @@ function FormCreateEditProject({
     const [projectCategory, setProjectCategory] = useState([]);
 
     const { errors, isSubmitting } = formState;
-    const navigate = useNavigate();
-
-    console.log(title);
 
     useEffect(() => {
         const fetchProjectCategory = async () => {
