@@ -21,54 +21,24 @@ import { checkTokenRequest } from './redux/reducer/userSlice';
 import LayoutModal from './layout/LayoutModal/LayoutModal';
 
 function App() {
-    const dispatch = useDispatch();
-    const { isCheckToken } = useSelector(getUserInfo);
+  const dispatch = useDispatch();
+  const { isCheckToken } = useSelector(getUserInfo);
 
-    useEffect(() => {
-        const userData = JSON.parse(localStorage.getItem(ACCESSTOKEN));
-        if (userData) {
-            dispatch(checkTokenRequest());
-            const checkToken = checkTokenThunk(userData);
-            dispatch(checkToken);
-        }
-    }, [dispatch]);
+  useEffect(() => {
+    const userData = JSON.parse(localStorage.getItem(ACCESSTOKEN));
+    if (userData) {
+      dispatch(checkTokenRequest());
+      const checkToken = checkTokenThunk(userData);
+      dispatch(checkToken);
+    }
+  }, [dispatch]);
 
-    return (
-        <div className="App">
-            {isCheckToken ? (
-                <div className="view-center">
-                    <Loading color="#000"></Loading>
-                </div>
-            ) : (
-                <Routes>
-                    <Route path="/auth" element={<Auth />} />
-                    <Route element={<ProtectRoute />}>
-                        <Route element={<LayoutMain />}>
-                            {/* Screens */}
-                            <Route path="/" element={<HomeScreen />} />
-                            <Route path="/adjust" element={<LayoutModal />} />
-                            <Route
-                                path="/create-project"
-                                element={<CreateProject />}
-                            />
-                            <Route
-                                path="/user-management"
-                                element={<UserManagement />}
-                            />
-                            {/* Detail Screens */}
-                            <Route
-                                path="/project-detail/:id"
-                                element={<ProjectDetail />}
-                            />
-                        </Route>
-                    </Route>
-                    {/* Not Found Page */}
-                    <Route path="*" element={<NotFoundPage />} />
-                </Routes>
-            )}
-            <ToastContainer />
+  return (
+    <div className="App">
+      {isCheckToken ? (
+        <div className="view-center">
+          <Loading color="#000"></Loading>
         </div>
-<<<<<<< HEAD
       ) : (
         <Routes>
           <Route path="/auth" element={<Auth />} />
@@ -76,7 +46,6 @@ function App() {
             <Route element={<LayoutMain />}>
               {/* Screens */}
               <Route path="/" element={<HomeScreen />} />
-              <Route path="/adjust" element={<ModalAdjust />} />
               <Route
                 path="/create-project"
                 element={<CreateProject />}
@@ -96,13 +65,8 @@ function App() {
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       )}
-      <ModalAdjust />
       <ToastContainer />
     </div>
   );
-=======
-    );
->>>>>>> c5bdc120749457af4e4938bf16bd23565e59308f
 }
-
 export default App;
