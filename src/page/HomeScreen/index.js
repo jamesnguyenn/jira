@@ -1,30 +1,18 @@
 import React, { useCallback, useEffect } from 'react';
-import { getAllProject } from '../../redux/selectors';
+import { getAllProject, getVisibleModal } from '../../redux/selectors';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, Space, Table, Tag, Divider, Avatar, Tooltip } from 'antd';
+import { Space, Table, Tag } from 'antd';
 import { useState } from 'react';
-import {
-    EditOutlined,
-    DeleteOutlined,
-    UserOutlined,
-    AntDesignOutlined,
-} from '@ant-design/icons';
-import {
-    delProjectAction,
-    getListProjectAction,
-    getProjectDetailAction,
-    getProjectDetailThunk,
-    updateProjectAction,
-} from '../../redux/thunk';
+import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import { getListProjectAction } from '../../redux/thunk';
 import { delProject } from '../../redux/reducer/projectSlice';
 import ReactHtmlParser from 'react-html-parser';
 import { openModal } from '../../redux/reducer/modalAdjustSlice';
 import { useNavigate } from 'react-router-dom';
 import LayoutModal from '../../layout/LayoutModal/LayoutModal';
 import FormCreateEditProject from '../../component/FormCreateEditProject';
-import HtmlParser from 'react-html-parser/lib/HtmlParser';
-import { http } from '../../axios';
 import { updateProject } from '../../axios/apiURL';
+import { http } from '../../axios';
 
 function HomeScreen(props) {
     // ------------------ ANT DESIGN ---------------------
@@ -129,9 +117,12 @@ function HomeScreen(props) {
                     />
 
                     <EditOutlined
-                        onClick={() => {
+                        onClick={(e) => {
                             dispatch(openModal());
-                            editProject(record.id);
+                            dispatch({
+                                type: 'FILL_INPUT',
+                                data: record,
+                            });
                         }}
                         className="btn btn-primary"
                         style={{ fontSize: 25 }}
@@ -143,35 +134,33 @@ function HomeScreen(props) {
 
     // ---------------------------------------
     const dispatch = useDispatch();
-    const Navigate = useNavigate();
+    const navigate = useNavigate();
+
+    const { visible } = useSelector(getVisibleModal);
     const { project } = useSelector(getAllProject);
+
     const edit = useSelector((state) => state.editProject.editProject);
     const { id, projectName, description, categoryId, projectCategory } = edit;
 
     useEffect(() => {
         const action = getListProjectAction();
         dispatch(action);
+    }, [dispatch]);
+
+    const onSubmit = useCallback(async (data, description) => {
+        try {
+            console.log(data, description);
+            // const { projectName, categoryId } = data;
+            // const dataSubmit = {
+            //     id,
+            //     projectName,
+            //     description,
+            //     categoryId: Number(categoryId),
+            // };
+            // const result = await http.put(updateProject, dataSubmit);
+            // console.log('RESULT UPDATE', result);
+        } catch (error) {}
     }, []);
-
-    const editProject = (projectID) => {
-        const action = getProjectDetailAction(projectID);
-        dispatch(action);
-    };
-
-    // const onSubmit = useCallback(async (data, description) => {
-    //   try {
-    //     const { projectName, categoryId } = data;
-    //     const dataSubmit = {
-    //       id,
-    //       projectName,
-    //       description,
-    //       categoryId: Number(categoryId),
-    //     };
-
-    //     const result = await http.put(updateProject, dataSubmit);
-    //     console.log('RESULT UPDATE', result);
-    //   } catch (error) {}
-    // }, []);
 
     return (
         <div>
@@ -187,13 +176,16 @@ function HomeScreen(props) {
                 onChange={handleChange}
             />
             <LayoutModal>
-                <FormCreateEditProject
-                    title="Edit Project"
-                    // onSubmitting={onSubmit}
-                    projectName={projectName}
-                    desc={description}
-                    textButton="Edit Project"
-                ></FormCreateEditProject>
+                {visible && (
+                    <FormCreateEditProject
+                        title="Edit Project"
+                        onSubmiting={onSubmit}
+                        projectName={projectName}
+                        desc={description}
+                        textButton="Edit Project"
+                        categoryID={categoryId}
+                    />
+                )}
             </LayoutModal>
         </div>
     );

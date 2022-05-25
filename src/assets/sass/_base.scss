@@ -50,69 +50,71 @@ body {
     font-size: $fz-xs;
     line-height: 1.3;
 }
-form {
-    .text-field {
-        position: relative;
-        margin-bottom: $m-2;
-        label {
-            display: inline-block;
-            font-weight: 600;
-            cursor: pointer;
-            position: absolute;
-            top: 0;
-            left: 10px;
-            background-color: $c-3;
-            padding: 1px 5px;
-            font-size: 12px;
-            transform: translateY(-50%);
-            color: $c-4;
-        }
 
-        input {
-            padding: 10px;
-            display: block;
-            width: 100%;
-            font-size: 14px;
-            border: 1px solid $bg-1;
-            border-radius: 4px;
-            background-color: transparent;
-            color: $c-4;
-        }
-        .text-field-error {
-            font-size: $fz-xs;
-            color: red;
-            margin: 0;
-            padding: 0;
-        }
+.text-field {
+    position: relative;
+    margin-bottom: $m-2;
+    label {
+        display: inline-block;
+        font-weight: 600;
+        cursor: pointer;
+        position: absolute;
+        top: 0;
+        left: 10px;
+        background-color: $c-3;
+        padding: 1px 5px;
+        font-size: 12px;
+        transform: translateY(-50%);
+        color: $c-4;
     }
 
-    .textEditor {
+    input {
+        padding: 11px;
+        display: block;
+        width: 100%;
+        font-size: 14px;
+        border: 1px solid $bg-1;
+        border-radius: 4px;
+        background-color: transparent;
+        color: $c-4;
+    }
+    .text-field-error {
+        font-size: $fz-xs;
+        color: red;
+        margin: 0;
+        padding: 0;
+    }
+}
+
+.textEditor {
+    font-size: $fz-sm;
+    font-weight: $fw-regular;
+    margin-bottom: $m-1;
+}
+.quill {
+    margin-bottom: $m-2;
+    .ql-toolbar:first-child {
+        display: none;
+    }
+    .ql-container {
+        min-height: 200px;
+    }
+}
+.selectCategory {
+    margin-bottom: $m-2;
+
+    .selectCategory__select {
+        width: 100%;
+        border: 1px solid #000;
+        padding: 11px;
         font-size: $fz-sm;
-        font-weight: $fw-regular;
-        margin-bottom: $m-1;
+        outline: none;
+        border-radius: 4px;
     }
-    .quill {
-        margin-bottom: $m-2;
-        .ql-toolbar:first-child {
-            display: none;
-        }
-        .ql-container {
-            min-height: 200px;
-        }
-    }
-    .projectCategory {
-        margin-bottom: $m-2;
-        .projectCategory__select {
-            width: 100%;
-            border: 1px solid #000;
-            padding: 5px 10px;
-            font-size: $fz-sm;
-        }
-        .projectCategory__option {
-            width: 100%;
-            border: 1px solid #000;
-            padding: 5px 10px;
-            font-size: $fz-xs;
-        }
+    .selectCategory__option {
+        width: 100%;
+        border: 1px solid #000;
+        padding: 5px 10px;
+        font-size: $fz-xs;
     }
 }

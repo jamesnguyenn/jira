@@ -34,6 +34,5 @@ export const editProjectReducer = (state = stateDefault, action) => {
         }
         default:
             return state;
-            break;
     }
 };

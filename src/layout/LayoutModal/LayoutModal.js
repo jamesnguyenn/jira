@@ -1,12 +1,11 @@
-import React, { memo, useEffect } from 'react';
-import { PlusOutlined } from '@ant-design/icons';
+import React, { memo } from 'react';
 import { Drawer } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
-import { closeModal, openModal } from '../../redux/reducer/modalAdjustSlice';
-import { getProjectDetail } from '../../redux/selectors';
+import { closeModal } from '../../redux/reducer/modalAdjustSlice';
+import { getVisibleModal } from '../../redux/selectors';
 
 function LayoutModal({ children }) {
-    const { visible } = useSelector((state) => state.modalAdjust);
+    const { visible } = useSelector(getVisibleModal);
 
     const dispatch = useDispatch();
 

@@ -122,7 +122,14 @@ function ProjectDetail() {
 
                 {/* Modal Create Task */}
                 <LayoutModal>
-                    <FormCreateEditTask />
+                    <FormCreateEditTask
+                        projectName={projectName}
+                        projectId={id}
+                        title="Create Task"
+                        statusDefaultValue={1}
+                        priorityDefaultValue={1}
+                        taskTypeDefaultValue={1}
+                    />
                 </LayoutModal>
             </section>
         </>

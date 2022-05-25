@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo, useEffect, useRef, useState } from 'react';
 import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { http } from '../../axios';
@@ -8,6 +8,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import { toast } from 'react-toastify';
 import Loading from '../Loading';
+import Input from '../../utils/Input';
+import Select from '../../utils/Select';
 
 const schemaValidations = Yup.object({
     projectName: Yup.string().required('Project name is required'),
@@ -18,16 +20,15 @@ function FormCreateEditProject({
     onSubmiting,
     projectName,
     desc,
-    category = 0,
+    categoryID = 0,
     textButton = 'Create Project',
 }) {
-    const { register, formState, handleSubmit } = useForm({
+    const { register, formState, handleSubmit, reset } = useForm({
         mode: 'all',
         resolver: yupResolver(schemaValidations),
     });
 
     const [description, setDescription] = useState('');
-
     const [projectCategory, setProjectCategory] = useState([]);
 
     const { errors, isSubmitting } = formState;
@@ -42,8 +43,11 @@ function FormCreateEditProject({
             }
         };
         fetchProjectCategory();
+        if (categoryID) {
+            reset({ categoryId: categoryID });
+        }
         return () => {};
-    }, []);
+    }, [categoryID, reset]);
 
     useEffect(() => {
         if (desc) {
@@ -52,29 +56,24 @@ function FormCreateEditProject({
     }, [desc]);
 
     return (
-        <section className="createProject">
+        <section className="formCreateEditProject">
             <h2>{title}</h2>
             <form
                 onSubmit={handleSubmit((data) =>
                     onSubmiting(data, description)
                 )}
             >
-                <div className="text-field">
-                    <label htmlFor="name">Project Name</label>
-                    <input
-                        defaultValue={projectName || ''}
-                        autoComplete="off"
-                        type="text"
-                        id="name"
-                        placeholder="Enter project name..."
-                        {...register('projectName')}
-                    />
-                    {errors.projectName && (
-                        <span className="text-field-error">
-                            {errors.projectName.message}
-                        </span>
-                    )}
-                </div>
+                <Input
+                    id="projectName"
+                    type="text"
+                    placeholder="Enter project name..."
+                    labelName="Project Name"
+                    register={register}
+                    registerName="projectName"
+                    errors={errors?.projectName}
+                    errorsMessage={errors?.projectName?.message}
+                    defaultValue={projectName}
+                />
                 <div className="textEditor">Description</div>
 
                 <ReactQuill
@@ -83,39 +82,27 @@ function FormCreateEditProject({
                     value={description}
                     onChange={setDescription}
                 />
-                <div className="projectCategory">
-                    <select
-                        className="projectCategory__select"
-                        name="projectCategory"
-                        id="projectCategory"
-                        {...register('categoryId')}
-                    >
-                        {projectCategory.length > 0 &&
-                            projectCategory.map((item) => {
-                                if (category) {
-                                    return (
-                                        <option
-                                            key={item.id}
-                                            className="projectCategory__option"
-                                            value={item.id}
-                                            selected
-                                        >
-                                            {item.projectCategoryName}
-                                        </option>
-                                    );
-                                }
-                                return (
-                                    <option
-                                        key={item.id}
-                                        className="projectCategory__option"
-                                        value={item.id}
-                                    >
-                                        {item.projectCategoryName}
-                                    </option>
-                                );
-                            })}
-                    </select>
-                </div>
+                {console.log(categoryID)}
+                <Select
+                    register={register}
+                    registerName="categoryId"
+                    id="projectCategory"
+                    name="projectCategory"
+                >
+                    {projectCategory.length > 0 &&
+                        projectCategory.map((item) => {
+                            return (
+                                <option
+                                    key={item.id}
+                                    className="selectCategory__option"
+                                    value={item.id}
+                                >
+                                    {item.projectCategoryName}
+                                </option>
+                            );
+                        })}
+                </Select>
+
                 <button
                     type="submit"
                     className="btn btn-primary"
