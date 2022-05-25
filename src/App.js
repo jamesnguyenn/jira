@@ -67,7 +67,6 @@ function App() {
         </Routes>
       )}
       <ModalAdjust />
-
       <ToastContainer />
     </div>
   );
