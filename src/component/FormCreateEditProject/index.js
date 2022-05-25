@@ -77,7 +77,7 @@ function FormCreateEditProject({
                 <div className="textEditor">Description</div>
 
                 <ReactQuill
-                    theme={'snow'}
+                    theme="snow"
                     defaultValue={description || ''}
                     value={description}
                     onChange={setDescription}
@@ -117,21 +117,11 @@ function FormCreateEditProject({
 }
 
 export default memo(FormCreateEditProject);
-
-//Quill Config
 const modules = {
     toolbar: {
         container: [
             [{ header: [1, 2, 3, 4, false] }],
-            ['bold', 'italic', 'underline', 'strike'],
-            [
-                {
-                    color: [],
-                },
-                {
-                    background: [],
-                },
-            ],
+            ['bold', 'italic', 'underline', 'color', 'strike'],
             ['link', 'image', 'video'],
             [
                 { list: 'ordered' },
@@ -145,10 +135,10 @@ const modules = {
 };
 const formats = [
     'header',
-    'display',
     'bold',
     'italic',
     'underline',
+    'color',
     'strike',
     'blockquote',
     'list',
@@ -156,6 +146,5 @@ const formats = [
     'indent',
     'link',
     'image',
-    'color',
     'video',
 ];
