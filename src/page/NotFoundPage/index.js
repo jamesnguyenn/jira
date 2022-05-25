@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Result } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
@@ -31,4 +31,4 @@ function NotFoundPage() {
     );
 }
 
-export default NotFoundPage;
+export default memo(NotFoundPage);

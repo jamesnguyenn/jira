@@ -4,8 +4,8 @@ Project Owner: Nguyen Quang Thien & Hoang Minh Khoa
 (BC23 - CyberSoft)
 </p>
 
-Link video huong dan: https://login.cybersoft.edu.vn/video
-Link dac ta du an: https://drive.google.com/drive/folders/1WUpiEhcBU1raigfMNgew3EKctC5c4B34
+<img src="./src/assets/img/readme-login.png" title="readme-login">
+<img src="./src/assets/img/readme-projectDetail.png" title="readme-projectDetail">
 
 <!-- //Screen
 

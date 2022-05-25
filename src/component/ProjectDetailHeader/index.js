@@ -3,7 +3,12 @@ import React, { memo, useRef } from 'react';
 import { Avatar, Result, Tooltip } from 'antd';
 import { NavLink } from 'react-router-dom';
 
-function ProjectDetailHeader({ listMember = [], id, isMemberInProject }) {
+function ProjectDetailHeader({
+    listMember = [],
+    id,
+    isMemberInProject,
+    creator,
+}) {
     const inputSearch = useRef(null);
 
     return (
@@ -29,6 +34,14 @@ function ProjectDetailHeader({ listMember = [], id, isMemberInProject }) {
                                 backgroundColor: '#fde3cf',
                             }}
                         >
+                            <Tooltip
+                                title={`Creator: ${creator.name}`}
+                                placement="top"
+                            >
+                                <Avatar style={{ backgroundColor: '#f56a00' }}>
+                                    {creator.name[0]}
+                                </Avatar>
+                            </Tooltip>
                             {listMember.length > 0 &&
                                 listMember.map((member) => {
                                     return (
@@ -58,15 +71,7 @@ function ProjectDetailHeader({ listMember = [], id, isMemberInProject }) {
                 </>
             ) : (
                 <>
-                    <div
-                        style={{
-                            width: '100%',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                        }}
-                    >
+                    <div className="center__column">
                         <Result
                             status="404"
                             extra={
@@ -74,10 +79,12 @@ function ProjectDetailHeader({ listMember = [], id, isMemberInProject }) {
                                     to="/"
                                     className="projectDetail__header-text"
                                     style={{
+                                        backgroundColor: '#000',
+                                        color: '#fff',
                                         textDecoration: 'none',
                                     }}
                                 >
-                                    Back to Project Management
+                                    Back To Home
                                 </NavLink>
                             }
                         />

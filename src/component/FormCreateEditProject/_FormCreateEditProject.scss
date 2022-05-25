@@ -1,7 +1,6 @@
 .createProject {
     h2 {
-        margin-bottom: $m-3;
-        font-size: $fz-md;
+        @include render-title();
     }
     form {
         .text-field {

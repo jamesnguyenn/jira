@@ -8,7 +8,6 @@
 
 //Page
 @import './page/Auth/Auth';
-@import './page/CreateProject/CreateProject';
 @import './page/ProjectDetail/ProjectDetail';
 
 //Component
@@ -17,3 +16,4 @@
 @import './component/Loading/Loading';
 @import './component/ProjectDetailHeader/ProjectDetailHeader';
 @import './component/ProjectDetailBody/ProjectDetailBody';
+@import './component/FormCreateEditProject/FormCreateEditProject';

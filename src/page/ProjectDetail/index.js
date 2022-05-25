@@ -14,13 +14,11 @@ import { Breadcrumb } from 'antd';
 
 function ProjectDetail() {
     const [isMemberInProject, setIsMemberInProject] = useState(false);
-    console.log('🚀 ~ isMemberInProject', isMemberInProject);
     const { id: userId } = useSelector(getUserInfo);
     const { id: projectId } = useParams();
     const dispatch = useDispatch();
     const projectDetail = useSelector(getProjectDetail);
     const { data, isLoading } = projectDetail;
-    console.log('🚀 ~ data', data);
 
     const {
         projectName,
@@ -33,12 +31,18 @@ function ProjectDetail() {
         members,
     } = data;
 
+    //Load Api Project Detail
+    useEffect(() => {
+        dispatch(getProjectDetailRequest());
+        const getProjectDetail = getProjectDetailThunk(projectId);
+        dispatch(getProjectDetail);
+    }, [dispatch, projectId]);
+
     //Check member is logged in belonging to projectDetail or not
     useEffect(() => {
         if (members || creator) {
             const allMemberInProject = [
                 ...members.map((member) => member.userId),
-
                 creator.id,
             ];
             setIsMemberInProject(
@@ -46,12 +50,6 @@ function ProjectDetail() {
             );
         }
     }, [creator, members, userId]);
-
-    useEffect(() => {
-        dispatch(getProjectDetailRequest());
-        const getProjectDetail = getProjectDetailThunk(projectId);
-        dispatch(getProjectDetail);
-    }, [dispatch, projectId]);
 
     return (
         <>
@@ -82,6 +80,7 @@ function ProjectDetail() {
                                 listMember={members}
                                 id={id}
                                 isMemberInProject={isMemberInProject}
+                                creator={creator}
                             />
                         </div>
                         <div className="projectDetail__body">
