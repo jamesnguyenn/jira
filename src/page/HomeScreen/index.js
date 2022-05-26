@@ -218,6 +218,7 @@ function HomeScreen(props) {
     dispatch(action);
   };
 
+<<<<<<< HEAD
   return (
     <div>
       <Space
@@ -243,6 +244,80 @@ function HomeScreen(props) {
       </LayoutModal>
     </div>
   );
+=======
+                    <EditOutlined
+                        onClick={(e) => {
+                            dispatch(openModal());
+                            dispatch({
+                                type: 'FILL_INPUT',
+                                data: record,
+                            });
+                        }}
+                        className="btn btn-primary"
+                        style={{ fontSize: 25 }}
+                    />
+                </Space>
+            ),
+        },
+    ];
+
+    // ---------------------------------------
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const { visible } = useSelector(getVisibleModal);
+    const { project } = useSelector(getAllProject);
+
+    const edit = useSelector((state) => state.editProject.editProject);
+    const { id, projectName, description, categoryId, projectCategory } = edit;
+
+    useEffect(() => {
+        const action = getListProjectAction();
+        dispatch(action);
+    }, [dispatch]);
+
+    const onSubmit = useCallback(async (data, description, id) => {
+        try {
+            // const { projectName, categoryId } = data;
+            // const dataSubmit = {
+            //     id,
+            //     projectName,
+            //     description,
+            //     categoryId: Number(categoryId),
+            // };
+            // const result = await http.put(updateProject, dataSubmit);
+            // console.log('RESULT UPDATE', result);
+        } catch (error) {}
+    }, []);
+
+    return (
+        <div>
+            <Space
+                style={{
+                    marginBottom: 16,
+                }}
+            ></Space>
+            <Table
+                rowKey={'id'}
+                columns={columns}
+                dataSource={project}
+                onChange={handleChange}
+            />
+            <LayoutModal>
+                {visible && (
+                    <FormCreateEditProject
+                        title="Edit Project"
+                        onSubmiting={onSubmit}
+                        projectName={projectName}
+                        desc={description}
+                        textButton="Edit Project"
+                        categoryID={categoryId}
+                    />
+                )}
+            </LayoutModal>
+        </div>
+    );
+>>>>>>> de7c4e0f197a3f51652dcf8262e22777009a32cf
 }
 
 export default HomeScreen;
