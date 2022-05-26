@@ -172,5 +172,21 @@ export const getProjectDetailAction = (projectID) => {
     }
   };
 };
+//Update project
+export const updateProjectAction = (projectID) => {
+  return async (dispatch) => {
+    try {
+      const result = await http.put(
+        updateProject + `?projectId=${projectID}`
+      );
+      dispatch({
+        type: 'UPDATE_PROJECT',
+        data: result.data.content,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
 
 //Delete project in project management
