@@ -147,9 +147,8 @@ function HomeScreen(props) {
         dispatch(action);
     }, [dispatch]);
 
-    const onSubmit = useCallback(async (data, description) => {
+    const onSubmit = useCallback(async (data, description, id) => {
         try {
-            console.log(data, description);
             // const { projectName, categoryId } = data;
             // const dataSubmit = {
             //     id,
