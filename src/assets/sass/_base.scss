@@ -22,12 +22,11 @@ body {
 }
 
 .btn {
-    margin-top: $m-1;
     &.btn-primary {
-        @include render-button($ptb: 8px, $plr: 10px);
+        @include render-button($ptb: 7px, $plr: 7px);
     }
     &.btn-secondary {
-        @include render-button(transparent, $c-1, $c-1, $ptb: 8px, $plr: 10px);
+        @include render-button(transparent, $c-1, $c-1, $ptb: 7px, $plr: 7px);
     }
 }
 
@@ -103,11 +102,10 @@ body {
 }
 .selectCategory {
     margin-bottom: $m-1;
-
     .selectCategory__select {
         width: 100%;
         border: 1px solid #000;
-        padding: 10px;
+        padding: 8px;
         font-size: 14px;
         outline: none;
         border-radius: 4px;

@@ -23,7 +23,13 @@ function CreateProject() {
                 toast.success('Create Project Successfully');
                 navigate('/');
             } catch (e) {
-                toast.error(e.response.data.content);
+                if (e.code === 'ERR_NETWORK') {
+                    toast.error(
+                        'Error while creating project. Please try again later'
+                    );
+                } else {
+                    toast.error(e.response.data.content);
+                }
             }
         },
         [navigate]
