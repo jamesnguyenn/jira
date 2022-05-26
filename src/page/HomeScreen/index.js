@@ -147,19 +147,23 @@ function HomeScreen(props) {
         dispatch(action);
     }, [dispatch]);
 
-    const onSubmit = useCallback(async (data, description, id) => {
-        try {
-            // const { projectName, categoryId } = data;
-            // const dataSubmit = {
-            //     id,
-            //     projectName,
-            //     description,
-            //     categoryId: Number(categoryId),
-            // };
-            // const result = await http.put(updateProject, dataSubmit);
-            // console.log('RESULT UPDATE', result);
-        } catch (error) {}
-    }, []);
+    const onSubmit = useCallback(
+        async (data, description) => {
+            console.log('🚀 ~ id', id);
+            try {
+                // const { projectName, categoryId } = data;
+                // const dataSubmit = {
+                //     id,
+                //     projectName,
+                //     description,
+                //     categoryId: Number(categoryId),
+                // };
+                // const result = await http.put(updateProject, dataSubmit);
+                // console.log('RESULT UPDATE', result);
+            } catch (error) {}
+        },
+        [id]
+    );
 
     return (
         <div>
