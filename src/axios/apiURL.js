@@ -8,3 +8,7 @@ export const getAllProject = '/Project/getAllProject';
 export const getProjectDetailURL = '/Project/getProjectDetail';
 export const deleteProject = '/Project/deleteProject';
 export const updateProject = '/Project/updateProject';
+export const getAllStatusURL = '/Status/getAll';
+export const getAllPriorityURL = '/Priority/getAll';
+export const getAllTaskTypeURL = '/TaskType/getAll';
+export const getAllAssigneesURL = '/Users/getUser';

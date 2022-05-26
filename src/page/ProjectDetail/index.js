@@ -106,7 +106,7 @@ function ProjectDetail() {
                     className="projectDetail__addTaskButton"
                     onClick={handleOpenLayoutModal}
                 >
-                    <Tooltip title="Add Task">
+                    <Tooltip title="Create Task">
                         <Button
                             shape="circle"
                             icon={<PlusOutlined style={{ color: '#fff' }} />}
@@ -122,7 +122,14 @@ function ProjectDetail() {
 
                 {/* Modal Create Task */}
                 <LayoutModal>
-                    <FormCreateEditTask />
+                    <FormCreateEditTask
+                        projectName={projectName}
+                        projectId={id}
+                        title="Create Task"
+                        statusDefaultValue={1}
+                        priorityDefaultValue={1}
+                        taskTypeDefaultValue={1}
+                    />
                 </LayoutModal>
             </section>
         </>

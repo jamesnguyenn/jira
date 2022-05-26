@@ -7,7 +7,7 @@
 @mixin render-title($m: $m-3, $fz: $fz-md, $fw: $fw-semiBold) {
     margin-bottom: $m-3;
     text-transform: uppercase;
-    font-size: $fz-md;
+    font-size: $fz-sm;
     font-weight: $fw-semiBold;
 }
 

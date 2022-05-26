@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect } from 'react';
-import { getAllProject } from '../../redux/selectors';
+import { getAllProject, getVisibleModal } from '../../redux/selectors';
 import { useDispatch, useSelector } from 'react-redux';
+<<<<<<< HEAD
 import {
   Button,
   Space,
@@ -24,15 +25,20 @@ import {
   getProjectDetailThunk,
   updateProjectAction,
 } from '../../redux/thunk';
+=======
+import { Space, Table, Tag } from 'antd';
+import { useState } from 'react';
+import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import { getListProjectAction } from '../../redux/thunk';
+>>>>>>> 7fb56e41e325dfad5d0db7eced11ecd9f57f1a70
 import { delProject } from '../../redux/reducer/projectSlice';
 import ReactHtmlParser from 'react-html-parser';
 import { openModal } from '../../redux/reducer/modalAdjustSlice';
 import { useNavigate } from 'react-router-dom';
 import LayoutModal from '../../layout/LayoutModal/LayoutModal';
 import FormCreateEditProject from '../../component/FormCreateEditProject';
-import HtmlParser from 'react-html-parser/lib/HtmlParser';
-import { http } from '../../axios';
 import { updateProject } from '../../axios/apiURL';
+import { http } from '../../axios';
 
 function HomeScreen(props) {
   // ------------------ ANT DESIGN ---------------------
@@ -136,6 +142,7 @@ function HomeScreen(props) {
             style={{ fontSize: 25 }}
           />
 
+<<<<<<< HEAD
           <EditOutlined
             onClick={() => {
               dispatch(openModal());
@@ -214,6 +221,81 @@ function HomeScreen(props) {
       </LayoutModal>
     </div>
   );
+=======
+                    <EditOutlined
+                        onClick={(e) => {
+                            dispatch(openModal());
+                            dispatch({
+                                type: 'FILL_INPUT',
+                                data: record,
+                            });
+                        }}
+                        className="btn btn-primary"
+                        style={{ fontSize: 25 }}
+                    />
+                </Space>
+            ),
+        },
+    ];
+
+    // ---------------------------------------
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const { visible } = useSelector(getVisibleModal);
+    const { project } = useSelector(getAllProject);
+
+    const edit = useSelector((state) => state.editProject.editProject);
+    const { id, projectName, description, categoryId, projectCategory } = edit;
+
+    useEffect(() => {
+        const action = getListProjectAction();
+        dispatch(action);
+    }, [dispatch]);
+
+    const onSubmit = useCallback(async (data, description) => {
+        try {
+            console.log(data, description);
+            // const { projectName, categoryId } = data;
+            // const dataSubmit = {
+            //     id,
+            //     projectName,
+            //     description,
+            //     categoryId: Number(categoryId),
+            // };
+            // const result = await http.put(updateProject, dataSubmit);
+            // console.log('RESULT UPDATE', result);
+        } catch (error) {}
+    }, []);
+
+    return (
+        <div>
+            <Space
+                style={{
+                    marginBottom: 16,
+                }}
+            ></Space>
+            <Table
+                rowKey={'id'}
+                columns={columns}
+                dataSource={project}
+                onChange={handleChange}
+            />
+            <LayoutModal>
+                {visible && (
+                    <FormCreateEditProject
+                        title="Edit Project"
+                        onSubmiting={onSubmit}
+                        projectName={projectName}
+                        desc={description}
+                        textButton="Edit Project"
+                        categoryID={categoryId}
+                    />
+                )}
+            </LayoutModal>
+        </div>
+    );
+>>>>>>> 7fb56e41e325dfad5d0db7eced11ecd9f57f1a70
 }
 
 export default HomeScreen;
