@@ -8,6 +8,8 @@ import {
   signInWithFacebook,
   updateProject,
   deleteProject,
+  getUserAddProject,
+  assignUserProject,
 } from '../../axios/apiURL';
 import { toast } from 'react-toastify';
 import {
@@ -160,7 +162,7 @@ export const getProjectDetailThunk = (projectID) => {
 export const deleteProjectAction = (projectID) => {
   return async (dispatch) => {
     try {
-      const result = http.delete(
+      const result = await http.delete(
         deleteProject + `?projectId=${projectID}`
       );
 
@@ -172,11 +174,63 @@ export const deleteProjectAction = (projectID) => {
       // });
       const actionDelete = delProject(projectID);
       dispatch(actionDelete);
+    } catch (error) {
+      toast.error(error.response.data.message, {
+        position: 'top-right',
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
+  };
+};
 
+//Get user to add to project
+export const getUserAction = (user) => {
+  return async (dispatch) => {
+    const result = await http.get(
+      `${getUserAddProject}?keyword=${user}`
+    );
+    dispatch({
+      type: 'ADD_SEARCH_USER',
+      user: result.data.content,
+    });
+    try {
+    } catch (error) {
+      toast.error(error.response.data.message, {
+        position: 'top-right',
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
+  };
+};
+
+//Asign User to project
+export const assignUserAction = (userInfo) => {
+  return async (dispatch) => {
+    try {
+      const result = http.post(assignUserProject, userInfo);
+      console.log('result', result);
       const action = getListProjectAction();
       dispatch(action);
     } catch (error) {
-      console.log(error);
+      toast.error(error.response.data.message, {
+        position: 'top-right',
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     }
   };
 };

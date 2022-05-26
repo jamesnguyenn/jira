@@ -16,9 +16,24 @@ const projectReducer = createSlice({
         (item) => item.id !== action.payload
       );
     },
+    updateProjects: (state, action) => {
+      console.log(action);
+      const project = state.project;
+
+      const currentProject = project.find(
+        (item) => item.id === action.payload.id
+      );
+
+      if (currentProject) {
+        for (let key in currentProject) {
+          currentProject[key] = action.payload[key];
+        }
+      }
+    },
   },
 });
 
-export const { gettAllProject, delProject } = projectReducer.actions;
+export const { gettAllProject, delProject, updateProjects } =
+  projectReducer.actions;
 
 export default projectReducer.reducer;

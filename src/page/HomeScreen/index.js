@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect } from 'react';
 import {
   getAllProject,
+  getUserSearch,
   getVisibleModal,
 } from '../../redux/selectors';
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,6 +14,9 @@ import {
   Avatar,
   Tooltip,
   Modal,
+  Image,
+  Popover,
+  AutoComplete,
 } from 'antd';
 import { useState } from 'react';
 import {
@@ -23,14 +27,19 @@ import {
   AntDesignOutlined,
 } from '@ant-design/icons';
 import {
+  assignUserAction,
   deleteProjectAction,
   delProjectAction,
   getListProjectAction,
   getProjectDetailAction,
   getProjectDetailThunk,
+  getUserAction,
   updateProjectAction,
 } from '../../redux/thunk';
-import { delProject } from '../../redux/reducer/projectSlice';
+import {
+  delProject,
+  updateProjects,
+} from '../../redux/reducer/projectSlice';
 import ReactHtmlParser from 'react-html-parser';
 import { openModal } from '../../redux/reducer/modalAdjustSlice';
 import { useNavigate } from 'react-router-dom';
@@ -146,6 +155,60 @@ function HomeScreen(props) {
       title: 'Members',
       dataIndex: 'Members',
       key: 'Members',
+      render: (text, record, index) => {
+        return (
+          <div key={index}>
+            {record.members?.slice(0, 2).map((user, index) => {
+              return <Avatar key={index} src={user.avatar}></Avatar>;
+            })}
+            {record.members?.length > 2 ? <Avatar>...</Avatar> : ''}
+
+            <Popover
+              placement="topLeft"
+              title={'Add User'}
+              content={() => {
+                return (
+                  <AutoComplete
+                    //onSearch use to call api backend
+                    onSearch={(user) => {
+                      const action = getUserAction(user);
+                      dispatch(action);
+                    }}
+                    //map data from api
+                    options={userSearch.map((user, index) => {
+                      return {
+                        label: user.name,
+                        value: user.userId.toString(), //toString() to not get warning at console.log
+                      };
+                    })}
+                    //onSelect to set value of input
+                    onSelect={(value, option) => {
+                      console.log(option);
+                      setValue(option.label);
+                      //Call api
+                      const action = assignUserAction({
+                        projectId: record.id,
+                        userId: value,
+                      });
+                      dispatch(action);
+                    }}
+                    value={value}
+                    //use onChange and setValue in this situation because
+                    // when user search and choose their name, the name will change into a number
+                    onChange={(text) => {
+                      setValue(text);
+                    }}
+                    style={{ width: '100%' }}
+                  />
+                );
+              }}
+              trigger="click"
+            >
+              <Button style={{ borderRadius: '55%' }}>+</Button>
+            </Popover>
+          </div>
+        );
+      },
     },
     //Action
     {
@@ -180,9 +243,10 @@ function HomeScreen(props) {
   // ---------------------------------------
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const { visible } = useSelector(getVisibleModal);
   const { project } = useSelector(getAllProject);
+  const { userSearch } = useSelector(getUserSearch);
+  const [value, setValue] = useState('');
   const edit = useSelector((state) => state.editProject.editProject);
   const {
     id,
@@ -210,15 +274,16 @@ function HomeScreen(props) {
       console.log('IDPROJECT', id);
       try {
         const result = await http.put(
-          updateProject + `?projectId=${id}`
+          `${updateProject}?projectId=${id}`,
+          data
         );
-        console.log('RESULT UPDATE', result);
-        dispatch({
-          type: 'UPDATE_PROJECT',
-          data: result.data.content,
-        });
-        console.log('RESULT_UPDATE', result);
-      } catch (error) {}
+        const action = updateProjects(result.data.content);
+        dispatch(action);
+
+        console.log('RESULT', result.data.content);
+      } catch (error) {
+        console.log(error);
+      }
     },
     [id]
   );
