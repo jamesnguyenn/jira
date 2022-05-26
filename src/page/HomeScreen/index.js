@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
-import { getAllProject } from '../../redux/selectors';
+import { getAllProject, getVisibleModal } from '../../redux/selectors';
 import { useDispatch, useSelector } from 'react-redux';
 import {
     Button,
@@ -241,5 +241,4 @@ function HomeScreen(props) {
         </div>
     );
 }
-
 export default HomeScreen;
