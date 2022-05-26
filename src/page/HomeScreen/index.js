@@ -1,5 +1,8 @@
 import React, { useCallback, useEffect } from 'react';
-import { getAllProject } from '../../redux/selectors';
+import {
+  getAllProject,
+  getVisibleModal,
+} from '../../redux/selectors';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   Button,
@@ -64,7 +67,7 @@ function HomeScreen(props) {
     });
   };
 
-  const showDeleteConfirm = (projectID) => {
+  const showDeleteConfirm = (id) => {
     confirm({
       title: 'Are you sure delete this project?',
       icon: <ExclamationCircleOutlined />,
@@ -73,7 +76,7 @@ function HomeScreen(props) {
       cancelText: 'No',
 
       onOk() {
-        deleteProject(projectID);
+        deleteProject(id);
       },
 
       onCancel() {},
@@ -152,7 +155,6 @@ function HomeScreen(props) {
         <Space size="middle">
           <DeleteOutlined
             onClick={() => {
-              console.log(record.id);
               showDeleteConfirm(record.id);
             }}
             className="btn btn-danger font-weight-light"
@@ -160,12 +162,12 @@ function HomeScreen(props) {
           />
 
           <EditOutlined
-            onClick={() => {
+            onClick={(e) => {
+              dispatch(openModal());
               dispatch({
                 type: 'FILL_INPUT',
                 data: record,
               });
-              dispatch(openModal());
             }}
             className="btn btn-primary"
             style={{ fontSize: 25 }}
@@ -177,24 +179,32 @@ function HomeScreen(props) {
 
   // ---------------------------------------
   const dispatch = useDispatch();
-  const Navigate = useNavigate();
+  const navigate = useNavigate();
+
+  const { visible } = useSelector(getVisibleModal);
   const { project } = useSelector(getAllProject);
   const edit = useSelector((state) => state.editProject.editProject);
   const {
     id,
-    alias,
     projectName,
     description,
     categoryId,
-    categoryName,
     projectCategory,
   } = edit;
 
+  // Render all project
   useEffect(() => {
     const action = getListProjectAction();
     dispatch(action);
   }, [dispatch]);
 
+  //Delete project
+  const deleteProject = (projectID) => {
+    const action = deleteProjectAction(projectID);
+    dispatch(action);
+  };
+
+  //Update project
   const onSubmit = useCallback(
     async (data, description) => {
       console.log('IDPROJECT', id);
@@ -213,12 +223,6 @@ function HomeScreen(props) {
     [id]
   );
 
-  const deleteProject = (projectID) => {
-    const action = deleteProjectAction(projectID);
-    dispatch(action);
-  };
-
-<<<<<<< HEAD
   return (
     <div>
       <Space
@@ -233,91 +237,18 @@ function HomeScreen(props) {
         onChange={handleChange}
       />
       <LayoutModal>
-        <FormCreateEditProject
-          title="Edit Project"
-          onSubmiting={onSubmit}
-          projectName={projectName}
-          desc={description}
-          categoryID={categoryId}
-          textButton="Edit Project"
-        ></FormCreateEditProject>
+        {visible && (
+          <FormCreateEditProject
+            title="Edit Project"
+            onSubmiting={onSubmit}
+            projectName={projectName}
+            desc={description}
+            textButton="Edit Project"
+            categoryID={categoryId}
+          />
+        )}
       </LayoutModal>
     </div>
   );
-=======
-                    <EditOutlined
-                        onClick={(e) => {
-                            dispatch(openModal());
-                            dispatch({
-                                type: 'FILL_INPUT',
-                                data: record,
-                            });
-                        }}
-                        className="btn btn-primary"
-                        style={{ fontSize: 25 }}
-                    />
-                </Space>
-            ),
-        },
-    ];
-
-    // ---------------------------------------
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-
-    const { visible } = useSelector(getVisibleModal);
-    const { project } = useSelector(getAllProject);
-
-    const edit = useSelector((state) => state.editProject.editProject);
-    const { id, projectName, description, categoryId, projectCategory } = edit;
-
-    useEffect(() => {
-        const action = getListProjectAction();
-        dispatch(action);
-    }, [dispatch]);
-
-    const onSubmit = useCallback(async (data, description, id) => {
-        try {
-            // const { projectName, categoryId } = data;
-            // const dataSubmit = {
-            //     id,
-            //     projectName,
-            //     description,
-            //     categoryId: Number(categoryId),
-            // };
-            // const result = await http.put(updateProject, dataSubmit);
-            // console.log('RESULT UPDATE', result);
-        } catch (error) {}
-    }, []);
-
-    return (
-        <div>
-            <Space
-                style={{
-                    marginBottom: 16,
-                }}
-            ></Space>
-            <Table
-                rowKey={'id'}
-                columns={columns}
-                dataSource={project}
-                onChange={handleChange}
-            />
-            <LayoutModal>
-                {visible && (
-                    <FormCreateEditProject
-                        title="Edit Project"
-                        onSubmiting={onSubmit}
-                        projectName={projectName}
-                        desc={description}
-                        textButton="Edit Project"
-                        categoryID={categoryId}
-                    />
-                )}
-            </LayoutModal>
-        </div>
-    );
->>>>>>> de7c4e0f197a3f51652dcf8262e22777009a32cf
 }
-
 export default HomeScreen;

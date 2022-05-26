@@ -155,22 +155,6 @@ export const getProjectDetailThunk = (projectID) => {
     }
   };
 };
-//Update project
-export const updateProjectAction = (projectID) => {
-  return async (dispatch) => {
-    try {
-      const result = await http.put(
-        updateProject + `?projectId=${projectID}`
-      );
-      dispatch({
-        type: 'UPDATE_PROJECT',
-        data: result.data.content,
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-};
 
 //Delete project in project management
 export const deleteProjectAction = (projectID) => {
@@ -179,6 +163,16 @@ export const deleteProjectAction = (projectID) => {
       const result = http.delete(
         deleteProject + `?projectId=${projectID}`
       );
+
+      console.log(result);
+
+      // dispatch({
+      //   type: 'DELETE_PROJECT',
+      //   id: projectID,
+      // });
+      const actionDelete = delProject(projectID);
+      dispatch(actionDelete);
+
       const action = getListProjectAction();
       dispatch(action);
     } catch (error) {

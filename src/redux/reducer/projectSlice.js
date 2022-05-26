@@ -12,7 +12,6 @@ const projectReducer = createSlice({
       state.project = action.payload;
     },
     delProject: (state, action) => {
-      console.log('DEL', action);
       state.project = state.project.filter(
         (item) => item.id !== action.payload
       );
