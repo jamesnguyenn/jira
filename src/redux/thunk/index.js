@@ -180,17 +180,17 @@ export const updateProjectAction = (projectID) => {
 export const deleteProjectAction = (projectID) => {
     return async (dispatch) => {
         try {
-            const result = http.delete(
-                deleteProject + `?projectId=${projectID}`
+            const result = await http.delete(
+                `${deleteProject}?projectId=${projectID}`
             );
-            const action = getListProjectAction();
-            dispatch(action);
+
+            const actionDelete = delProject(projectID);
+            dispatch(actionDelete);
         } catch (error) {
-            console.log(error);
+            toast.error(error.response.data.content);
         }
     };
 };
-
 //Create Task Thunk
 export const createTaskThunk = (taskInfo) => {
     return async (dispatch) => {

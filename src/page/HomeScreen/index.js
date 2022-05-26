@@ -177,9 +177,11 @@ function HomeScreen(props) {
 
     // ---------------------------------------
     const dispatch = useDispatch();
-    const Navigate = useNavigate();
+    const navigate = useNavigate();
     const { project } = useSelector(getAllProject);
+
     const edit = useSelector((state) => state.editProject.editProject);
+    const { visible } = useSelector(getVisibleModal);
     const {
         id,
         alias,
@@ -199,7 +201,8 @@ function HomeScreen(props) {
         async (data, description) => {
             try {
                 const result = await http.put(
-                    updateProject + `?projectId=${id}`
+                    `${updateProject}?projectId=${id}`,
+                    data
                 );
                 dispatch({
                     type: 'UPDATE_PROJECT',
@@ -229,14 +232,16 @@ function HomeScreen(props) {
                 onChange={handleChange}
             />
             <LayoutModal>
-                <FormCreateEditProject
-                    title="Edit Project"
-                    onSubmiting={onSubmit}
-                    projectName={projectName}
-                    desc={description}
-                    categoryID={categoryId}
-                    textButton="Edit Project"
-                ></FormCreateEditProject>
+                {visible && (
+                    <FormCreateEditProject
+                        title="Edit Project"
+                        onSubmiting={onSubmit}
+                        projectName={projectName}
+                        desc={description}
+                        categoryID={categoryId}
+                        textButton="Edit Project"
+                    ></FormCreateEditProject>
+                )}
             </LayoutModal>
         </div>
     );
