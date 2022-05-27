@@ -36,6 +36,7 @@ import FormCreateEditProject from '../../component/FormCreateEditProject';
 import HtmlParser from 'react-html-parser/lib/HtmlParser';
 import { http } from '../../axios';
 import { updateProject } from '../../axios/apiURL';
+import { toast } from 'react-toastify';
 const { confirm } = Modal;
 
 function HomeScreen(props) {
@@ -208,7 +209,17 @@ function HomeScreen(props) {
                     type: 'UPDATE_PROJECT',
                     data: result.data.content,
                 });
-            } catch (error) {}
+            } catch (error) {
+                toast.error('Cannot update project. Please try again later !', {
+                    position: 'top-right',
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+            }
         },
         [dispatch, id]
     );

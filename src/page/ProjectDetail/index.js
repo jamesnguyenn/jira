@@ -3,7 +3,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useParams } from 'react-router-dom';
 
 import { getProjectDetailThunk } from '../../redux/thunk';
-import { getProjectDetail, getUserInfo } from '../../redux/selectors';
+import {
+    getProjectDetail,
+    getUserInfo,
+    getVisibleModal,
+} from '../../redux/selectors';
 import { getProjectDetailRequest } from '../../redux/reducer/projectDetailSlice';
 
 import ProjectDetailHeader from '../../component/ProjectDetailHeader';
@@ -19,6 +23,7 @@ import FormCreateEditTask from '../../component/FormCreateEditTask';
 function ProjectDetail() {
     const [isMemberInProject, setIsMemberInProject] = useState(false);
     const { id: userId } = useSelector(getUserInfo);
+    const { visible } = useSelector(getVisibleModal);
     const { id: projectId } = useParams();
     const dispatch = useDispatch();
     const projectDetail = useSelector(getProjectDetail);
@@ -124,14 +129,16 @@ function ProjectDetail() {
                     </div>
                 )}
                 <LayoutModal>
-                    <FormCreateEditTask
-                        projectName={projectName}
-                        projectId={id}
-                        title="Create Task"
-                        statusDefaultValue={1}
-                        priorityDefaultValue={1}
-                        taskTypeDefaultValue={1}
-                    />
+                    {visible && (
+                        <FormCreateEditTask
+                            projectName={projectName}
+                            projectId={id}
+                            title="Create Task"
+                            statusDefaultValue={1}
+                            priorityDefaultValue={1}
+                            taskTypeDefaultValue={1}
+                        />
+                    )}
                 </LayoutModal>
             </section>
         </>

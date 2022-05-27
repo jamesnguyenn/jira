@@ -50,7 +50,7 @@ export const loginThunk = (userInfo, navigate) => {
             dispatch(loginFailed());
             toast.error('Email/Password Not Correct!', {
                 position: 'top-right',
-                autoClose: 1000,
+                autoClose: 2000,
                 hideProgressBar: false,
                 closeOnClick: true,
                 pauseOnHover: true,
@@ -171,7 +171,15 @@ export const updateProjectAction = (projectID) => {
                 data: result.data.content,
             });
         } catch (error) {
-            console.log(error);
+            toast.error('Cannot update project. Please try again later !', {
+                position: 'top-right',
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
         }
     };
 };
@@ -186,8 +194,25 @@ export const deleteProjectAction = (projectID) => {
 
             const actionDelete = delProject(projectID);
             dispatch(actionDelete);
+            toast.success('Delete Project Successfully', {
+                position: 'top-right',
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
         } catch (error) {
-            toast.error(error.response.data.content);
+            toast.error('Cannot delete project. Please try again later !', {
+                position: 'top-right',
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
         }
     };
 };
@@ -205,7 +230,7 @@ export const createTaskThunk = (taskInfo) => {
             dispatch(closeModal());
             toast.success('Create Task Successfully', {
                 position: 'top-right',
-                autoClose: 2000,
+                autoClose: 1000,
                 hideProgressBar: false,
                 closeOnClick: true,
                 pauseOnHover: true,

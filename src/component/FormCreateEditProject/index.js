@@ -24,7 +24,7 @@ function FormCreateEditProject({
     categoryID = 0,
     textButton = 'Create Project',
 }) {
-    const { register, formState, handleSubmit, reset } = useForm({
+    const { register, formState, handleSubmit, reset, setFocus } = useForm({
         mode: 'all',
         resolver: yupResolver(schemaValidations),
     });
@@ -55,6 +55,10 @@ function FormCreateEditProject({
             setDescription(desc);
         }
     }, [desc]);
+
+    useEffect(() => {
+        setFocus('projectName', { shouldSelect: true });
+    }, [setFocus]);
 
     return (
         <section className="formCreateEditProject">
