@@ -8,9 +8,6 @@ import TaskLists from './TaskLists';
 function ProjectDetailBody({ lstTask = [], visible, setVisible }) {
     const dispatch = useDispatch();
 
-    const handleOnDragStart = useCallback((e) => {
-        console.log(e);
-    }, []);
     return (
         <>
             <div className="cards">
@@ -36,13 +33,13 @@ function ProjectDetailBody({ lstTask = [], visible, setVisible }) {
                                                       taskId: id,
                                                       taskName,
                                                       assigness: members,
+                                                      taskTypeDetail: {
+                                                          id: typeId,
+                                                      },
                                                   } = lstTaskDeTailItem;
 
                                                   return (
                                                       <li
-                                                          onDragStart={
-                                                              handleOnDragStart
-                                                          }
                                                           draggable={true}
                                                           className="task__item"
                                                           key={id}
@@ -60,6 +57,7 @@ function ProjectDetailBody({ lstTask = [], visible, setVisible }) {
                                                                   taskName,
                                                                   priority,
                                                                   members,
+                                                                  typeId,
                                                               }}
                                                           />
                                                       </li>
