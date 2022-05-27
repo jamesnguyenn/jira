@@ -10,7 +10,6 @@ import { toast } from 'react-toastify';
 import Loading from '../Loading';
 import Input from '../../utils/Input';
 import Select from '../../utils/Select';
-import Editor from '../Editor';
 
 const schemaValidations = Yup.object({
     projectName: Yup.string().required('Project name is required'),

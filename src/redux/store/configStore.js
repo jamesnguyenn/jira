@@ -5,14 +5,16 @@ import projectDetailReducer from '../reducer/projectDetailSlice';
 import modalReducer from '../reducer/modalAdjustSlice';
 import { editProjectReducer } from '../reducer/editProjectSlice';
 import { userSearchReducer } from '../reducer/userSearchSlice';
+import taskDetailReducer from '../reducer/taskDetailSlice';
 
 export const store = configureStore({
-  reducer: {
-    user: userReducers,
-    project: projectReducer,
-    projectDetail: projectDetailReducer,
-    modalAdjust: modalReducer,
-    editProject: editProjectReducer,
-    userSearch: userSearchReducer,
-  },
+    reducer: {
+        user: userReducers,
+        project: projectReducer,
+        projectDetail: projectDetailReducer,
+        taskDetail: taskDetailReducer,
+        modalAdjust: modalReducer,
+        editProject: editProjectReducer,
+        userSearch: userSearchReducer,
+    },
 });

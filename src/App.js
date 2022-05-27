@@ -14,10 +14,10 @@ import NotFoundPage from './page/NotFoundPage';
 import ProjectDetail from './page/ProjectDetail';
 import Loading from './component/Loading';
 
-import { ACCESSTOKEN } from './axios';
 import { checkTokenThunk } from './redux/thunk';
 import { getUserInfo } from './redux/selectors';
 import { checkTokenRequest } from './redux/reducer/userSlice';
+import { ACCESSTOKEN } from './axios';
 
 function App() {
     const dispatch = useDispatch();

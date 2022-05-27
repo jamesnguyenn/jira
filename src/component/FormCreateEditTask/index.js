@@ -10,6 +10,7 @@ import Select from '../../utils/Select';
 import { http } from '../../axios';
 import { toast } from 'react-toastify';
 import { Slider } from 'antd';
+import { ArrowUpOutlined } from '@ant-design/icons';
 
 import {
     getAllPriorityURL,
@@ -37,7 +38,7 @@ function FormCreateEditTask({
     priorityDefaultValue,
     taskTypeDefaultValue,
 }) {
-    const { register, handleSubmit, formState, watch } = useForm({
+    const { register, handleSubmit, formState, watch, reset } = useForm({
         mode: 'all',
         resolver: yupResolver(schemaValidations),
         defaultValues: {
@@ -58,6 +59,7 @@ function FormCreateEditTask({
     const [description, setDescription] = useState('');
     const timeSpentValue = watch('timeTrackingSpent');
     const timeTrackingRemaining = watch('timeTrackingRemaining');
+    const priority = watch('priorityId');
 
     //Load All API Input fields
     useEffect(() => {
@@ -88,7 +90,7 @@ function FormCreateEditTask({
                     });
                 });
             } catch (err) {
-                toast.error('Cannot get status field!');
+                toast.error('Cannot get data field!');
             }
         };
         getAllField();
@@ -204,6 +206,11 @@ function FormCreateEditTask({
                                                 key={item.priorityId}
                                                 className="selectCategory__option"
                                                 value={item.priorityId}
+                                                style={{
+                                                    color: colorFlag[
+                                                        item.priority
+                                                    ],
+                                                }}
                                             >
                                                 {item.priority}
                                             </option>
@@ -402,3 +409,10 @@ let formats = [
     'color',
     'background',
 ];
+
+const colorFlag = {
+    High: 'red',
+    Medium: '#096dd9',
+    Low: '#1eb290',
+    Lowest: '#1eb290',
+};

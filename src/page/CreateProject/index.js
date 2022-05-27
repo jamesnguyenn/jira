@@ -25,7 +25,11 @@ function CreateProject() {
             } catch (e) {
                 if (e.code === 'ERR_NETWORK') {
                     toast.error(
-                        'Error while creating project. Please try again later'
+                        'Please check your network connection and try again later !'
+                    );
+                } else if (e.code === 500) {
+                    toast.error(
+                        'Project Name taken already. Please change project name !'
                     );
                 } else {
                     toast.error(e.response.data.content);

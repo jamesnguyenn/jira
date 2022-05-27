@@ -8,9 +8,11 @@ function LayoutModalPopUp({ title, visible, setVisible, children }) {
                 title={title}
                 centered
                 visible={visible}
-                onOk={() => setVisible(false)}
                 onCancel={() => setVisible(false)}
-                width={1000}
+                width={1100}
+                cancelButtonProps={{ style: { display: 'none' } }}
+                okButtonProps={{ style: { display: 'none' } }}
+                footer={null}
             >
                 {children}
             </Modal>

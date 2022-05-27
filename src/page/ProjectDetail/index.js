@@ -5,6 +5,7 @@ import { NavLink, useParams } from 'react-router-dom';
 import { getProjectDetailThunk } from '../../redux/thunk';
 import {
     getProjectDetail,
+    getTaskDetail,
     getUserInfo,
     getVisibleModal,
 } from '../../redux/selectors';
@@ -20,19 +21,21 @@ import LayoutModal from '../../layout/LayoutModal/LayoutModal';
 import { openModal } from '../../redux/reducer/modalAdjustSlice';
 import FormCreateEditTask from '../../component/FormCreateEditTask';
 import LayoutModalPopUp from '../../layout/LayoutModalPopUp';
+import TaskDetail from '../TaskDetail';
 
 function ProjectDetail() {
     const [isMemberInProject, setIsMemberInProject] = useState(false);
     const { id: userId } = useSelector(getUserInfo);
     const { visible } = useSelector(getVisibleModal);
+
     const { id: projectId } = useParams();
+
     const dispatch = useDispatch();
-    const projectDetail = useSelector(getProjectDetail);
-    const { data, isLoading } = projectDetail;
 
-    const [visibleModal, setVisibleModal] = useState(false);
-    console.log('🚀 ~ visibleModal', visibleModal);
+    const { data: taskDetailData, isLoading: isLoadingTaskDetail } =
+        useSelector(getTaskDetail);
 
+    const { data, isLoading } = useSelector(getProjectDetail);
     const {
         projectName,
         description,
@@ -43,6 +46,8 @@ function ProjectDetail() {
         alias,
         members,
     } = data;
+
+    const [visibleModal, setVisibleModal] = useState(false);
 
     //Load Api Project Detail
     useEffect(() => {
@@ -136,22 +141,26 @@ function ProjectDetail() {
                         </Tooltip>
                     </div>
                 )}
+
                 <LayoutModal>
-                    {visible && (
-                        <FormCreateEditTask
-                            projectName={projectName}
-                            projectId={id}
-                            title="Create Task"
-                            statusDefaultValue={1}
-                            priorityDefaultValue={1}
-                            taskTypeDefaultValue={1}
-                        />
-                    )}
+                    <FormCreateEditTask
+                        projectName={projectName}
+                        projectId={id}
+                        title="Create Task"
+                        statusDefaultValue={1}
+                        priorityDefaultValue={1}
+                        taskTypeDefaultValue={1}
+                    />
                 </LayoutModal>
-                <LayoutModalPopUp
-                    visible={visibleModal}
-                    setVisible={setVisibleModal}
-                ></LayoutModalPopUp>
+
+                {visibleModal && (
+                    <LayoutModalPopUp
+                        visible={visibleModal}
+                        setVisible={setVisibleModal}
+                    >
+                        <TaskDetail taskDetailData={taskDetailData} />
+                    </LayoutModalPopUp>
+                )}
             </section>
         </>
     );

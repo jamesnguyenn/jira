@@ -1,8 +1,13 @@
 import React, { memo, useCallback, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { updateTaskDetail } from '../../redux/reducer/taskDetailSlice';
 
 import TaskLists from './TaskLists';
 
 function ProjectDetailBody({ lstTask = [], visible, setVisible }) {
+    const dispatch = useDispatch();
+
     const handleOnDragStart = useCallback((e) => {
         console.log(e);
     }, []);
@@ -41,9 +46,14 @@ function ProjectDetailBody({ lstTask = [], visible, setVisible }) {
                                                           draggable={true}
                                                           className="task__item"
                                                           key={id}
-                                                          onClick={() =>
-                                                              setVisible(true)
-                                                          }
+                                                          onClick={() => {
+                                                              dispatch(
+                                                                  updateTaskDetail(
+                                                                      lstTaskDeTailItem
+                                                                  )
+                                                              );
+                                                              setVisible(true);
+                                                          }}
                                                       >
                                                           <TaskLists
                                                               data={{
