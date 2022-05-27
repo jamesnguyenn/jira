@@ -1,5 +1,9 @@
 import React, { useCallback, useEffect } from 'react';
-import { getAllProject, getVisibleModal } from '../../redux/selectors';
+import {
+    getAllProject,
+    getUserSearch,
+    getVisibleModal,
+} from '../../redux/selectors';
 import { useDispatch, useSelector } from 'react-redux';
 import {
     Button,
@@ -10,6 +14,9 @@ import {
     Avatar,
     Tooltip,
     Modal,
+    Image,
+    Popover,
+    AutoComplete,
 } from 'antd';
 import { useState } from 'react';
 import {
@@ -20,14 +27,16 @@ import {
     AntDesignOutlined,
 } from '@ant-design/icons';
 import {
+    assignUserAction,
     deleteProjectAction,
     delProjectAction,
     getListProjectAction,
     getProjectDetailAction,
     getProjectDetailThunk,
+    getUserAction,
     updateProjectAction,
 } from '../../redux/thunk';
-import { delProject } from '../../redux/reducer/projectSlice';
+import { delProject, updateProjects } from '../../redux/reducer/projectSlice';
 import ReactHtmlParser from 'react-html-parser';
 import { openModal } from '../../redux/reducer/modalAdjustSlice';
 import { useNavigate } from 'react-router-dom';
@@ -65,7 +74,7 @@ function HomeScreen(props) {
         });
     };
 
-    const showDeleteConfirm = (projectID) => {
+    const showDeleteConfirm = (id) => {
         confirm({
             title: 'Are you sure delete this project?',
             icon: <ExclamationCircleOutlined />,
@@ -74,7 +83,7 @@ function HomeScreen(props) {
             cancelText: 'No',
 
             onOk() {
-                deleteProject(projectID);
+                deleteProject(id);
             },
 
             onCancel() {},
@@ -144,6 +153,64 @@ function HomeScreen(props) {
             title: 'Members',
             dataIndex: 'Members',
             key: 'Members',
+            render: (text, record, index) => {
+                return (
+                    <div key={index}>
+                        {record.members?.slice(0, 2).map((user, index) => {
+                            return (
+                                <Avatar key={index} src={user.avatar}></Avatar>
+                            );
+                        })}
+                        {record.members?.length > 2 ? <Avatar>...</Avatar> : ''}
+
+                        <Popover
+                            placement="topLeft"
+                            title={'Add User'}
+                            content={() => {
+                                return (
+                                    <AutoComplete
+                                        //onSearch use to call api backend
+                                        onSearch={(user) => {
+                                            const action = getUserAction(user);
+                                            dispatch(action);
+                                        }}
+                                        //map data from api
+                                        options={userSearch.map(
+                                            (user, index) => {
+                                                return {
+                                                    label: user.name,
+                                                    value: user.userId.toString(), //toString() to not get warning at console.log
+                                                };
+                                            }
+                                        )}
+                                        //onSelect to set value of input
+                                        onSelect={(value, option) => {
+                                            console.log(option);
+                                            setValue(option.label);
+                                            //Call api
+                                            const action = assignUserAction({
+                                                projectId: record.id,
+                                                userId: value,
+                                            });
+                                            dispatch(action);
+                                        }}
+                                        value={value}
+                                        //use onChange and setValue in this situation because
+                                        // when user search and choose their name, the name will change into a number
+                                        onChange={(text) => {
+                                            setValue(text);
+                                        }}
+                                        style={{ width: '100%' }}
+                                    />
+                                );
+                            }}
+                            trigger="click"
+                        >
+                            <Button style={{ borderRadius: '55%' }}>+</Button>
+                        </Popover>
+                    </div>
+                );
+            },
         },
         //Action
         {
@@ -153,7 +220,6 @@ function HomeScreen(props) {
                 <Space size="middle">
                     <DeleteOutlined
                         onClick={() => {
-                            console.log(record.id);
                             showDeleteConfirm(record.id);
                         }}
                         className="btn btn-danger font-weight-light"
@@ -161,12 +227,12 @@ function HomeScreen(props) {
                     />
 
                     <EditOutlined
-                        onClick={() => {
+                        onClick={(e) => {
+                            dispatch(openModal());
                             dispatch({
                                 type: 'FILL_INPUT',
                                 data: record,
                             });
-                            dispatch(openModal());
                         }}
                         className="btn btn-primary"
                         style={{ fontSize: 25 }}
@@ -179,55 +245,44 @@ function HomeScreen(props) {
     // ---------------------------------------
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { project } = useSelector(getAllProject);
-
-    const edit = useSelector((state) => state.editProject.editProject);
     const { visible } = useSelector(getVisibleModal);
-    const {
-        id,
-        alias,
-        projectName,
-        description,
-        categoryId,
-        categoryName,
-        projectCategory,
-    } = edit;
+    const { project } = useSelector(getAllProject);
+    const { userSearch } = useSelector(getUserSearch);
+    const [value, setValue] = useState('');
+    const edit = useSelector((state) => state.editProject.editProject);
+    const { id, projectName, description, categoryId, projectCategory } = edit;
 
+    // Render all project
     useEffect(() => {
         const action = getListProjectAction();
         dispatch(action);
     }, [dispatch]);
 
+    //Delete project
+    const deleteProject = (projectID) => {
+        const action = deleteProjectAction(projectID);
+        dispatch(action);
+    };
+
+    //Update project
     const onSubmit = useCallback(
         async (data, description) => {
+            console.log('IDPROJECT', id);
             try {
                 const result = await http.put(
                     `${updateProject}?projectId=${id}`,
                     data
                 );
-                dispatch({
-                    type: 'UPDATE_PROJECT',
-                    data: result.data.content,
-                });
+                const action = updateProjects(result.data.content);
+                dispatch(action);
+
+                console.log('RESULT', result.data.content);
             } catch (error) {
-                toast.error('Cannot update project. Please try again later !', {
-                    position: 'top-right',
-                    autoClose: 2000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
+                console.log(error);
             }
         },
-        [dispatch, id]
+        [id]
     );
-
-    const deleteProject = (projectID) => {
-        const action = deleteProjectAction(projectID);
-        dispatch(action);
-    };
 
     return (
         <div>
@@ -249,9 +304,9 @@ function HomeScreen(props) {
                         onSubmiting={onSubmit}
                         projectName={projectName}
                         desc={description}
-                        categoryID={categoryId}
                         textButton="Edit Project"
-                    ></FormCreateEditProject>
+                        categoryID={categoryId}
+                    />
                 )}
             </LayoutModal>
         </div>

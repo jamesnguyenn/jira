@@ -4,6 +4,7 @@ import projectReducer from '../reducer/projectSlice';
 import projectDetailReducer from '../reducer/projectDetailSlice';
 import modalReducer from '../reducer/modalAdjustSlice';
 import { editProjectReducer } from '../reducer/editProjectSlice';
+import { userSearchReducer } from '../reducer/userSearchSlice';
 
 export const store = configureStore({
   reducer: {
@@ -12,5 +13,6 @@ export const store = configureStore({
     projectDetail: projectDetailReducer,
     modalAdjust: modalReducer,
     editProject: editProjectReducer,
+    userSearch: userSearchReducer,
   },
 });

@@ -15,3 +15,6 @@ export const getUserAllURL = '/Users/getUser';
 export const getUserByProjectIdURL = '/Users/getUserByProjectId';
 export const createTaskURL = '/Project/createTask';
 export const getTaskDetailURL = '/Project/getTaskDetail';
+export const getAllAssigneesURL = '/Users/getUser';
+export const getUserAddProject = '/Users/getUser';
+export const assignUserProject = '/Project/assignUserProject';
