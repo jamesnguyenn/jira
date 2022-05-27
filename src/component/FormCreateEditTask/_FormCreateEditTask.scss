@@ -1,4 +1,5 @@
 .formCreateEditTask {
+    overflow: auto;
     h2 {
         @include render-title();
     }
@@ -9,13 +10,15 @@
     .formCreateEditTask-flex {
         width: 100%;
         display: flex;
-        align-items: flex-start;
+        align-items: stretch;
+        justify-content: space-between;
         gap: $gap-1;
         .formCreateEditTask-flexItem {
             width: 100%;
             height: 100%;
             display: flex;
             flex-direction: column;
+            margin-bottom: 1.5rem;
         }
     }
     .formCreateEditTask__column {
@@ -26,4 +29,16 @@
             font-size: $fz-xs;
         }
     }
+}
+.ant-slider-handle {
+    border-color: #001529;
+    display: none;
+    &:hover,
+    &:focus,
+    &:active {
+        border-color: #001529;
+    }
+}
+.ant-slider:hover .ant-slider-handle:not(.ant-tooltip-open) {
+    border-color: #001529;
 }

@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo, useEffect, useRef, useState, useMemo } from 'react';
 
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -9,37 +9,55 @@ import Select from '../../utils/Select';
 
 import { http } from '../../axios';
 import { toast } from 'react-toastify';
+import { Slider } from 'antd';
 
 import {
     getAllPriorityURL,
     getAllStatusURL,
     getAllTaskTypeURL,
+    getUserByProjectIdURL,
 } from '../../axios/apiURL';
+import DebounceSelectMember from '../DebounceSelectMember';
+import ReactQuill from 'react-quill';
+import { createTaskThunk } from '../../redux/thunk';
+import { useDispatch } from 'react-redux';
 
 const schemaValidations = Yup.object({
     taskName: Yup.string().required('Task name is required'),
+    originalEstimate: Yup.string().required('Original estimate is required'),
+    timeTrackingSpent: Yup.string().required('Time spent is required'),
+    timeTrackingRemaining: Yup.string().required('Time remaining is required'),
 });
 
 function FormCreateEditTask({
     projectId,
     projectName,
     title,
-    status,
     statusDefaultValue,
     priorityDefaultValue,
     taskTypeDefaultValue,
 }) {
-    const { register, handleSubmit, formState } = useForm({
+    const { register, handleSubmit, formState, watch } = useForm({
         mode: 'all',
         resolver: yupResolver(schemaValidations),
+        defaultValues: {
+            statusId: statusDefaultValue,
+            priorityId: priorityDefaultValue,
+            typeId: taskTypeDefaultValue,
+        },
     });
     const { errors } = formState;
 
+    const dispatch = useDispatch();
     const [dataField, setDataField] = useState({
         status: [],
         priority: [],
         taskType: [],
     });
+    const [members, setMembers] = useState([]);
+    const [description, setDescription] = useState('');
+    const timeSpentValue = watch('timeTrackingSpent');
+    const timeTrackingRemaining = watch('timeTrackingRemaining');
 
     //Load All API Input fields
     useEffect(() => {
@@ -64,7 +82,10 @@ function FormCreateEditTask({
                         objectData = { ...objectData, ...item };
                     });
 
-                    setDataField(objectData);
+                    setDataField({
+                        ...dataField,
+                        ...objectData,
+                    });
                 });
             } catch (err) {
                 toast.error('Cannot get status field!');
@@ -73,8 +94,47 @@ function FormCreateEditTask({
         getAllField();
     }, []);
 
+    async function fetchUserList() {
+        try {
+            const response = await http.get(
+                `${getUserByProjectIdURL}?idProject=${projectId}`
+            );
+            return response.data.content.map((user) => ({
+                label: user.name,
+                value: user.userId,
+            }));
+        } catch (err) {
+            toast.error('Cannot load data user');
+        }
+    }
+
     const onSubmit = (data) => {
-        console.log(data);
+        const listUserAssign = members.map((member) => member.value);
+        const {
+            originalEstimate,
+            timeTrackingSpent,
+            statusId,
+            timeTrackingRemaining,
+            typeId,
+            taskName,
+            priorityId,
+        } = data;
+
+        const dataSubmit = {
+            listUserAsign: listUserAssign,
+            taskName: String(taskName),
+            description: String(description),
+            statusId: String(statusId),
+            originalEstimate: Number(originalEstimate),
+            timeTrackingSpent: Number(timeTrackingSpent),
+            timeTrackingRemaining: Number(timeTrackingRemaining),
+            projectId: Number(projectId),
+            typeId: Number(typeId),
+            priorityId: Number(priorityId),
+        };
+
+        const createTaskAPI = createTaskThunk(dataSubmit);
+        dispatch(createTaskAPI);
     };
 
     return (
@@ -110,7 +170,6 @@ function FormCreateEditTask({
                         registerName="statusId"
                         id="status"
                         name="status"
-                        defaultValue={statusDefaultValue}
                     >
                         {dataField?.status.length > 0 &&
                             dataField?.status.map((item) => {
@@ -137,7 +196,6 @@ function FormCreateEditTask({
                                 registerName="priorityId"
                                 id="priorityId"
                                 name="priorityId"
-                                defaultValue={priorityDefaultValue}
                             >
                                 {dataField?.priority.length > 0 &&
                                     dataField?.priority.map((item) => {
@@ -164,7 +222,6 @@ function FormCreateEditTask({
                                 registerName="typeId"
                                 id="taskType"
                                 name="taskType"
-                                defaultValue={taskTypeDefaultValue}
                             >
                                 {dataField?.taskType.length > 0 &&
                                     dataField?.taskType.map((item) => {
@@ -182,9 +239,166 @@ function FormCreateEditTask({
                         </div>
                     </div>
                 </div>
+
+                <div className="formCreateEditTask-flex">
+                    <div className="formCreateEditTask-flexItem">
+                        <div className="formCreateEditTask__column">
+                            <span className="formCreateEditTask__fieldTitle">
+                                Assignees
+                            </span>
+                            <DebounceSelectMember
+                                mode="multiple"
+                                value={members}
+                                placeholder="Select users"
+                                fetchOptions={fetchUserList}
+                                onChange={(newValue) => {
+                                    setMembers(newValue);
+                                }}
+                                style={{
+                                    width: '100%',
+                                }}
+                            />
+                        </div>
+                    </div>
+                    <div className="formCreateEditTask-flexItem">
+                        <div className="formCreateEditTask__column">
+                            <span className="formCreateEditTask__fieldTitle">
+                                Time tracking
+                            </span>
+                            <Slider
+                                max={
+                                    Number(timeSpentValue) +
+                                    Number(timeTrackingRemaining)
+                                }
+                                value={timeSpentValue}
+                                style={{
+                                    margin: '0',
+                                    pointerEvents: 'none',
+                                }}
+                                trackStyle={{
+                                    backgroundColor: '#001529',
+                                }}
+                            />
+                            <div
+                                style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'space-between',
+                                }}
+                            >
+                                <div className="formCreateEditTask__fieldTitle">
+                                    {timeSpentValue || 0}h logged
+                                </div>
+                                <div className="formCreateEditTask__fieldTitle">
+                                    {timeTrackingRemaining || 0}h remaining
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="formCreateEditTask-flex">
+                    <div className="formCreateEditTask-flexItem">
+                        <div className="formCreateEditTask__column">
+                            <Input
+                                id="originalEstimate"
+                                type="number"
+                                labelName="Original Estimate"
+                                register={register}
+                                registerName="originalEstimate"
+                                errors={errors?.originalEstimate}
+                                errorsMessage={
+                                    errors?.originalEstimate?.message
+                                }
+                                defaultValue="0"
+                            />
+                        </div>
+                    </div>
+                    <div className="formCreateEditTask-flexItem">
+                        <div className="formCreateEditTask__column">
+                            <Input
+                                id="timeTrackingSpent"
+                                type="number"
+                                labelName="Time spent"
+                                register={register}
+                                registerName="timeTrackingSpent"
+                                errors={errors?.timeTrackingSpent}
+                                errorsMessage={
+                                    errors?.timeTrackingSpent?.message
+                                }
+                                defaultValue="0"
+                            />
+                        </div>
+                    </div>
+                    <div className="formCreateEditTask-flexItem">
+                        <div className="formCreateEditTask__column">
+                            <Input
+                                id="timeTrackingRemaining"
+                                type="number"
+                                labelName="Time remaining"
+                                register={register}
+                                registerName="timeTrackingRemaining"
+                                errors={errors?.timeTrackingRemaining}
+                                errorsMessage={
+                                    errors?.timeTrackingRemaining?.message
+                                }
+                                defaultValue="0"
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div className="formCreateEditTask__column">
+                    <div className="formCreateEditTask__fieldTitle">
+                        Description
+                    </div>
+                    <ReactQuill
+                        theme="snow"
+                        defaultValue=""
+                        value={description}
+                        onChange={setDescription}
+                        modules={modules}
+                        formats={formats}
+                    >
+                        <div className="my-editing-area" />
+                    </ReactQuill>
+                </div>
+                <div>
+                    <button
+                        type="submit"
+                        className="btn btn-primary"
+                        // disabled={isSubmitting}
+                    >
+                        Create Task
+                    </button>
+                </div>
             </form>
         </section>
     );
 }
 
 export default memo(FormCreateEditTask);
+
+let modules = {
+    toolbar: [
+        [{ header: [1, 2, false] }],
+        ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+        [{ list: 'ordered' }, { list: 'bullet' }],
+        ['link', 'image'],
+        [{ color: [] }, { background: [] }],
+    ],
+};
+
+let formats = [
+    'header',
+    'bold',
+    'italic',
+    'underline',
+    'strike',
+    'blockquote',
+    'list',
+    'bullet',
+    'indent',
+    'link',
+    'image',
+    'color',
+    'background',
+];

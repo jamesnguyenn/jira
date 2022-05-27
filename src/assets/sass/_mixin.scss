@@ -27,6 +27,7 @@
     transition: all 0.2s ease-in-out;
     background-color: $bg;
     color: $c;
+    font-size: $fz-xs;
     &:hover {
         opacity: 1;
     }

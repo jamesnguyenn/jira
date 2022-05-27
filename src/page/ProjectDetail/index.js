@@ -102,25 +102,27 @@ function ProjectDetail() {
                 )}
 
                 {/* Add Task Button */}
-                <div
-                    className="projectDetail__addTaskButton"
-                    onClick={handleOpenLayoutModal}
-                >
-                    <Tooltip title="Create Task">
-                        <Button
-                            shape="circle"
-                            icon={<PlusOutlined style={{ color: '#fff' }} />}
-                            size="large"
-                            style={{
-                                backgroundColor: '#001529',
-                                border: 'none',
-                                outline: 'none',
-                            }}
-                        />
-                    </Tooltip>
-                </div>
-
-                {/* Modal Create Task */}
+                {creator?.id === userId && (
+                    <div
+                        className="projectDetail__addTaskButton"
+                        onClick={handleOpenLayoutModal}
+                    >
+                        <Tooltip title="Create Task">
+                            <Button
+                                shape="circle"
+                                icon={
+                                    <PlusOutlined style={{ color: '#fff' }} />
+                                }
+                                size="large"
+                                style={{
+                                    backgroundColor: '#001529',
+                                    border: 'none',
+                                    outline: 'none',
+                                }}
+                            />
+                        </Tooltip>
+                    </div>
+                )}
                 <LayoutModal>
                     <FormCreateEditTask
                         projectName={projectName}
