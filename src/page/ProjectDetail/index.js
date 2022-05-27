@@ -19,6 +19,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import LayoutModal from '../../layout/LayoutModal/LayoutModal';
 import { openModal } from '../../redux/reducer/modalAdjustSlice';
 import FormCreateEditTask from '../../component/FormCreateEditTask';
+import LayoutModalPopUp from '../../layout/LayoutModalPopUp';
 
 function ProjectDetail() {
     const [isMemberInProject, setIsMemberInProject] = useState(false);
@@ -28,6 +29,9 @@ function ProjectDetail() {
     const dispatch = useDispatch();
     const projectDetail = useSelector(getProjectDetail);
     const { data, isLoading } = projectDetail;
+
+    const [visibleModal, setVisibleModal] = useState(false);
+    console.log('🚀 ~ visibleModal', visibleModal);
 
     const {
         projectName,
@@ -101,7 +105,11 @@ function ProjectDetail() {
                             />
                         </div>
                         <div className="projectDetail__body">
-                            <ProjectDetailBody lstTask={lstTask} />
+                            <ProjectDetailBody
+                                lstTask={lstTask}
+                                visible={visibleModal}
+                                setVisible={setVisibleModal}
+                            />
                         </div>
                     </>
                 )}
@@ -140,6 +148,10 @@ function ProjectDetail() {
                         />
                     )}
                 </LayoutModal>
+                <LayoutModalPopUp
+                    visible={visibleModal}
+                    setVisible={setVisibleModal}
+                ></LayoutModalPopUp>
             </section>
         </>
     );

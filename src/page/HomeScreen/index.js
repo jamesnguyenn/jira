@@ -206,7 +206,7 @@ function HomeScreen(props) {
                             }}
                             trigger="click"
                         >
-                            <Button style={{ borderRadius: '55%' }}>+</Button>
+                            <Button style={{ borderRadius: '100%' }}>+</Button>
                         </Popover>
                     </div>
                 );
@@ -249,6 +249,7 @@ function HomeScreen(props) {
     const { project } = useSelector(getAllProject);
     const { userSearch } = useSelector(getUserSearch);
     const [value, setValue] = useState('');
+
     const edit = useSelector((state) => state.editProject.editProject);
     const { id, projectName, description, categoryId, projectCategory } = edit;
 
@@ -267,16 +268,14 @@ function HomeScreen(props) {
     //Update project
     const onSubmit = useCallback(
         async (data, description) => {
-            console.log('IDPROJECT', id);
             try {
-                const result = await http.put(
-                    `${updateProject}?projectId=${id}`,
-                    data
-                );
-                const action = updateProjects(result.data.content);
-                dispatch(action);
-
-                console.log('RESULT', result.data.content);
+                // const result = await http.put(
+                //     `${updateProject}?projectId=${id}`,
+                //     data
+                // );
+                // const action = updateProjects(result.data.content);
+                // dispatch(action);
+                // console.log('RESULT', result.data.content);
             } catch (error) {
                 console.log(error);
             }

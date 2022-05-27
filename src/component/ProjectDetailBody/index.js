@@ -1,8 +1,8 @@
-import React, { memo, useCallback } from 'react';
+import React, { memo, useCallback, useState } from 'react';
 
 import TaskLists from './TaskLists';
 
-function ProjectDetailBody({ lstTask = [] }) {
+function ProjectDetailBody({ lstTask = [], visible, setVisible }) {
     const handleOnDragStart = useCallback((e) => {
         console.log(e);
     }, []);
@@ -41,6 +41,9 @@ function ProjectDetailBody({ lstTask = [] }) {
                                                           draggable={true}
                                                           className="task__item"
                                                           key={id}
+                                                          onClick={() =>
+                                                              setVisible(true)
+                                                          }
                                                       >
                                                           <TaskLists
                                                               data={{
