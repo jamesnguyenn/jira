@@ -5,7 +5,7 @@ import { BugOutlined, RocketOutlined } from '@ant-design/icons';
 
 function TaskLists({ data }) {
     const { taskName, priority, members, typeId } = data;
-    console.log('🚀 ~ typeId', typeId);
+
     return (
         <>
             <div className="task__itemHeader">

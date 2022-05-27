@@ -55,6 +55,8 @@ function ProjectDetailHeader({
                                                     src={member.avatar}
                                                     style={{
                                                         cursor: 'pointer',
+                                                        backgroundColor:
+                                                            'white',
                                                     }}
                                                 />
                                             ) : (
