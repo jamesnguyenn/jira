@@ -39,7 +39,7 @@ import {
 import { delProject, updateProjects } from '../../redux/reducer/projectSlice';
 import ReactHtmlParser from 'react-html-parser';
 import { openModal } from '../../redux/reducer/modalAdjustSlice';
-import { useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import LayoutModal from '../../layout/LayoutModal/LayoutModal';
 import FormCreateEditProject from '../../component/FormCreateEditProject';
 import HtmlParser from 'react-html-parser/lib/HtmlParser';
@@ -113,6 +113,9 @@ function HomeScreen(props) {
                 }
                 return 1;
             },
+            render: (text, record, index) => (
+                <NavLink to={`/project-detail/${record.id}`}>{text}</NavLink>
+            ),
         },
         //Description
         {
