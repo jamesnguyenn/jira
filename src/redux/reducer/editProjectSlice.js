@@ -33,11 +33,6 @@ const stateDefault = {
 
 export const editProjectReducer = (state = stateDefault, action) => {
   switch (action.type) {
-    case 'UPDATE_PROJECT': {
-      const currentState = { ...state };
-      currentState.updateProject = action.data;
-      return { ...currentState };
-    }
     case 'FILL_INPUT': {
       const currentState = { ...state };
       currentState.editProject = action.data;

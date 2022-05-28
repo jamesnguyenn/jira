@@ -11,13 +11,11 @@ export const updateProject = '/Project/updateProject';
 export const getAllStatusURL = '/Status/getAll';
 export const getAllPriorityURL = '/Priority/getAll';
 export const getAllTaskTypeURL = '/TaskType/getAll';
-<<<<<<< HEAD
 export const getAllAssigneesURL = '/Users/getUser';
 export const getUserAddProject = '/Users/getUser';
 export const assignUserProject = '/Project/assignUserProject';
-=======
 export const getUserAllURL = '/Users/getUser';
 export const getUserByProjectIdURL = '/Users/getUserByProjectId';
 export const createTaskURL = '/Project/createTask';
 export const getTaskDetailURL = '/Project/getTaskDetail';
->>>>>>> 4fcc1dc3aa2b1401b958cd78418e947f0faeb9c6
+export const removeUserFromProject = '/Project/removeUserFromProject';

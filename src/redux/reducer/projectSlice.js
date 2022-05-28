@@ -17,7 +17,6 @@ const projectReducer = createSlice({
       );
     },
     updateProjects: (state, action) => {
-      console.log(action);
       const project = state.project;
 
       const currentProject = project.find(

@@ -7,6 +7,8 @@ export const userSearchReducer = (state = stateDefault, action) => {
     case 'ADD_SEARCH_USER': {
       const users = { ...state };
 
+      console.log('users', state.userSearch);
+
       users.userSearch = action.user;
 
       return { ...users };
