@@ -114,7 +114,12 @@ function HomeScreen(props) {
                 return 1;
             },
             render: (text, record, index) => (
-                <NavLink to={`/project-detail/${record.id}`}>{text}</NavLink>
+                <NavLink
+                    to={`/project-detail/${record.id}`}
+                    style={{ color: '#000' }}
+                >
+                    {text}
+                </NavLink>
             ),
         },
         //Description

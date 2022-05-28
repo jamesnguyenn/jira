@@ -12,6 +12,8 @@ import {
     getTaskDetailURL,
     assignUserProject,
     getUserAddProject,
+    updateTaskURL,
+    removeTaskURL,
 } from '../../axios/apiURL';
 import { toast } from 'react-toastify';
 import {
@@ -20,14 +22,17 @@ import {
     registerUserFailed,
     registerUserSuccess,
 } from '../reducer/userSlice';
-import axios from 'axios';
+
 import {
+    createTaskProjectDetail,
+    deleteTaskProjectDetail,
     getProjectDetailFailure,
     getProjectDetailSuccess,
-    updateProjectDetail,
+    updateTaskProjectDetail,
 } from '../reducer/projectDetailSlice';
 import { delProject, gettAllProject } from '../reducer/projectSlice';
 import { closeModal } from '../reducer/modalAdjustSlice';
+import { updateTaskDetail } from '../reducer/taskDetailSlice';
 
 //Login
 export const loginThunk = (userInfo, navigate) => {
@@ -228,7 +233,7 @@ export const createTaskThunk = (taskInfo) => {
                 `${getTaskDetailURL}?taskId=${response.data.content.taskId}`
             );
 
-            dispatch(updateProjectDetail(getTaskDetail.data.content));
+            dispatch(createTaskProjectDetail(getTaskDetail.data.content));
             dispatch(closeModal());
             toast.success('Create Task Successfully', {
                 position: 'top-right',
@@ -249,6 +254,39 @@ export const createTaskThunk = (taskInfo) => {
                 draggable: true,
                 progress: undefined,
             });
+        }
+    };
+};
+
+//Update Task Detail
+export const updateTaskDetailThunk = (taskInfo, setTypeUpdate) => {
+    return async (dispatch) => {
+        try {
+            const response = await http.post(`${updateTaskURL}`, taskInfo);
+            const getTaskDetail = await http.get(
+                `${getTaskDetailURL}?taskId=${response.data.content.taskId}`
+            );
+            setTypeUpdate(getTaskDetail.data.content.typeId);
+            dispatch(updateTaskProjectDetail(getTaskDetail.data.content));
+        } catch (err) {
+            toast.error('Cannot Update Task Detail !');
+        }
+    };
+};
+
+//Update Task Detail
+export const deleteTaskDetailThunk = (taskId, statusId, setVisibleModal) => {
+    return async (dispatch) => {
+        try {
+            const response = await http.delete(
+                `${removeTaskURL}?taskId=${taskId}`
+            );
+            console.log('🚀 ~ response', response);
+            dispatch(deleteTaskProjectDetail({ taskId, statusId }));
+            setVisibleModal(false);
+            toast.success('Remove Task Successfully !');
+        } catch (err) {
+            toast.error('Cannot Remove Task !');
         }
     };
 };

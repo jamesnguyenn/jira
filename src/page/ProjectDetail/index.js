@@ -25,6 +25,8 @@ import TaskDetail from '../TaskDetail';
 
 function ProjectDetail() {
     const [isMemberInProject, setIsMemberInProject] = useState(false);
+    const [isCreatorProject, setIsCreatorProject] = useState(false);
+
     const { id: userId } = useSelector(getUserInfo);
     const { visible } = useSelector(getVisibleModal);
 
@@ -68,6 +70,13 @@ function ProjectDetail() {
             );
         }
     }, [creator, members, userId]);
+
+    //Check member is creator in project
+    useEffect(() => {
+        if (userId === creator?.id) {
+            setIsCreatorProject(true);
+        }
+    }, [creator?.id, userId]);
 
     //Open Layout Modal to add Task
     const handleOpenLayoutModal = () => {
@@ -158,7 +167,12 @@ function ProjectDetail() {
                         visible={visibleModal}
                         setVisible={setVisibleModal}
                     >
-                        <TaskDetail taskDetailData={taskDetailData} />
+                        <TaskDetail
+                            taskDetailData={taskDetailData}
+                            isCreatorProject={isCreatorProject}
+                            projectId={projectId}
+                            setVisibleModal={setVisibleModal}
+                        />
                     </LayoutModalPopUp>
                 )}
             </section>

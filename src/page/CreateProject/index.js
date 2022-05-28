@@ -24,9 +24,7 @@ function CreateProject() {
                 navigate('/');
             } catch (e) {
                 if (e.code === 'ERR_NETWORK') {
-                    toast.error(
-                        'Please check your network connection and try again later !'
-                    );
+                    toast.error('Internal Server Error !');
                 } else if (e.code === 500) {
                     toast.error(
                         'Project Name taken already. Please change project name !'

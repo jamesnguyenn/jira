@@ -56,6 +56,7 @@ function FormCreateEditTask({
         taskType: [],
     });
     const [members, setMembers] = useState([]);
+
     const [description, setDescription] = useState('');
     const timeSpentValue = watch('timeTrackingSpent');
     const timeTrackingRemaining = watch('timeTrackingRemaining');
@@ -256,7 +257,7 @@ function FormCreateEditTask({
                             <DebounceSelectMember
                                 mode="multiple"
                                 value={members}
-                                placeholder="Select users"
+                                placeholder="Select member..."
                                 fetchOptions={fetchUserList}
                                 onChange={(newValue) => {
                                     setMembers(newValue);

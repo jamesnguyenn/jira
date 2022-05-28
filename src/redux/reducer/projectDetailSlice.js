@@ -29,13 +29,41 @@ const projectDetailReducer = createSlice({
                 isLoading: false,
             };
         },
-        updateProjectDetail(state, action) {
+        createTaskProjectDetail(state, action) {
             const { payload } = action;
 
             let currentTaskLists = state.data.lstTask.find(
                 (task) => task.statusId === payload.statusId
             );
             currentTaskLists.lstTaskDeTail.push(payload);
+        },
+        updateTaskProjectDetail(state, action) {
+            const { payload } = action;
+            let currentTaskLists = state.data.lstTask.find(
+                (task) => task.statusId === payload.statusId
+            );
+            let currentTaskIndex = currentTaskLists.lstTaskDeTail.findIndex(
+                (task) => task.taskId === payload.taskId
+            );
+            if (currentTaskIndex !== -1) {
+                currentTaskLists.lstTaskDeTail.splice(
+                    currentTaskIndex,
+                    1,
+                    payload
+                );
+            }
+        },
+        deleteTaskProjectDetail(state, action) {
+            const { payload } = action;
+            let currentTaskLists = state.data.lstTask.find(
+                (task) => task.statusId === payload.statusId
+            );
+            let currentTaskIndex = currentTaskLists.lstTaskDeTail.findIndex(
+                (task) => task.taskId === payload.taskId
+            );
+            if (currentTaskIndex !== -1) {
+                currentTaskLists.lstTaskDeTail.splice(currentTaskIndex, 1);
+            }
         },
     },
 });
@@ -44,7 +72,9 @@ export const {
     getProjectDetailRequest,
     getProjectDetailSuccess,
     getProjectDetailFailure,
-    updateProjectDetail,
+    createTaskProjectDetail,
+    updateTaskProjectDetail,
+    deleteTaskProjectDetail,
 } = projectDetailReducer.actions;
 
 export default projectDetailReducer.reducer;

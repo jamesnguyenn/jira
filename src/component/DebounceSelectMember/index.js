@@ -5,6 +5,7 @@ import debounce from 'lodash/debounce';
 function DebounceSelectMember({
     fetchOptions,
     debounceTimeout = 800,
+    disabled,
     ...props
 }) {
     const [fetching, setFetching] = useState(false);
@@ -37,6 +38,7 @@ function DebounceSelectMember({
             notFoundContent={fetching ? <Spin size="small" /> : null}
             {...props}
             options={options}
+            disabled={disabled}
         />
     );
 }
