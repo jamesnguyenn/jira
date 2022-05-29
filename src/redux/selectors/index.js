@@ -3,3 +3,4 @@ export const getAllProject = (state) => state.project;
 export const getProjectDetail = (state) => state.projectDetail;
 export const getVisibleModal = (state) => state.modalAdjust;
 export const getUserSearch = (state) => state.userSearch;
+export const getAllUserManagement = (state) => state.userSearch;

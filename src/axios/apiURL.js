@@ -19,3 +19,6 @@ export const getUserByProjectIdURL = '/Users/getUserByProjectId';
 export const createTaskURL = '/Project/createTask';
 export const getTaskDetailURL = '/Project/getTaskDetail';
 export const removeUserFromProject = '/Project/removeUserFromProject';
+export const getAllUsersManagement = '/Users/getUser';
+export const deleteUserManage = '/Users/deleteUser';
+export const updateUserManage = '/Users/editUser';

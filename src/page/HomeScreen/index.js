@@ -37,6 +37,7 @@ import {
   getProjectDetailAction,
   getProjectDetailThunk,
   getUserAction,
+  registerThunk,
   removeUserFromProjectAction,
   updateProjectAction,
 } from '../../redux/thunk';
@@ -244,7 +245,7 @@ function HomeScreen(props) {
                 );
               })}
 
-              {record.members.length > 3 ? (
+              {record.members.length > 2 ? (
                 <Avatar
                   style={{
                     backgroundColor: '#6dbcdb',
@@ -276,7 +277,7 @@ function HomeScreen(props) {
                       }
                       searchRef.current = setTimeout(() => {
                         dispatch(getUserAction(user));
-                      }, 350);
+                      }, 400);
                     }}
                     options={userSearch?.map((member, index) => {
                       return {
@@ -429,14 +430,16 @@ function HomeScreen(props) {
 
   //Update project
   const onSubmit = useCallback(
-    async (data) => {
+    async (data, description) => {
       try {
         const result = await http.put(
           `${updateProject}?projectId=${id}`,
           data
         );
-        const action = updateProjects(result.data.content);
-        dispatch(action);
+        dispatch({
+          type: 'UPDATE_PROJECT',
+          data: data,
+        });
 
         const actionGetList = getListProjectAction();
         dispatch(actionGetList);

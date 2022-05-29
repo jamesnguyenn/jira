@@ -13,6 +13,9 @@ import {
   createTaskURL,
   getTaskDetailURL,
   removeUserFromProject,
+  getAllUserManagement,
+  getAllUsersManagement,
+  deleteUserManage,
 } from '../../axios/apiURL';
 import { toast } from 'react-toastify';
 import {
@@ -169,10 +172,6 @@ export const updateProjectAction = (projectID) => {
       const result = await http.put(
         updateProject + `?projectId=${projectID}`
       );
-      dispatch({
-        type: 'UPDATE_PROJECT',
-        data: result.data.content,
-      });
     } catch (error) {
       console.log(error);
     }
@@ -210,15 +209,15 @@ export const deleteProjectAction = (projectID) => {
 //Get user to add to project
 export const getUserAction = (user) => {
   return async (dispatch) => {
-    const result = await http.get(
-      `${getUserAddProject}?keyword=${user}`
-    );
-    dispatch({
-      //dispatch to userSearchSlice (store)
-      type: 'ADD_SEARCH_USER',
-      user: result.data.content,
-    });
     try {
+      const result = await http.get(
+        `${getUserAddProject}?keyword=${user}`
+      );
+      dispatch({
+        //dispatch to userSearchSlice (store)
+        type: 'ADD_SEARCH_USER',
+        user: result.data.content,
+      });
     } catch (error) {
       toast.error(error.response.data.message, {
         position: 'top-right',
@@ -233,11 +232,55 @@ export const getUserAction = (user) => {
   };
 };
 
+//Get user for user management
+export const getAllUserAction = () => {
+  return async (dispatch) => {
+    try {
+      const result = await http.get(getAllUsersManagement);
+      dispatch({
+        type: 'GET_ALL_USER',
+        users: result.data.content,
+      });
+    } catch (error) {
+      toast.error('Cannot load users !');
+    }
+  };
+};
+
+//Delete user from user management
+export const deleteUserManageAction = (userId) => {
+  return async (dispatch) => {
+    try {
+      const result = await http.delete(
+        `${deleteUserManage}?id=${userId}`
+      );
+      dispatch({
+        type: 'DELETE_USER',
+        userId: userId,
+      });
+      // const action = getAllUserAction();
+      // dispatch(action);
+      toast.success('Delete User Successfully!', {
+        position: 'top-right',
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: true,
+        progress: undefined,
+      });
+    } catch (error) {
+      // toast.error('Cannot delete this user !');
+      console.log(error);
+    }
+  };
+};
+
 //Asign User to project
 export const assignUserAction = (userInfo) => {
   return async (dispatch) => {
     try {
       const result = http.post(assignUserProject, userInfo);
+      console.log('result', result);
       const action = getListProjectAction();
       dispatch(action);
     } catch (error) {
@@ -260,8 +303,6 @@ export const removeUserFromProjectAction = (userInfo) => {
       const result = await http.post(removeUserFromProject, userInfo);
       const action = getListProjectAction();
       dispatch(action);
-
-      console.log('result', result);
     } catch (error) {
       console.log(error);
     }

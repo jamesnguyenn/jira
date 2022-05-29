@@ -18,17 +18,6 @@ const stateDefault = {
       categoryId: '',
     },
   ],
-
-  deleteProject: [
-    {
-      id: 0,
-      projectName: '',
-      alias: '',
-      creator: 0,
-      description: '',
-      categoryId: '',
-    },
-  ],
 };
 
 export const editProjectReducer = (state = stateDefault, action) => {
@@ -39,19 +28,14 @@ export const editProjectReducer = (state = stateDefault, action) => {
       return { ...currentState };
     }
 
-    case 'DELETE_PROJECT': {
-      const deleteProject = [...state.deleteProject];
+    case 'UPDATE_PROJECT': {
+      const currentProject = { ...state };
 
-      const currentProject = deleteProject.findIndex(
-        (item) => item.id === action.id
-      );
+      currentProject.updateProject = action.data;
 
-      if (currentProject) {
-        deleteProject.splice(currentProject, 1);
-      }
-
-      return { ...state };
+      return { ...currentProject };
     }
+
     default:
       return state;
       break;
