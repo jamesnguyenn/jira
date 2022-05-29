@@ -35,6 +35,7 @@ function ProjectDetail() {
     const dispatch = useDispatch();
 
     const { data, isLoading } = useSelector(getProjectDetail);
+
     const {
         projectName,
         description,
@@ -45,6 +46,7 @@ function ProjectDetail() {
         alias,
         members,
     } = data;
+    const [lstTaskDetail, setLstTaskDetail] = useState(lstTask);
 
     const [visibleModal, setVisibleModal] = useState(false);
 
@@ -54,6 +56,12 @@ function ProjectDetail() {
         const getProjectDetail = getProjectDetailThunk(projectId);
         dispatch(getProjectDetail);
     }, [dispatch, projectId]);
+
+    useEffect(() => {
+        if (data) {
+            setLstTaskDetail(lstTask);
+        }
+    }, [data, lstTask]);
 
     //Check member is logged in belonging to projectDetail or not
     useEffect(() => {
@@ -117,9 +125,10 @@ function ProjectDetail() {
                         </div>
                         <div className="projectDetail__body">
                             <ProjectDetailBody
-                                lstTask={lstTask}
+                                lstTask={lstTaskDetail}
                                 visible={visibleModal}
                                 setVisible={setVisibleModal}
+                                setLstTaskDetail={setLstTaskDetail}
                             />
                         </div>
                     </>

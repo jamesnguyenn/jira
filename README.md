@@ -9,29 +9,13 @@ Project Owner: Nguyen Quang Thien & Hoang Minh Khoa
 
 <!-- //Screen
 
-       - Login, Register (Done) ;
-       - LayoutMain & NavLink (Done);
+(Thien)- Login, Register (Done) ;
+(Khoa) - LayoutMain & NavLink (Done);
 (Khoa) - Project Management (Add/Remove User , Edit/Delete Project);
-(Thien)- Create Project;
-       - Project Details (use Drag & Drop to move task)
-       - Create Task, Edit Task;
-       - Task Details (Comment, Status, Members, Priority...)
-        *Lưu ý: Pop up Edit Task và Create Task đều giống nhau là hiện ra từ bên phải vào(sử dụng thư viện Ant Design) chỉ khác nhau về nội dung nên mình sẽ tạo 1 HOC dùng chung cho 2 component này.
+(Thien)- Create Project (Done)
+(Thien)- Project Details (use Drag & Drop to move task) (Done)
+(Thien)- Create Task, Information & Edit Task (Done);
+(Thien)- Task Details (Comment, Status, Members, Priority...) (Done);
+(Khoa)- User Management (Giống Project Management, thêm xóa sửa user)
 
-       - User Management (Giống Project Management, thêm xóa sửa user)
-Deadline : (2 weeks)
-    -->
-
-<!-- API
-
-- Project Management :
-    + GetAllProject : /api/Project/getAllProject
-    + UpdateProject: /api/Project/updateProject
-    + DeleteProject: /api/Project/deleteProject
-    + GetMembersByProjectID: /api/Users/getUserByProjectId
-    + RemoveMembers : /api/Project/removeUserFromProject
-    + SearchMember: /api/Users/getUser
-    + AddMembersToProject: /api/Project/assignUserProject
-- Create Project:
-    + CreateProject: /api/Project/createProject
 -->

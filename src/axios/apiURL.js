@@ -16,6 +16,7 @@ export const getUserByProjectIdURL = '/Users/getUserByProjectId';
 export const createTaskURL = '/Project/createTask';
 export const updateTaskURL = '/Project/updateTask';
 export const removeTaskURL = '/Project/removeTask';
+export const updateStatusURL = '/Project/updateStatus';
 export const getTaskDetailURL = '/Project/getTaskDetail';
 export const getAllAssigneesURL = '/Users/getUser';
 export const getUserAddProject = '/Users/getUser';
