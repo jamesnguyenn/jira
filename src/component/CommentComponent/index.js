@@ -1,5 +1,7 @@
-import { memo, useState, useCallback } from 'react';
-import { Avatar, Button, Comment, Form, List } from 'antd';
+import { memo, useState, useCallback, useRef } from 'react';
+import { Avatar, Button, Comment, Form, List, Popover, Tooltip } from 'antd';
+import { SendOutlined } from '@ant-design/icons';
+
 import TextArea from 'antd/lib/input/TextArea';
 import { useSelector } from 'react-redux';
 import { http } from '../../axios';
@@ -7,6 +9,7 @@ import {
     deleteCommentURL,
     getAllCommentURL,
     insertCommentURL,
+    updateCommentURL,
 } from '../../axios/apiURL';
 import { getUserInfo } from '../../redux/selectors';
 import { toast } from 'react-toastify';
@@ -51,6 +54,7 @@ function CommentComponent({ dataField, taskIdDetail, setDataField }) {
     const [submitting, setSubmitting] = useState(false);
     const [value, setValue] = useState('');
     const currentUser = useSelector(getUserInfo);
+    const editValueComment = useRef('');
 
     const { comments: commentLists } = dataField;
 
@@ -111,12 +115,71 @@ function CommentComponent({ dataField, taskIdDetail, setDataField }) {
                 toast.success('Delete Comment Successfully', {
                     autoClose: 1000,
                 });
-            } catch (err) {}
+            } catch (err) {
+                toast.error('Cannot Delete Comment', {
+                    autoClose: 1000,
+                });
+            }
         },
         [commentLists, dataField, setDataField]
     );
+
+    const handleOnChangeEditComment = useCallback((e) => {
+        editValueComment.current = e.target.value;
+    }, []);
+
+    const handleEditComment = useCallback(
+        async (commentId) => {
+            try {
+                const response = await http.put(
+                    `${updateCommentURL}?id=${commentId}&contentComment=${editValueComment.current}`
+                );
+                const { alias, contentComment, id, taskId, userId } =
+                    response.data.content;
+                const dataPushInMemberArray = {
+                    alias: alias,
+                    contentComment: contentComment,
+                    deleted: false,
+                    id: id,
+                    taskId: taskId,
+                    user: {
+                        userId: userId,
+                        name: currentUser.name,
+                        avatar: currentUser.avatar,
+                    },
+                    userId: userId,
+                };
+                let newCommentLists = [...commentLists];
+                let currentIndex = newCommentLists.findIndex(
+                    (comment) => comment.id === id
+                );
+
+                newCommentLists.splice(currentIndex, 1, dataPushInMemberArray);
+
+                setDataField({
+                    ...dataField,
+                    comments: newCommentLists,
+                });
+                toast.success('Edit Comment Successfully', {
+                    autoClose: 1000,
+                });
+            } catch (e) {
+                toast.error('Cannot Edit Comment', {
+                    autoClose: 1000,
+                });
+            }
+        },
+        [
+            commentLists,
+            currentUser.avatar,
+            currentUser.name,
+            dataField,
+            setDataField,
+        ]
+    );
+
     return (
-        <>
+        <div className="comments">
             {/* Header Comment */}
             <Comment
                 avatar={
@@ -160,9 +223,67 @@ function CommentComponent({ dataField, taskIdDetail, setDataField }) {
                                                     gap: '10px',
                                                 }}
                                             >
-                                                <button className="button__comment button__comment--primary">
-                                                    Edit
-                                                </button>
+                                                <Popover
+                                                    content={
+                                                        <div
+                                                            style={{
+                                                                width: '200px',
+                                                            }}
+                                                        >
+                                                            <div
+                                                                style={{
+                                                                    position:
+                                                                        'relative',
+                                                                    width: '100%',
+                                                                }}
+                                                            >
+                                                                <textarea
+                                                                    type="text"
+                                                                    defaultValue={
+                                                                        comment?.contentComment
+                                                                    }
+                                                                    style={{
+                                                                        padding:
+                                                                            '5px 8px',
+                                                                        width: '100%',
+                                                                    }}
+                                                                    onChange={
+                                                                        handleOnChangeEditComment
+                                                                    }
+                                                                />
+                                                                <button
+                                                                    onClick={() =>
+                                                                        handleEditComment(
+                                                                            comment?.id
+                                                                        )
+                                                                    }
+                                                                >
+                                                                    <Tooltip title="Submit">
+                                                                        <SendOutlined
+                                                                            style={{
+                                                                                position:
+                                                                                    'absolute',
+                                                                                right: '0',
+                                                                                bottom: '0',
+                                                                                margin: '15px 10px',
+                                                                                fontSize:
+                                                                                    '20px',
+                                                                                color: '#192134',
+                                                                            }}
+                                                                        />
+                                                                    </Tooltip>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                    title="Edit Comment"
+                                                    trigger="click"
+                                                    placement="bottom"
+                                                >
+                                                    <button className="button__comment button__comment--primary">
+                                                        Edit
+                                                    </button>
+                                                </Popover>
                                                 <button
                                                     className="button__comment button__comment--secondary"
                                                     onClick={() =>
@@ -181,7 +302,7 @@ function CommentComponent({ dataField, taskIdDetail, setDataField }) {
                         );
                     })}
             </div>
-        </>
+        </div>
     );
 }
 

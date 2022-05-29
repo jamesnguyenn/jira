@@ -341,7 +341,7 @@ function TaskDetail({ isCreatorProject, projectId, setVisibleModal }) {
                             </Select>
                         </div>
                         <div className="taskDetailHeader__leftItem">
-                            {taskName}
+                            Task Name: {taskName}
                         </div>
                     </div>
                     <div className="taskDetailHeader__right">

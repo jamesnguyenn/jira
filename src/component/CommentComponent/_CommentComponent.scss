@@ -42,51 +42,53 @@
     }
 }
 
-.comment__lists {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: $gap-2;
-    margin-top: $m-1;
+.comments {
+    .comment__lists {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: $gap-2;
+        margin-top: $m-1;
 
-    .ant-comment {
-        background-color: rgb(245, 245, 245);
-        border-radius: 10px;
-        padding: $p-1;
-        font-size: $fz-xs;
-        width: 100%;
-        .ant-comment-inner {
-            .ant-comment-avatar {
-            }
-            .ant-comment-content {
-                .ant-comment-content-author {
-                    margin: 0;
+        .ant-comment {
+            background-color: rgb(245, 245, 245);
+            border-radius: 10px;
+            padding: $p-1;
+            font-size: $fz-xs;
+            width: 100%;
+            .ant-comment-inner {
+                .ant-comment-avatar {
                 }
-                .ant-comment-content-detail {
-                    font-size: $fz-xs;
-                    .button__comment {
-                        width: 100%;
-                        max-width: 50px;
-                        padding: 1px;
-                        border-radius: 4px;
-                        margin-top: 15px;
-                        font-size: 10px;
-                        font-weight: $fw-light;
-                        border: 1px solid transparent;
-                        transition: all 0.3s ease-in-out;
-                        &.button__comment--primary:hover {
-                            border: 1px solid transparent;
-                            background-color: $bg-1;
-                            color: #fff;
-                        }
-                        &.button__comment--secondary:hover {
-                            border: 1px solid transparent;
-                            background-color: red;
-                            color: #fff;
-                        }
+                .ant-comment-content {
+                    .ant-comment-content-author {
+                        margin: 0;
+                    }
+                    .ant-comment-content-detail {
+                        font-size: $fz-xs;
                     }
                 }
             }
         }
+    }
+}
+.button__comment {
+    width: 100%;
+    max-width: 50px;
+    padding: 1px;
+    border-radius: 4px;
+    margin-top: 10px;
+    font-size: 10px;
+    font-weight: $fw-light;
+    border: 1px solid transparent;
+    transition: all 0.3s ease-in-out;
+    &.button__comment--primary:hover {
+        border: 1px solid transparent;
+        background-color: $bg-1;
+        color: #fff;
+    }
+    &.button__comment--secondary:hover {
+        border: 1px solid transparent;
+        background-color: red;
+        color: #fff;
     }
 }
