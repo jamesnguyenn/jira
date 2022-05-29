@@ -22,3 +22,4 @@ export const getUserAddProject = '/Users/getUser';
 export const assignUserProject = '/Project/assignUserProject';
 export const getAllCommentURL = '/Comment/getAll';
 export const insertCommentURL = '/Comment/insertComment';
+export const deleteCommentURL = '/Comment/deleteComment';

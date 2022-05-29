@@ -64,6 +64,27 @@
                 }
                 .ant-comment-content-detail {
                     font-size: $fz-xs;
+                    .button__comment {
+                        width: 100%;
+                        max-width: 50px;
+                        padding: 1px;
+                        border-radius: 4px;
+                        margin-top: 15px;
+                        font-size: 10px;
+                        font-weight: $fw-light;
+                        border: 1px solid transparent;
+                        transition: all 0.3s ease-in-out;
+                        &.button__comment--primary:hover {
+                            border: 1px solid transparent;
+                            background-color: $bg-1;
+                            color: #fff;
+                        }
+                        &.button__comment--secondary:hover {
+                            border: 1px solid transparent;
+                            background-color: red;
+                            color: #fff;
+                        }
+                    }
                 }
             }
         }

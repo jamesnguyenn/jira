@@ -1,10 +1,15 @@
+import { memo, useState, useCallback } from 'react';
 import { Avatar, Button, Comment, Form, List } from 'antd';
 import TextArea from 'antd/lib/input/TextArea';
-import { memo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { http } from '../../axios';
-import { getAllCommentURL, insertCommentURL } from '../../axios/apiURL';
+import {
+    deleteCommentURL,
+    getAllCommentURL,
+    insertCommentURL,
+} from '../../axios/apiURL';
 import { getUserInfo } from '../../redux/selectors';
+import { toast } from 'react-toastify';
 
 const CommentList = ({ comments }) => (
     <List
@@ -85,6 +90,31 @@ function CommentComponent({ dataField, taskIdDetail, setDataField }) {
     const handleChange = (e) => {
         setValue(e.target.value);
     };
+    const handleDeleteComment = useCallback(
+        async (commentID) => {
+            try {
+                const response = await http.delete(
+                    `${deleteCommentURL}?idComment=${commentID}`
+                );
+
+                let newCommentLists = [...commentLists];
+                let currentIndex = newCommentLists.findIndex(
+                    (comment) => comment.id === commentID
+                );
+
+                newCommentLists.splice(currentIndex, 1);
+                setDataField({
+                    ...dataField,
+                    comments: newCommentLists,
+                });
+
+                toast.success('Delete Comment Successfully', {
+                    autoClose: 1000,
+                });
+            } catch (err) {}
+        },
+        [commentLists, dataField, setDataField]
+    );
     return (
         <>
             {/* Header Comment */}
@@ -105,6 +135,7 @@ function CommentComponent({ dataField, taskIdDetail, setDataField }) {
             <div className="comment__lists">
                 {commentLists.length > 0 &&
                     commentLists.map((comment) => {
+                        console.log();
                         return (
                             <Comment
                                 key={comment?.id}
@@ -115,7 +146,37 @@ function CommentComponent({ dataField, taskIdDetail, setDataField }) {
                                         alt="Han Solo"
                                     />
                                 }
-                                content={<p>{comment?.contentComment}</p>}
+                                content={
+                                    <div>
+                                        <div>{comment?.contentComment}</div>
+                                        {comment.user.userId ===
+                                            currentUser.id && (
+                                            <div
+                                                style={{
+                                                    display: 'flex',
+                                                    justifyContent:
+                                                        'flex-start',
+                                                    alignItems: 'center',
+                                                    gap: '10px',
+                                                }}
+                                            >
+                                                <button className="button__comment button__comment--primary">
+                                                    Edit
+                                                </button>
+                                                <button
+                                                    className="button__comment button__comment--secondary"
+                                                    onClick={() =>
+                                                        handleDeleteComment(
+                                                            comment?.id
+                                                        )
+                                                    }
+                                                >
+                                                    Delete
+                                                </button>
+                                            </div>
+                                        )}
+                                    </div>
+                                }
                             />
                         );
                     })}
