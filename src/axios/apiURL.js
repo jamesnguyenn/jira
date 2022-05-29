@@ -20,3 +20,5 @@ export const getTaskDetailURL = '/Project/getTaskDetail';
 export const getAllAssigneesURL = '/Users/getUser';
 export const getUserAddProject = '/Users/getUser';
 export const assignUserProject = '/Project/assignUserProject';
+export const getAllCommentURL = '/Comment/getAll';
+export const insertCommentURL = '/Comment/insertComment';

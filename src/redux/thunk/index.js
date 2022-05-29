@@ -52,6 +52,7 @@ export const loginThunk = (userInfo, navigate) => {
                 draggable: true,
                 progress: undefined,
             });
+
             navigate('/');
         } catch (err) {
             dispatch(loginFailed());
@@ -259,15 +260,16 @@ export const createTaskThunk = (taskInfo) => {
 };
 
 //Update Task Detail
-export const updateTaskDetailThunk = (taskInfo, setTypeUpdate) => {
+export const updateTaskDetailThunk = (taskInfo, actions, callback) => {
     return async (dispatch) => {
         try {
             const response = await http.post(`${updateTaskURL}`, taskInfo);
             const getTaskDetail = await http.get(
                 `${getTaskDetailURL}?taskId=${response.data.content.taskId}`
             );
-            setTypeUpdate(getTaskDetail.data.content.typeId);
-            dispatch(updateTaskProjectDetail(getTaskDetail.data.content));
+            dispatch(actions(getTaskDetail.data.content));
+            dispatch(updateTaskDetail(getTaskDetail.data.content));
+            if (callback) callback(getTaskDetail.data.content);
         } catch (err) {
             toast.error('Cannot Update Task Detail !');
         }

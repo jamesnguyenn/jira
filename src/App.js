@@ -17,7 +17,7 @@ import Loading from './component/Loading';
 import { checkTokenThunk } from './redux/thunk';
 import { getUserInfo } from './redux/selectors';
 import { checkTokenRequest } from './redux/reducer/userSlice';
-import { ACCESSTOKEN } from './axios';
+import { ACCESSTOKEN, http, TOKEN_CYBERSOFT } from './axios';
 
 function App() {
     const dispatch = useDispatch();
@@ -25,7 +25,7 @@ function App() {
 
     useEffect(() => {
         const userData = JSON.parse(localStorage.getItem(ACCESSTOKEN));
-        if (userData) {
+        if (userData.accessToken) {
             dispatch(checkTokenRequest());
             const checkToken = checkTokenThunk(userData);
             dispatch(checkToken);

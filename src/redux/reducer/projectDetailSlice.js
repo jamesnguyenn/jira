@@ -53,6 +53,26 @@ const projectDetailReducer = createSlice({
                 );
             }
         },
+        updateStatusTaskProjectDetail(state, action) {
+            const { payload } = action;
+            let currentTaskArray = [];
+            state.data.lstTask.forEach((task) => {
+                currentTaskArray.push({
+                    ...task,
+                    lstTaskDeTail: [
+                        ...task.lstTaskDeTail.filter(
+                            (detail) => detail.taskId !== payload.taskId
+                        ),
+                    ],
+                });
+            });
+
+            state.data.lstTask = currentTaskArray;
+            let currentTaskLists = state.data.lstTask.find(
+                (task) => task.statusId === payload.statusId
+            );
+            currentTaskLists.lstTaskDeTail.push(payload);
+        },
         deleteTaskProjectDetail(state, action) {
             const { payload } = action;
             let currentTaskLists = state.data.lstTask.find(
@@ -75,6 +95,7 @@ export const {
     createTaskProjectDetail,
     updateTaskProjectDetail,
     deleteTaskProjectDetail,
+    updateStatusTaskProjectDetail,
 } = projectDetailReducer.actions;
 
 export default projectDetailReducer.reducer;

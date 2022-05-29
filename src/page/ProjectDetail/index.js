@@ -34,9 +34,6 @@ function ProjectDetail() {
 
     const dispatch = useDispatch();
 
-    const { data: taskDetailData, isLoading: isLoadingTaskDetail } =
-        useSelector(getTaskDetail);
-
     const { data, isLoading } = useSelector(getProjectDetail);
     const {
         projectName,
@@ -168,7 +165,6 @@ function ProjectDetail() {
                         setVisible={setVisibleModal}
                     >
                         <TaskDetail
-                            taskDetailData={taskDetailData}
                             isCreatorProject={isCreatorProject}
                             projectId={projectId}
                             setVisibleModal={setVisibleModal}

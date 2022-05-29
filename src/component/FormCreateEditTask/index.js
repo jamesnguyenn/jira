@@ -361,7 +361,6 @@ function FormCreateEditTask({
                     <ReactQuill
                         theme="snow"
                         defaultValue=""
-                        value={description}
                         onChange={setDescription}
                         modules={modules}
                         formats={formats}

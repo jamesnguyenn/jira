@@ -3,22 +3,26 @@ import React, {
     useCallback,
     useEffect,
     useLayoutEffect,
+    useMemo,
+    useRef,
     useState,
 } from 'react';
 
 import ReactHtmlParser from 'react-html-parser';
-
+import lodash from 'lodash';
 import {
     MessageOutlined,
     LinkOutlined,
     BugOutlined,
     RocketOutlined,
     DeleteOutlined,
+    ClockCircleOutlined,
 } from '@ant-design/icons';
-import { Popconfirm, Select } from 'antd';
+import { Input, Popconfirm, Select, Slider } from 'antd';
 import { toast } from 'react-toastify';
 import { http } from '../../axios';
 import {
+    getAllCommentURL,
     getAllPriorityURL,
     getAllStatusURL,
     getAllTaskTypeURL,
@@ -28,27 +32,30 @@ import {
     deleteTaskDetailThunk,
     updateTaskDetailThunk,
 } from '../../redux/thunk';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import ReactQuill from 'react-quill';
 import DebounceSelectMember from '../../component/DebounceSelectMember';
+import { getTaskDetail } from '../../redux/selectors';
+import {
+    updateStatusTaskProjectDetail,
+    updateTaskProjectDetail,
+} from '../../redux/reducer/projectDetailSlice';
+import CommentComponent from '../../component/CommentComponent';
 
 const { Option } = Select;
 
-function TaskDetail({
-    taskDetailData,
-    isCreatorProject,
-    projectId,
-    setVisibleModal,
-}) {
+function TaskDetail({ isCreatorProject, projectId, setVisibleModal }) {
+    const dispatch = useDispatch();
     //Store Data Select Field from  API response
     const [dataField, setDataField] = useState({
         status: [],
         priority: [],
         taskType: [],
+        comments: [],
     });
 
-    console.log(dataField);
-
+    const { data: taskDetailData, isLoading: isLoadingTaskDetail } =
+        useSelector(getTaskDetail);
     //Task Detail
     const {
         taskTypeDetail,
@@ -62,10 +69,9 @@ function TaskDetail({
         timeTrackingRemaining,
         timeTrackingSpent,
     } = taskDetailData;
-    console.log('🚀 ~ taskDetailData', taskDetailData);
 
-    //Type of task
     const [taskTypeUpdate, setTypeUpdate] = useState(taskTypeDetail.id);
+    const descriptionUpdate = useRef(description);
 
     const [members, setMembers] = useState(
         assigness.map((member) => {
@@ -77,21 +83,22 @@ function TaskDetail({
         }) || []
     );
 
-    const [descriptionUpdate, setDescriptionUpdate] = useState(description);
-    const dispatch = useDispatch();
-
     //Load All API Input fields
     useLayoutEffect(() => {
         const getAllField = async () => {
             try {
-                let arrayField = ['status', 'priority', 'taskType'];
+                let arrayField = ['status', 'priority', 'taskType', 'comments'];
                 const getStatusAPI = http.get(getAllStatusURL);
                 const getPriorityAPI = http.get(getAllPriorityURL);
                 const getTaskTypeAPI = http.get(getAllTaskTypeURL);
+                const getAllCommentAPI = http.get(
+                    `${getAllCommentURL}?taskId=${taskId}`
+                );
                 Promise.all([
                     getStatusAPI,
                     getPriorityAPI,
                     getTaskTypeAPI,
+                    getAllCommentAPI,
                 ]).then((data) => {
                     const newData = data.map((item, index) => {
                         return {
@@ -113,7 +120,31 @@ function TaskDetail({
             }
         };
         getAllField();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    //Function update Task Detail
+    const handleUpdateTaskDetail = useRef(null);
+    handleUpdateTaskDetail.current = (fieldUpdate) => {
+        const dataUpdate = {
+            listUserAsign: assigness.map((user) => user.id),
+            taskId: String(taskId),
+            taskName: taskName,
+            description: description,
+            statusId: statusId,
+            originalEstimate: originalEstimate,
+            timeTrackingSpent: timeTrackingSpent,
+            timeTrackingRemaining: timeTrackingRemaining,
+            projectId: Number(projectId),
+            typeId: taskTypeDetail.id,
+            priorityId: priorityTask.priorityId,
+        };
+        const newDataUpdate = {
+            ...dataUpdate,
+            ...fieldUpdate,
+        };
+        return newDataUpdate;
+    };
 
     //Handle Copy Link Project
     const handleCopyLink = useCallback(async () => {
@@ -134,40 +165,107 @@ function TaskDetail({
     //Handle Change Type TaskDetail (newTask, bug)
     const handleChangeTypeTask = useCallback(
         (e) => {
-            const dataUpdate = {
-                listUserAsign: assigness.map((user) => user.id),
-                taskId: String(taskId),
-                taskName: taskName,
-                description: description,
-                statusId: statusId,
-                originalEstimate: originalEstimate,
-                timeTrackingSpent: timeTrackingSpent,
-                timeTrackingRemaining: timeTrackingRemaining,
-                projectId: Number(projectId),
-                typeId: e,
-                priorityId: priorityTask.priorityId,
-            };
-
+            const dataUpdate = handleUpdateTaskDetail.current({ typeId: e });
             const updateTaskApi = updateTaskDetailThunk(
                 dataUpdate,
-                setTypeUpdate
+                updateTaskProjectDetail,
+                (taskDetail) => setTypeUpdate(taskDetail.typeId)
             );
             dispatch(updateTaskApi);
         },
-        [
-            assigness,
-            description,
-            dispatch,
-            originalEstimate,
-            priorityTask.priorityId,
-            projectId,
-            statusId,
-            taskId,
-            taskName,
-            timeTrackingRemaining,
-            timeTrackingSpent,
-        ]
+        [dispatch]
     );
+
+    //Handle Debounce All Field
+    const debouncedFilter = useRef(
+        lodash.debounce((payload, actions, callback) => {
+            const dataUpdate = handleUpdateTaskDetail.current(payload);
+            const updateTaskApi = updateTaskDetailThunk(
+                dataUpdate,
+                actions,
+                callback
+            );
+            dispatch(updateTaskApi);
+        }, 800)
+    );
+
+    //Handle Update Status TaskDetail
+    const handleChangeStatusTask = useCallback((e) => {
+        if (!e) return;
+        debouncedFilter.current({ statusId: e }, updateStatusTaskProjectDetail);
+    }, []);
+
+    //Handle Update Assignees TaskDetail
+    const handleUpdateAssignees = useCallback(
+        (newValue) => {
+            const dataUpdate = handleUpdateTaskDetail.current({
+                listUserAsign: newValue.map((member) => member.value),
+            });
+            const updateTaskApi = updateTaskDetailThunk(
+                dataUpdate,
+                updateTaskProjectDetail,
+                () => setMembers(newValue)
+            );
+            dispatch(updateTaskApi);
+        },
+        [dispatch]
+    );
+
+    //Handle Update Description TaskDetail
+    const handleChangeDescriptionTask = useCallback((e) => {
+        if (!e) return;
+        debouncedFilter.current(
+            {
+                description: e,
+            },
+            updateTaskProjectDetail,
+            (taskDetail) => (descriptionUpdate.current = taskDetail.description)
+        );
+    }, []);
+    //Handle Update Original Estimate TaskDetail
+    const handleChangeEstimate = useCallback((e) => {
+        if (!e) return;
+        debouncedFilter.current(
+            {
+                originalEstimate: e.target.value,
+            },
+            updateTaskProjectDetail
+        );
+    }, []);
+
+    //Handle Update Priority TaskDetail
+    const handleChangePriorityTask = useCallback((e) => {
+        if (!e) return;
+        debouncedFilter.current(
+            {
+                priorityId: e,
+            },
+            updateTaskProjectDetail
+        );
+    }, []);
+
+    //Handle Update Time Tracking Spent
+    const handleChangeTimeTrackingSpent = useCallback((e) => {
+        if (!e) return;
+        debouncedFilter.current(
+            {
+                timeTrackingSpent: e.target.value,
+            },
+            updateTaskProjectDetail
+        );
+    }, []);
+
+    //Handle Update Time Tracking Remaining
+    const handleChangeTimeTrackingRemaining = useCallback((e) => {
+        if (!e) return;
+        debouncedFilter.current(
+            {
+                timeTrackingRemaining: e.target.value,
+            },
+            updateTaskProjectDetail
+        );
+    }, []);
+
     //Handle Delete Task
     const handleDeleteTask = useCallback(() => {
         const removeTaskApi = deleteTaskDetailThunk(
@@ -178,8 +276,7 @@ function TaskDetail({
         dispatch(removeTaskApi);
     }, [dispatch, setVisibleModal, statusId, taskId]);
 
-    const handleChangeStatusTask = useCallback(() => {}, []);
-
+    //Get Member in Project
     async function fetchUserList() {
         try {
             const response = await http.get(
@@ -290,9 +387,8 @@ function TaskDetail({
                                 {isCreatorProject ? (
                                     <ReactQuill
                                         theme="snow"
-                                        defaultValue={descriptionUpdate}
-                                        // value={descriptionUpdate}
-                                        // onChange={setDescriptionUpdate}
+                                        defaultValue={descriptionUpdate.current}
+                                        onChange={handleChangeDescriptionTask}
                                         modules={modules}
                                         formats={formats}
                                     >
@@ -305,46 +401,11 @@ function TaskDetail({
                         </div>
                         <div className="taskDetailBody__leftItem">
                             <h4>Comment</h4>
-                            Lorem ipsum dolor sit amet consectetur adipisicing
-                            elit. Quod laboriosam exercitationem voluptatibus
-                            omnis quisquam nihil labore reprehenderit id sint
-                            fugiat consequatur obcaecati, expedita ipsam aut
-                            dolore dicta quos excepturi accusantium. Lorem ipsum
-                            dolor sit amet consectetur adipisicing elit. Quod
-                            laboriosam exercitationem voluptatibus omnis
-                            quisquam nihil labore reprehenderit id sint fugiat
-                            consequatur obcaecati, expedita ipsam aut dolore
-                            dicta quos excepturi accusantium. Lorem ipsum dolor
-                            sit amet consectetur adipisicing elit. Quod
-                            laboriosam exercitationem voluptatibus omnis
-                            quisquam nihil labore reprehenderit id sint fugiat
-                            consequatur obcaecati, expedita ipsam aut dolore
-                            dicta quos excepturi accusantium. Lorem ipsum dolor
-                            sit amet consectetur adipisicing elit. Quod
-                            laboriosam exercitationem voluptatibus omnis
-                            quisquam nihil labore reprehenderit id sint fugiat
-                            consequatur obcaecati, expedita ipsam aut dolore
-                            dicta quos excepturi accusantium. Lorem ipsum dolor
-                            sit amet consectetur adipisicing elit. Quod
-                            laboriosam exercitationem voluptatibus omnis
-                            quisquam nihil labore reprehenderit id sint fugiat
-                            consequatur obcaecati, expedita ipsam aut dolore
-                            dicta quos excepturi accusantium. Lorem ipsum dolor
-                            sit amet consectetur adipisicing elit. Quod
-                            laboriosam exercitationem voluptatibus omnis
-                            quisquam nihil labore reprehenderit id sint fugiat
-                            consequatur obcaecati, expedita ipsam aut dolore
-                            dicta quos excepturi accusantium. Lorem ipsum dolor
-                            sit amet consectetur adipisicing elit. Quod
-                            laboriosam exercitationem voluptatibus omnis
-                            quisquam nihil labore reprehenderit id sint fugiat
-                            consequatur obcaecati, expedita ipsam aut dolore
-                            dicta quos excepturi accusantium. Lorem ipsum dolor
-                            sit amet consectetur adipisicing elit. Quod
-                            laboriosam exercitationem voluptatibus omnis
-                            quisquam nihil labore reprehenderit id sint fugiat
-                            consequatur obcaecati, expedita ipsam aut dolore
-                            dicta quos excepturi accusantium.
+                            <CommentComponent
+                                dataField={dataField}
+                                taskIdDetail={taskId}
+                                setDataField={setDataField}
+                            />
                         </div>
                     </div>
                     <div className="taskDetailBody__right">
@@ -377,13 +438,111 @@ function TaskDetail({
                                 placeholder="No member be assigned to this task..."
                                 fetchOptions={fetchUserList}
                                 onChange={(newValue) => {
-                                    setMembers(newValue);
+                                    handleUpdateAssignees(newValue);
                                 }}
                                 style={{
                                     width: '100%',
                                 }}
                                 disabled={!isCreatorProject}
                             />
+                        </div>
+                        <div className="taskDetailBody__rightItem">
+                            <h4>PRIORITY</h4>
+                            <Select
+                                style={{
+                                    width: '100%',
+                                }}
+                                defaultValue={priorityTask?.priorityId}
+                                onChange={handleChangePriorityTask}
+                            >
+                                {dataField?.priority.length > 0 &&
+                                    dataField?.priority.map((item) => {
+                                        return (
+                                            <Option
+                                                key={item.priorityId}
+                                                value={item.priorityId}
+                                                style={{
+                                                    color: !isCreatorProject
+                                                        ? '#ccc '
+                                                        : colorFlag[
+                                                              item.priority
+                                                          ],
+                                                }}
+                                                disabled={!isCreatorProject}
+                                            >
+                                                {item.priority}
+                                            </Option>
+                                        );
+                                    })}
+                            </Select>
+                        </div>
+                        <div className="taskDetailBody__rightItem">
+                            <h4>ORIGINAL ESTIMATE (HOURS)</h4>
+                            <Input
+                                id="originalEstimate"
+                                type="number"
+                                defaultValue={originalEstimate}
+                                onChange={handleChangeEstimate}
+                                disabled={!isCreatorProject}
+                            />
+                        </div>
+                        <div className="taskDetailBody__rightItem">
+                            <h4>
+                                <ClockCircleOutlined />
+                                TIME TRACKING
+                            </h4>
+                            <Slider
+                                max={
+                                    Number(timeTrackingSpent) +
+                                    Number(timeTrackingRemaining)
+                                }
+                                value={timeTrackingSpent}
+                                style={{
+                                    margin: '0',
+                                    pointerEvents: 'none',
+                                }}
+                                trackStyle={{
+                                    backgroundColor: '#001529',
+                                }}
+                            />
+                            <div
+                                style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'space-between',
+                                }}
+                            >
+                                <div className="formCreateEditTask__fieldTitle">
+                                    {timeTrackingSpent || 0}h logged
+                                </div>
+                                <div className="formCreateEditTask__fieldTitle">
+                                    {timeTrackingRemaining || 0}h remaining
+                                </div>
+                            </div>
+                            <div
+                                style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'space-between',
+                                    gap: '5px',
+                                    marginTop: '10px',
+                                }}
+                            >
+                                <Input
+                                    id="timeTrackingSpent"
+                                    type="number"
+                                    defaultValue={timeTrackingSpent}
+                                    onChange={handleChangeTimeTrackingSpent}
+                                    disabled={!isCreatorProject}
+                                />
+                                <Input
+                                    id="timeTrackingRemaining"
+                                    type="number"
+                                    defaultValue={timeTrackingRemaining}
+                                    onChange={handleChangeTimeTrackingRemaining}
+                                    disabled={!isCreatorProject}
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>

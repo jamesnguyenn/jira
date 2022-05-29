@@ -14,7 +14,7 @@
             display: flex;
             justify-content: center;
             align-items: stretch;
-            gap: 10px;
+            gap: 5px;
 
             .taskDetailHeader__leftItem {
                 display: flex;
@@ -77,6 +77,10 @@
                     font-size: $fz-xs;
                     font-weight: $fw-medium;
                     margin-bottom: 0.5rem;
+                    display: flex;
+                    justify-content: start;
+                    align-items: center;
+                    gap: 5px;
                 }
             }
         }

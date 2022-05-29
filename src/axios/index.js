@@ -21,6 +21,7 @@ http.interceptors.request.use(
             TokenCybersoft: TOKEN_CYBERSOFT,
             'Content-type': 'application/json',
         };
+        console.log(userData.accessToken);
         return config;
     },
     (errors) => {
