@@ -25,7 +25,7 @@ function App() {
 
     useEffect(() => {
         const userData = JSON.parse(localStorage.getItem(ACCESSTOKEN));
-        if (userData.accessToken) {
+        if (userData) {
             dispatch(checkTokenRequest());
             const checkToken = checkTokenThunk(userData);
             dispatch(checkToken);

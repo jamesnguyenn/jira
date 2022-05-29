@@ -88,6 +88,7 @@ export const registerThunk = (userInfo, onClick) => {
     return async (dispatch) => {
         try {
             const response = await http.post(register, userInfo);
+            console.log('🚀 ~ response', response);
             const { content, message } = response.data;
 
             const { email } = content;
@@ -104,7 +105,7 @@ export const registerThunk = (userInfo, onClick) => {
             onClick();
         } catch (err) {
             dispatch(registerUserFailed());
-            toast.error(err.response.data.message, {
+            toast.error('Cannot Register Account ', {
                 position: 'top-right',
                 autoClose: 2000,
                 hideProgressBar: false,
