@@ -1,8 +1,9 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import Login from '../../component/Login';
 import Register from '../../component/Register';
+
 import { getUserInfo } from '../../redux/selectors';
 
 function Auth() {
@@ -23,8 +24,8 @@ function Auth() {
     return (
         <div className="auth">
             <div className="auth__left">
-                <div className="auth__left-container">
-                    <h2>Project Bug & Task Management </h2>
+                <div className="auth__left-container" id="auth__left-container">
+                    <h2>Bug & Task Management </h2>
                     <p>
                         Project Owner: Nguyen Quang Thien & Hoang Minh Khoa
                         (BC23 - CyberSoft)
@@ -34,6 +35,20 @@ function Auth() {
                         src="https://wiki.tino.org/wp-content/uploads/2021/07/word-image-1272.png"
                         alt="jira-background"
                     />
+                </div>
+                <div class="area">
+                    <ul class="circles">
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                    </ul>
                 </div>
             </div>
             <div className="auth__right">

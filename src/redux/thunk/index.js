@@ -356,7 +356,6 @@ export const deleteUserManageAction = (userId) => {
                 progress: undefined,
             });
         } catch (error) {
-            // toast.error('Cannot delete this user !');
             console.log(error);
         }
     };
@@ -391,7 +390,9 @@ export const removeUserFromProjectAction = (userInfo) => {
             const action = getListProjectAction();
             dispatch(action);
         } catch (error) {
-            console.log(error);
+            toast.error('Cannot delete this user !', {
+                autoClose: 1000,
+            });
         }
     };
 };

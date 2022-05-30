@@ -14,6 +14,7 @@ body {
     background-color: $bg-2;
     font-size: 1.6rem;
     font-weight: $fw-regular;
+    width: 100%;
 }
 
 .container {
@@ -54,6 +55,7 @@ body {
 .text-field {
     position: relative;
     margin-bottom: $m-2;
+
     label {
         display: inline-block;
         font-weight: 600;

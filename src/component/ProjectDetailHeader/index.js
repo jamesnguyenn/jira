@@ -53,7 +53,13 @@ function ProjectDetailHeader({
                                 title={`Creator: ${creator.name}`}
                                 placement="top"
                             >
-                                <Avatar style={{ backgroundColor: '#f56a00' }}>
+                                <Avatar
+                                    style={{
+                                        backgroundColor: '#f56a00',
+                                        cursor: 'pointer',
+                                    }}
+                                    onClick={() => setTaskOfMember(0)}
+                                >
                                     {creator.name[0].toUpperCase()}
                                 </Avatar>
                             </Tooltip>

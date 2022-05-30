@@ -129,7 +129,6 @@ function LayoutMain({ children }) {
                     >
                         <div
                             style={{
-                                height: height,
                                 overflow: 'scroll',
                                 backgroundColor: '#fff',
                                 padding: '20px 15px',

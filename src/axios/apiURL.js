@@ -11,7 +11,6 @@ export const updateProject = '/Project/updateProject';
 export const getAllStatusURL = '/Status/getAll';
 export const getAllPriorityURL = '/Priority/getAll';
 export const getAllTaskTypeURL = '/TaskType/getAll';
-
 export const getUserAllURL = '/Users/getUser';
 export const getUserByProjectIdURL = '/Users/getUserByProjectId';
 export const createTaskURL = '/Project/createTask';
