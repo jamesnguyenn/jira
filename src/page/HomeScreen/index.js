@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import {
     getAllProject,
+    getUserInfo,
     getUserSearch,
     getVisibleModal,
 } from '../../redux/selectors';
@@ -26,9 +27,8 @@ import {
     DeleteOutlined,
     ExclamationCircleOutlined,
     QuestionCircleOutlined,
-    UserOutlined,
-    AntDesignOutlined,
     UsergroupAddOutlined,
+    CloseOutlined,
 } from '@ant-design/icons';
 import {
     assignUserAction,
@@ -44,7 +44,7 @@ import {
 } from '../../redux/thunk';
 import { delProject, updateProjects } from '../../redux/reducer/projectSlice';
 import ReactHtmlParser from 'react-html-parser';
-import { openModal } from '../../redux/reducer/modalAdjustSlice';
+import { closeModal, openModal } from '../../redux/reducer/modalAdjustSlice';
 import { useNavigate, NavLink } from 'react-router-dom';
 import LayoutModal from '../../layout/LayoutModal/LayoutModal';
 import FormCreateEditProject from '../../component/FormCreateEditProject';
@@ -58,38 +58,49 @@ const { Option } = Select;
 
 function HomeScreen(props) {
     const dispatch = useDispatch();
+    const searchRef = useRef(null);
+
     const { visible } = useSelector(getVisibleModal);
     const { project } = useSelector(getAllProject);
+
     const { userSearch } = useSelector(getUserSearch);
-    const [keyword, setKeyword] = useState('');
-    const searchRef = useRef(null);
+    const { id: userId } = useSelector(getUserInfo);
     const edit = useSelector((state) => state.editProject.editProject);
+
+    const [keyword, setKeyword] = useState('');
+
     const { id, projectName, description, categoryId } = edit;
     // ------------------ ANT DESIGN ---------------------
     const [filteredInfo, setFilteredInfo] = useState({});
     const [sortedInfo, setSortedInfo] = useState({});
 
-    const handleChange = (pagination, filters, sorter) => {
+    const showDeleteConfirm = useRef(null);
+    showDeleteConfirm.current = (id, creatorId) => {
+        if (creatorId === userId) {
+            confirm({
+                title: 'Are you sure delete this project?',
+                icon: <ExclamationCircleOutlined />,
+                okText: 'Yes',
+                okType: 'danger',
+                cancelText: 'No',
+
+                onOk() {
+                    deleteProject(id);
+                },
+
+                onCancel() {},
+            });
+        } else {
+            toast.error('You do not have permission to delete this project !', {
+                autoClose: 1000,
+            });
+        }
+    };
+
+    const handleChange = useCallback((pagination, filters, sorter) => {
         setFilteredInfo(filters);
         setSortedInfo(sorter);
-    };
-
-    const showDeleteConfirm = useRef(null);
-    showDeleteConfirm.current = (id) => {
-        confirm({
-            title: 'Are you sure delete this project?',
-            icon: <ExclamationCircleOutlined />,
-            okText: 'Yes',
-            okType: 'danger',
-            cancelText: 'No',
-
-            onOk() {
-                deleteProject(id);
-            },
-
-            onCancel() {},
-        });
-    };
+    }, []);
 
     // Render all project
     useEffect(() => {
@@ -106,26 +117,39 @@ function HomeScreen(props) {
         [dispatch]
     );
 
-    //Update project
+    //Submit to Edit project
     const onSubmit = useCallback(
         async (data, description) => {
+            const { categoryId, projectName } = data;
+            const dataUpdate = {
+                id: id,
+                projectName: projectName,
+                creator: userId,
+                description: description,
+                categoryId: String(categoryId),
+            };
             try {
                 const result = await http.put(
                     `${updateProject}?projectId=${id}`,
-                    data
+                    dataUpdate
                 );
                 dispatch({
                     type: 'UPDATE_PROJECT',
                     data: data,
                 });
-
                 const actionGetList = getListProjectAction();
                 dispatch(actionGetList);
+                dispatch(closeModal());
+                toast.success('Edit Project Successfully ', {
+                    autoClose: 1000,
+                });
             } catch (error) {
-                console.log(error);
+                toast.error('Cannot Edit Project', {
+                    autoClose: 1000,
+                });
             }
         },
-        [id]
+        [dispatch, id, userId]
     );
 
     const columns = useMemo(() => {
@@ -154,6 +178,7 @@ function HomeScreen(props) {
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
+                                color: '#000',
                             }}
                         >
                             {text}
@@ -245,7 +270,10 @@ function HomeScreen(props) {
                                                     <tr className="text-center">
                                                         <th>User ID</th>
                                                         <th>Name</th>
-                                                        <th>Action</th>
+                                                        {record.creator.id ===
+                                                            userId && (
+                                                            <th>Action</th>
+                                                        )}
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -266,36 +294,47 @@ function HomeScreen(props) {
                                                                             member.name
                                                                         }
                                                                     </td>
-                                                                    <td>
-                                                                        <Popconfirm
-                                                                            title="Do you still want to delete this member?"
-                                                                            icon={
-                                                                                <QuestionCircleOutlined
-                                                                                    style={{
-                                                                                        fontSize: 25,
-                                                                                    }}
-                                                                                />
-                                                                            }
-                                                                            onConfirm={() => {
-                                                                                dispatch(
-                                                                                    removeUserFromProjectAction(
-                                                                                        {
-                                                                                            projectId:
-                                                                                                record.id,
-                                                                                            userId: member.userId,
-                                                                                        }
-                                                                                    )
-                                                                                );
-                                                                            }}
-                                                                        >
-                                                                            <Button
-                                                                                type="danger"
-                                                                                shape="circle"
+                                                                    {record
+                                                                        .creator
+                                                                        .id ===
+                                                                        userId && (
+                                                                        <td>
+                                                                            <Popconfirm
+                                                                                title="Do you still want to delete this member?"
+                                                                                icon={
+                                                                                    <QuestionCircleOutlined
+                                                                                        style={{
+                                                                                            fontSize: 25,
+                                                                                        }}
+                                                                                    />
+                                                                                }
+                                                                                onConfirm={() => {
+                                                                                    dispatch(
+                                                                                        removeUserFromProjectAction(
+                                                                                            {
+                                                                                                projectId:
+                                                                                                    record.id,
+                                                                                                userId: member.userId,
+                                                                                            }
+                                                                                        )
+                                                                                    );
+                                                                                }}
                                                                             >
-                                                                                X
-                                                                            </Button>
-                                                                        </Popconfirm>
-                                                                    </td>
+                                                                                <Button
+                                                                                    type="danger"
+                                                                                    shape="circle"
+                                                                                    icon={
+                                                                                        <CloseOutlined
+                                                                                            style={{
+                                                                                                fontSize:
+                                                                                                    '20px',
+                                                                                            }}
+                                                                                        />
+                                                                                    }
+                                                                                />
+                                                                            </Popconfirm>
+                                                                        </td>
+                                                                    )}
                                                                 </tr>
                                                             );
                                                         }
@@ -306,31 +345,44 @@ function HomeScreen(props) {
                                     );
                                 }}
                             >
-                                {record.members
-                                    .slice(0, 2)
-                                    .map((user, index) => {
-                                        return (
-                                            <Avatar
-                                                key={index}
-                                                size="default"
-                                                src={user.avatar}
-                                            />
-                                        );
-                                    })}
+                                <div
+                                    style={{
+                                        display: 'flex',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                    }}
+                                >
+                                    {record.members
+                                        .slice(0, 2)
+                                        .map((user, index) => {
+                                            return (
+                                                <Avatar
+                                                    key={index}
+                                                    size="default"
+                                                    src={user.avatar}
+                                                />
+                                            );
+                                        })}
 
-                                {record.members.length > 2 ? (
-                                    <Avatar
-                                        style={{
-                                            backgroundColor: 'rgb(245, 106, 0)',
-                                            color: '#fff',
-                                        }}
-                                        size="default"
-                                    >
-                                        +{record.members.length - 2}
-                                    </Avatar>
-                                ) : (
-                                    ''
-                                )}
+                                    {record.members.length > 2 ? (
+                                        <Avatar
+                                            style={{
+                                                backgroundColor: '#001529',
+                                                color: '#fff',
+                                                display: 'flex',
+                                                justifyContent: 'center',
+                                                alignItems: 'center',
+                                            }}
+                                            size="default"
+                                        >
+                                            <span style={{ fontSize: '10px' }}>
+                                                +{record.members.length - 2}
+                                            </span>
+                                        </Avatar>
+                                    ) : (
+                                        ''
+                                    )}
+                                </div>
                             </Popover>
                             <Popover
                                 placement="topLeft"
@@ -371,13 +423,25 @@ function HomeScreen(props) {
                                                 setKeyword(keyword);
                                             }}
                                             onSelect={(value, option) => {
-                                                setKeyword(option.label);
-                                                dispatch(
-                                                    assignUserAction({
-                                                        projectId: record.id,
-                                                        userId: value, //value in onSelect
-                                                    })
-                                                );
+                                                if (
+                                                    record.creator.id === userId
+                                                ) {
+                                                    setKeyword(option.label);
+                                                    dispatch(
+                                                        assignUserAction({
+                                                            projectId:
+                                                                record.id,
+                                                            userId: value, //value in onSelect
+                                                        })
+                                                    );
+                                                } else {
+                                                    toast.error(
+                                                        'You do not have permission to assign member to this project',
+                                                        {
+                                                            autoClose: 1000,
+                                                        }
+                                                    );
+                                                }
                                             }}
                                         />
                                     );
@@ -406,22 +470,23 @@ function HomeScreen(props) {
                 key: 'action',
                 align: 'center',
                 render: (_, record, index, text) => (
-                    <Space
-                        size="middle"
-                        style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            gap: '8px',
-                        }}
-                    >
+                    <Space size="middle">
                         <Button
                             onClick={(e) => {
-                                dispatch(openModal());
-                                dispatch({
-                                    type: 'FILL_INPUT',
-                                    data: record,
-                                });
+                                if (record.creator.id === userId) {
+                                    dispatch(openModal());
+                                    dispatch({
+                                        type: 'FILL_INPUT',
+                                        data: record,
+                                    });
+                                } else {
+                                    toast.error(
+                                        'You do not have permission to edit this project !',
+                                        {
+                                            autoClose: 1000,
+                                        }
+                                    );
+                                }
                             }}
                             icon={<EditOutlined style={{ fontSize: '20px' }} />}
                             className="btn btn-primary"
@@ -432,7 +497,10 @@ function HomeScreen(props) {
                         ></Button>
                         <Button
                             onClick={() => {
-                                showDeleteConfirm.current(record.id);
+                                showDeleteConfirm.current(
+                                    record.id,
+                                    record.creator.id
+                                );
                             }}
                             icon={
                                 <DeleteOutlined style={{ fontSize: '20px' }} />
@@ -448,7 +516,7 @@ function HomeScreen(props) {
                 ),
             },
         ];
-    }, [dispatch, keyword, showDeleteConfirm, userSearch]);
+    }, [dispatch, keyword, userId, userSearch]);
 
     // ---------------------------------------
 

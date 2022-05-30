@@ -5,10 +5,8 @@ import { NavLink, useParams } from 'react-router-dom';
 import { getProjectDetailThunk } from '../../redux/thunk';
 import {
     getProjectDetail,
-    getTaskDetail,
     getUserInfo,
     getViewPort,
-    getVisibleModal,
 } from '../../redux/selectors';
 import { getProjectDetailRequest } from '../../redux/reducer/projectDetailSlice';
 
@@ -27,21 +25,12 @@ import TaskDetail from '../TaskDetail';
 function ProjectDetail() {
     const dispatch = useDispatch();
     const viewPort = useSelector(getViewPort);
-    const { width, height } = viewPort.data;
+    const { width } = viewPort.data;
     const { id: projectId } = useParams();
     const { id: userId } = useSelector(getUserInfo);
     const { data, isLoading } = useSelector(getProjectDetail);
 
-    const {
-        projectName,
-        description,
-        id,
-        creator,
-        lstTask,
-        projectCategory,
-        alias,
-        members,
-    } = data;
+    const { projectName, id, creator, lstTask, members } = data;
     const [lstTaskDetail, setLstTaskDetail] = useState(lstTask);
 
     const [visibleModal, setVisibleModal] = useState(false);
@@ -58,6 +47,7 @@ function ProjectDetail() {
         dispatch(getProjectDetail);
     }, [dispatch, projectId]);
 
+    //Set task lists
     useEffect(() => {
         if (data) {
             setLstTaskDetail(lstTask);
@@ -138,6 +128,7 @@ function ProjectDetail() {
         } else {
             setLstTaskDetail(lstTask);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [searchTask, taskOfMember]);
 
     //Open Layout Modal to add Task

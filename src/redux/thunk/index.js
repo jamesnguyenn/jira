@@ -365,8 +365,7 @@ export const deleteUserManageAction = (userId) => {
 export const assignUserAction = (userInfo) => {
     return async (dispatch) => {
         try {
-            const result = http.post(assignUserProject, userInfo);
-            console.log('result', result);
+            const result = await http.post(assignUserProject, userInfo);
             const action = getListProjectAction();
             dispatch(action);
         } catch (error) {
