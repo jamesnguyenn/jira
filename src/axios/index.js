@@ -17,10 +17,13 @@ http.interceptors.request.use(
     (config) => {
         config.headers = {
             ...config.headers, //Lấy lại tất cả các giá trị header qua thuộc tính headers
-            Authorization: 'Bearer ' + userData.accessToken,
+            Authorization:
+                'Bearer ' +
+                JSON.parse(localStorage.getItem(ACCESSTOKEN))?.accessToken,
             TokenCybersoft: TOKEN_CYBERSOFT,
             'Content-type': 'application/json',
         };
+
         return config;
     },
     (errors) => {

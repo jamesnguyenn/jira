@@ -1,0 +1,88 @@
+.taskDetail {
+    padding: $p-1 $p-1;
+    overflow: hidden;
+    svg {
+        font-size: 17px;
+        pointer-events: none;
+    }
+    .taskDetailHeader {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: $m-2;
+        .taskDetailHeader__left {
+            display: flex;
+            justify-content: center;
+            align-items: stretch;
+            gap: 5px;
+
+            .taskDetailHeader__leftItem {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+        }
+        .taskDetailHeader__right {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: $gap-2;
+            .taskDetailHeader__rightItem {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 5px;
+                cursor: pointer;
+                opacity: 0.7;
+                transition: all 0.3s ease-in-out;
+                &:hover {
+                    opacity: 1;
+                }
+            }
+        }
+    }
+    .taskDetailBody {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: stretch;
+        height: 500px;
+        .taskDetailBody__left {
+            flex: 1 1 700px;
+            height: 100%;
+            overflow-y: scroll;
+            padding: 0 $p-1;
+            .taskDetailBody__leftItem {
+                h3 {
+                    font-size: $fz-xl;
+                    font-weight: $fw-medium;
+                    margin-bottom: $m-1;
+                    line-height: 1;
+                }
+                h4 {
+                    font-size: $fz-sm;
+                    font-weight: $fw-medium;
+                    margin: $m-1 0;
+                }
+            }
+        }
+        .taskDetailBody__right {
+            flex: 1 1 300px;
+            height: 100%;
+            overflow-y: scroll;
+            padding: 0 $p-2;
+
+            .taskDetailBody__rightItem {
+                margin-bottom: $m-2;
+                h4 {
+                    font-size: $fz-xs;
+                    font-weight: $fw-medium;
+                    margin-bottom: 0.5rem;
+                    display: flex;
+                    justify-content: start;
+                    align-items: center;
+                    gap: 5px;
+                }
+            }
+        }
+    }
+}

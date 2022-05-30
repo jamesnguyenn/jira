@@ -1,6 +1,14 @@
 import React, { memo } from 'react';
 
-function Select({ register, registerName, id, name, children, defaultValue }) {
+function Select({
+    register,
+    registerName,
+    id,
+    name,
+    children,
+    defaultValue,
+    style,
+}) {
     return (
         <div className="selectCategory">
             <select

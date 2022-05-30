@@ -3,7 +3,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useParams } from 'react-router-dom';
 
 import { getProjectDetailThunk } from '../../redux/thunk';
-import { getProjectDetail, getUserInfo } from '../../redux/selectors';
+import {
+    getProjectDetail,
+    getTaskDetail,
+    getUserInfo,
+    getVisibleModal,
+} from '../../redux/selectors';
 import { getProjectDetailRequest } from '../../redux/reducer/projectDetailSlice';
 
 import ProjectDetailHeader from '../../component/ProjectDetailHeader';
@@ -15,14 +20,21 @@ import { PlusOutlined } from '@ant-design/icons';
 import LayoutModal from '../../layout/LayoutModal/LayoutModal';
 import { openModal } from '../../redux/reducer/modalAdjustSlice';
 import FormCreateEditTask from '../../component/FormCreateEditTask';
+import LayoutModalPopUp from '../../layout/LayoutModalPopUp';
+import TaskDetail from '../TaskDetail';
 
 function ProjectDetail() {
     const [isMemberInProject, setIsMemberInProject] = useState(false);
+    const [isCreatorProject, setIsCreatorProject] = useState(false);
+
     const { id: userId } = useSelector(getUserInfo);
+    const { visible } = useSelector(getVisibleModal);
+
     const { id: projectId } = useParams();
+
     const dispatch = useDispatch();
-    const projectDetail = useSelector(getProjectDetail);
-    const { data, isLoading } = projectDetail;
+
+    const { data, isLoading } = useSelector(getProjectDetail);
 
     const {
         projectName,
@@ -34,6 +46,9 @@ function ProjectDetail() {
         alias,
         members,
     } = data;
+    const [lstTaskDetail, setLstTaskDetail] = useState(lstTask);
+
+    const [visibleModal, setVisibleModal] = useState(false);
 
     //Load Api Project Detail
     useEffect(() => {
@@ -41,6 +56,12 @@ function ProjectDetail() {
         const getProjectDetail = getProjectDetailThunk(projectId);
         dispatch(getProjectDetail);
     }, [dispatch, projectId]);
+
+    useEffect(() => {
+        if (data) {
+            setLstTaskDetail(lstTask);
+        }
+    }, [data, lstTask]);
 
     //Check member is logged in belonging to projectDetail or not
     useEffect(() => {
@@ -54,6 +75,13 @@ function ProjectDetail() {
             );
         }
     }, [creator, members, userId]);
+
+    //Check member is creator in project
+    useEffect(() => {
+        if (userId === creator?.id) {
+            setIsCreatorProject(true);
+        }
+    }, [creator?.id, userId]);
 
     //Open Layout Modal to add Task
     const handleOpenLayoutModal = () => {
@@ -96,7 +124,12 @@ function ProjectDetail() {
                             />
                         </div>
                         <div className="projectDetail__body">
-                            <ProjectDetailBody lstTask={lstTask} />
+                            <ProjectDetailBody
+                                lstTask={lstTaskDetail}
+                                visible={visibleModal}
+                                setVisible={setVisibleModal}
+                                setLstTaskDetail={setLstTaskDetail}
+                            />
                         </div>
                     </>
                 )}
@@ -123,6 +156,7 @@ function ProjectDetail() {
                         </Tooltip>
                     </div>
                 )}
+
                 <LayoutModal>
                     <FormCreateEditTask
                         projectName={projectName}
@@ -133,6 +167,19 @@ function ProjectDetail() {
                         taskTypeDefaultValue={1}
                     />
                 </LayoutModal>
+
+                {visibleModal && (
+                    <LayoutModalPopUp
+                        visible={visibleModal}
+                        setVisible={setVisibleModal}
+                    >
+                        <TaskDetail
+                            isCreatorProject={isCreatorProject}
+                            projectId={projectId}
+                            setVisibleModal={setVisibleModal}
+                        />
+                    </LayoutModalPopUp>
+                )}
             </section>
         </>
     );

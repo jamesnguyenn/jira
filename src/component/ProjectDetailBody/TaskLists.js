@@ -1,23 +1,34 @@
 import { Avatar, Tag, Tooltip } from 'antd';
 import React, { memo } from 'react';
 
+import { BugOutlined, RocketOutlined } from '@ant-design/icons';
+
 function TaskLists({ data }) {
-    const { taskName, priority, members } = data;
+    const { taskName, priority, members, typeId } = data;
+
     return (
         <>
-            <div className="task__itemHeader">{taskName}</div>
+            <div className="task__itemHeader">
+                <span> {taskName}</span>
+
+                <span>
+                    {typeId === 1 ? <BugOutlined /> : <RocketOutlined />}
+                </span>
+            </div>
             <div className="task__itemBody">
-                <Tag
-                    color={
-                        priority === 'High'
-                            ? 'red'
-                            : priority === 'Medium'
-                            ? 'blue'
-                            : 'green'
-                    }
-                >
-                    {priority}
-                </Tag>
+                <div>
+                    <Tag
+                        color={
+                            priority === 'High'
+                                ? 'red'
+                                : priority === 'Medium'
+                                ? 'blue'
+                                : 'green'
+                        }
+                    >
+                        {priority}
+                    </Tag>
+                </div>
 
                 <Avatar.Group
                     maxCount={2}

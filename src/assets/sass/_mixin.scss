@@ -28,6 +28,9 @@
     background-color: $bg;
     color: $c;
     font-size: $fz-xs;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     &:hover {
         opacity: 1;
     }

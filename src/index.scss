@@ -5,10 +5,12 @@
 
 //Layout
 @import './layout/LayoutMain/LayoutMain';
+@import './layout/LayoutModalPopUp/LayoutModalPopUp';
 
 //Page
 @import './page/Auth/Auth';
 @import './page/ProjectDetail/ProjectDetail';
+@import './page/TaskDetail/TaskDetail';
 
 //Component
 @import './component/Login/Login';
@@ -18,3 +20,4 @@
 @import './component/ProjectDetailBody/ProjectDetailBody';
 @import './component/FormCreateEditProject/FormCreateEditProject';
 @import './component/FormCreateEditTask/FormCreateEditTask';
+@import './component//CommentComponent/CommentComponent';
