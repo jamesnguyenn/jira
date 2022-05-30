@@ -14,6 +14,9 @@ import {
     getUserAddProject,
     updateTaskURL,
     removeTaskURL,
+    removeUserFromProject,
+    getAllUsersManagement,
+    deleteUserManage,
 } from '../../axios/apiURL';
 import { toast } from 'react-toastify';
 import {
@@ -234,7 +237,6 @@ export const createTaskThunk = (taskInfo) => {
             const getTaskDetail = await http.get(
                 `${getTaskDetailURL}?taskId=${response.data.content.taskId}`
             );
-
             dispatch(createTaskProjectDetail(getTaskDetail.data.content));
             dispatch(closeModal());
             toast.success('Create Task Successfully', {
@@ -317,6 +319,49 @@ export const getUserAction = (user) => {
     };
 };
 
+//Get user for user management
+export const getAllUserAction = () => {
+    return async (dispatch) => {
+        try {
+            const result = await http.get(getAllUsersManagement);
+            dispatch({
+                type: 'GET_ALL_USER',
+                users: result.data.content,
+            });
+        } catch (error) {
+            toast.error('Cannot load users !');
+        }
+    };
+};
+
+//Delete user from user management
+export const deleteUserManageAction = (userId) => {
+    return async (dispatch) => {
+        try {
+            const result = await http.delete(
+                `${deleteUserManage}?id=${userId}`
+            );
+            dispatch({
+                type: 'DELETE_USER',
+                userId: userId,
+            });
+            // const action = getAllUserAction();
+            // dispatch(action);
+            toast.success('Delete User Successfully!', {
+                position: 'top-right',
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                draggable: true,
+                progress: undefined,
+            });
+        } catch (error) {
+            // toast.error('Cannot delete this user !');
+            console.log(error);
+        }
+    };
+};
+
 //Asign User to project
 export const assignUserAction = (userInfo) => {
     return async (dispatch) => {
@@ -335,6 +380,18 @@ export const assignUserAction = (userInfo) => {
                 draggable: true,
                 progress: undefined,
             });
+        }
+    };
+};
+//Remove user from project
+export const removeUserFromProjectAction = (userInfo) => {
+    return async (dispatch) => {
+        try {
+            const result = await http.post(removeUserFromProject, userInfo);
+            const action = getListProjectAction();
+            dispatch(action);
+        } catch (error) {
+            console.log(error);
         }
     };
 };
