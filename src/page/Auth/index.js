@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import Login from '../../component/Login';
@@ -8,15 +8,20 @@ import { getUserInfo } from '../../redux/selectors';
 
 function Auth() {
     const [auth, setAuth] = useState(true);
+    console.log('🚀 ~ auth', auth);
 
     let location = useLocation();
     let from = location.state?.from?.pathname || '/';
 
     const { accessToken } = useSelector(getUserInfo);
 
-    const handleOnClick = useCallback(() => {
-        setAuth(!auth);
-    }, [auth]);
+    const handleOnClick = useCallback(
+        (e) => {
+            console.log(e.target);
+            setAuth(!auth);
+        },
+        [auth]
+    );
     if (accessToken) {
         return <Navigate to={from} replace />;
     }
@@ -36,8 +41,8 @@ function Auth() {
                         alt="jira-background"
                     />
                 </div>
-                <div class="area">
-                    <ul class="circles">
+                <div className="area">
+                    <ul className="circles">
                         <li></li>
                         <li></li>
                         <li></li>
@@ -62,4 +67,4 @@ function Auth() {
     );
 }
 
-export default Auth;
+export default memo(Auth);

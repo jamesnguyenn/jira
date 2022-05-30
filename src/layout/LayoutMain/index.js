@@ -16,9 +16,8 @@ import { getUserInfo, getViewPort } from '../../redux/selectors';
 
 const { Header, Sider, Content } = Layout;
 
-function LayoutMain({ children }) {
+function LayoutMain() {
     const [collapsed, setCollapsed] = useState(false);
-    console.log('🚀 ~ collapsed', collapsed);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const location = useLocation();
@@ -37,6 +36,7 @@ function LayoutMain({ children }) {
         body = (
             <Layout>
                 <Sider
+                    width="250px"
                     breakpoint="xl"
                     collapsedWidth="0"
                     onCollapse={(collapsed, type) => {
@@ -145,9 +145,9 @@ function LayoutMain({ children }) {
         body = (
             <Layout>
                 <Sider
+                    width="230px"
                     trigger={null}
                     collapsible
-                    collapsedWidth="0"
                     collapsed={collapsed}
                     style={{
                         overflow: 'auto',
@@ -219,7 +219,7 @@ function LayoutMain({ children }) {
                     style={{
                         transition: 'all 0.2s ease-in-out',
                         padding: 0,
-                        marginLeft: `${collapsed ? '0px' : '200px'}`,
+                        marginLeft: `${collapsed ? '80px' : '230px'}`,
                     }}
                 >
                     <Header

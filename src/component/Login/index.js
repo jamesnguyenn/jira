@@ -1,9 +1,7 @@
 import React, { memo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import FacebookLogin from 'react-facebook-login';
 import { useDispatch, useSelector } from 'react-redux';
-import { loginThunk, signInFacebook } from '../../redux/thunk';
-import { ToastContainer, toast } from 'react-toastify';
+import { loginThunk } from '../../redux/thunk';
 import { getUserInfo } from '../../redux/selectors';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
@@ -31,29 +29,6 @@ function Login({ onClick }) {
     });
 
     const { errors } = formState;
-
-    // const responseFacebook = (response) => {
-    //     // const { accessToken } = response;
-    //     // const actionThunk = signInFacebook(accessToken);
-    //     // //dispatch action thực thi
-    //     // dispatch(actionThunk);
-    // };
-
-    // const componentClicked = (data) => {
-    //     // console.warn(data);
-    //     toast.warn(
-    //         '🦄 This feature is building. Please help us login by your email and password!. Thanks you',
-    //         {
-    //             position: 'top-right',
-    //             autoClose: 5000,
-    //             hideProgressBar: false,
-    //             closeOnClick: true,
-    //             pauseOnHover: true,
-    //             draggable: true,
-    //             progress: undefined,
-    //         }
-    //     );
-    // };
 
     const onSubmit = (data) => {
         const loginApi = loginThunk(data, navigate);
@@ -112,18 +87,6 @@ function Login({ onClick }) {
                 <button className="btn btn-secondary" onClick={onClick}>
                     Register account
                 </button>
-
-                {/* <div className="login__social">
-                    <FacebookLogin
-                        appId="5477025092310466"
-                        autoLoad={true}
-                        fields="name,email,picture"
-                        callback={responseFacebook}
-                        cssClass="my-facebook-button-class"
-                        onClick={componentClicked}
-                        icon="fa-facebook"
-                    />
-                </div> */}
             </div>
         </form>
     );

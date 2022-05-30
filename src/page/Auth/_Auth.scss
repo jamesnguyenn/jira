@@ -5,7 +5,7 @@
     @media screen and (max-width: 1023.98px) {
         flex-direction: column;
         width: 100%;
-        height: 100vh;
+        height: auto;
         overflow: hidden;
     }
 
@@ -17,10 +17,11 @@
         justify-content: center;
         align-items: center;
         color: $c-3;
+        position: relative;
         @media screen and (max-width: 1023.98px) {
             flex-direction: column;
             width: 100%;
-            height: 50%;
+            height: 450px;
             padding: 40px 0;
         }
         .auth__left-container {
@@ -55,25 +56,16 @@
                 opacity: 0.9;
             }
         }
-        .context {
-            width: 100%;
-            position: absolute;
-            top: 50vh;
-        }
-
-        .context h1 {
-            text-align: center;
-            color: #fff;
-            font-size: 50px;
-        }
 
         .circles {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            overflow: hidden;
         }
 
         .circles li {
@@ -83,7 +75,7 @@
             width: 20px;
             height: 20px;
             background: rgba(255, 255, 255, 0.2);
-            animation: animate 5s linear infinite;
+            animation: animate 10s linear infinite;
             bottom: -150px;
         }
 

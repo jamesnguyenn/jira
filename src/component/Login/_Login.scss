@@ -14,6 +14,7 @@
         justify-content: center;
         align-items: center;
         gap: 13px;
+
         h2 {
             @include render-text($fz-md, $fw-semiBold, $c-1);
             margin-bottom: $m-1;
