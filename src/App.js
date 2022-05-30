@@ -18,11 +18,15 @@ import { checkTokenThunk } from './redux/thunk';
 import { getUserInfo } from './redux/selectors';
 import { checkTokenRequest } from './redux/reducer/userSlice';
 import { ACCESSTOKEN, http, TOKEN_CYBERSOFT } from './axios';
+import { useWindowResize } from './hooks/useWindowResize';
+import { updateViewPort } from './redux/reducer/viewPortSlice';
 
 function App() {
     const dispatch = useDispatch();
     const { isCheckToken } = useSelector(getUserInfo);
+    const { width, height } = useWindowResize();
 
+    //Check valid token if user have accessToken at local storage
     useEffect(() => {
         const userData = JSON.parse(localStorage.getItem(ACCESSTOKEN));
         if (userData) {
@@ -31,6 +35,11 @@ function App() {
             dispatch(checkToken);
         }
     }, [dispatch]);
+
+    //Update Viewport
+    useEffect(() => {
+        dispatch(updateViewPort({ width, height }));
+    }, [dispatch, height, width]);
 
     return (
         <div className="App">

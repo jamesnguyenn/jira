@@ -6,6 +6,7 @@ import modalReducer from '../reducer/modalAdjustSlice';
 import { editProjectReducer } from '../reducer/editProjectSlice';
 import { userSearchReducer } from '../reducer/userSearchSlice';
 import taskDetailReducer from '../reducer/taskDetailSlice';
+import viewPortReducer from '../reducer/viewPortSlice';
 
 export const store = configureStore({
     reducer: {
@@ -16,5 +17,6 @@ export const store = configureStore({
         modalAdjust: modalReducer,
         editProject: editProjectReducer,
         userSearch: userSearchReducer,
+        viewPort: viewPortReducer,
     },
 });
