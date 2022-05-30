@@ -7,6 +7,7 @@ import {
     getProjectDetail,
     getTaskDetail,
     getUserInfo,
+    getViewPort,
     getVisibleModal,
 } from '../../redux/selectors';
 import { getProjectDetailRequest } from '../../redux/reducer/projectDetailSlice';
@@ -25,6 +26,8 @@ import TaskDetail from '../TaskDetail';
 
 function ProjectDetail() {
     const dispatch = useDispatch();
+    const viewPort = useSelector(getViewPort);
+    const { width, height } = viewPort.data;
     const { id: projectId } = useParams();
     const { id: userId } = useSelector(getUserInfo);
     const { data, isLoading } = useSelector(getProjectDetail);
@@ -198,7 +201,7 @@ function ProjectDetail() {
                         className="projectDetail__addTaskButton"
                         onClick={handleOpenLayoutModal}
                     >
-                        <Tooltip title="Create Task">
+                        {width <= 1023 ? (
                             <Button
                                 shape="circle"
                                 icon={
@@ -211,7 +214,24 @@ function ProjectDetail() {
                                     outline: 'none',
                                 }}
                             />
-                        </Tooltip>
+                        ) : (
+                            <Tooltip title="Create Task">
+                                <Button
+                                    shape="circle"
+                                    icon={
+                                        <PlusOutlined
+                                            style={{ color: '#fff' }}
+                                        />
+                                    }
+                                    size="large"
+                                    style={{
+                                        backgroundColor: '#001529',
+                                        border: 'none',
+                                        outline: 'none',
+                                    }}
+                                />
+                            </Tooltip>
+                        )}
                     </div>
                 )}
 

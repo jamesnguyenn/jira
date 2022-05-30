@@ -18,6 +18,7 @@ const { Header, Sider, Content } = Layout;
 
 function LayoutMain({ children }) {
     const [collapsed, setCollapsed] = useState(false);
+    console.log('🚀 ~ collapsed', collapsed);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const location = useLocation();
@@ -38,9 +39,12 @@ function LayoutMain({ children }) {
                 <Sider
                     breakpoint="xl"
                     collapsedWidth="0"
+                    onCollapse={(collapsed, type) => {
+                        setCollapsed(collapsed);
+                    }}
                     style={{
                         position: 'fixed',
-                        zIndex: '9999',
+                        zIndex: '99',
                     }}
                 >
                     <div className="logo">JIRA</div>
@@ -100,6 +104,17 @@ function LayoutMain({ children }) {
                     />
                 </Sider>
                 <Layout>
+                    {!collapsed && (
+                        <div
+                            style={{
+                                backgroundColor: '#000',
+                                opacity: '0.5',
+                                inset: 0,
+                                position: 'fixed',
+                                zIndex: 50,
+                            }}
+                        ></div>
+                    )}
                     <Header
                         className="site-layout-sub-header-background"
                         style={{
@@ -203,6 +218,7 @@ function LayoutMain({ children }) {
                 <Layout
                     className="site-layout"
                     style={{
+                        transition: 'all 0.2s ease-in-out',
                         padding: 0,
                         marginLeft: `${collapsed ? '0px' : '200px'}`,
                     }}

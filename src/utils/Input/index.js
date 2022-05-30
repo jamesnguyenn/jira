@@ -1,4 +1,6 @@
 import React, { memo } from 'react';
+import { useSelector } from 'react-redux';
+import { getViewPort } from '../../redux/selectors';
 
 function Input({
     defaultValue,
@@ -12,9 +14,13 @@ function Input({
     type,
     disabled,
 }) {
+    const viewPort = useSelector(getViewPort);
+    const { width, height } = viewPort.data;
     return (
         <div className="text-field">
-            <label htmlFor={id}>{labelName}</label>
+            <label htmlFor={id} style={{ fontSize: width <= 1023 && '9px' }}>
+                {labelName}
+            </label>
             <input
                 defaultValue={defaultValue || ''}
                 autoComplete="off"

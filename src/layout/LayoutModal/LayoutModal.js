@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import { Drawer } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { closeModal } from '../../redux/reducer/modalAdjustSlice';
-import { getVisibleModal } from '../../redux/selectors';
+import { getViewPort, getVisibleModal } from '../../redux/selectors';
 
 function LayoutModal({ children }) {
     const { visible } = useSelector(getVisibleModal);
@@ -10,16 +10,18 @@ function LayoutModal({ children }) {
     const onClose = () => {
         dispatch(closeModal());
     };
-
+    const viewPort = useSelector(getViewPort);
+    const { width, height } = viewPort.data;
     return (
         <>
             <Drawer
                 onClose={onClose}
-                width={720}
+                width={width <= 1023 ? '100%' : '720px'}
                 visible={visible} //Visible get from store will set here
                 bodyStyle={{
                     paddingBottom: 80,
                 }}
+                style={{ zIndex: 100 }}
             >
                 {children}
             </Drawer>
