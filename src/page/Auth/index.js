@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useRef, useState } from 'react';
+import React, { memo, useCallback, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Navigate, useLocation } from 'react-router-dom';
 import Login from '../../component/Login';
@@ -38,6 +38,7 @@ function Auth() {
                         alt="jira-background"
                     />
                 </div>
+                {/* Animation Background */}
                 <div className="area">
                     <ul className="circles">
                         <li></li>
