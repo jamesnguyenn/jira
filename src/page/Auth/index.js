@@ -32,8 +32,7 @@ function Auth() {
                 <div className="auth__left-container" id="auth__left-container">
                     <h2>Bug & Task Management </h2>
                     <p>
-                        Project Owner: Nguyen Quang Thien & Hoang Minh Khoa
-                        (BC23 - CyberSoft)
+                        Author: Nguyen Quang Thien & Hoang Minh Khoa (CyberSoft)
                     </p>
                     <img
                         className="auth__left__image"

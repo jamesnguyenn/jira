@@ -1,7 +1,7 @@
 <h2>Project Bug & Task Management </h2>
 <p>
-Project Owner: Nguyen Quang Thien & Hoang Minh Khoa
-(BC23 - CyberSoft)
+Author: Nguyen Quang Thien & Hoang Minh Khoa
+(CyberSoft)
 </p>
 
 <img src="./src/assets/img/readme-login.png" title="readme-login">
@@ -11,7 +11,7 @@ Project Owner: Nguyen Quang Thien & Hoang Minh Khoa
 
 (Thien)- Login, Register (Done) ;
 (Khoa) - LayoutMain & NavLink (Done);
-(Khoa) - Project Management (Add/Remove User , Edit/Delete Project);
+(Khoa) - Project Management (Add/Remove User , Edit/Delete Project) (Done);
 (Thien)- Create Project (Done)
 (Thien)- Project Details (use Drag & Drop to move task) (Done)
 (Thien)- Create Task, Information & Edit Task (Done);
