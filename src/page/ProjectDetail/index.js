@@ -31,6 +31,7 @@ function ProjectDetail() {
     const { data, isLoading } = useSelector(getProjectDetail);
 
     const { projectName, id, creator, lstTask, members } = data;
+
     const [lstTaskDetail, setLstTaskDetail] = useState(lstTask);
 
     const [visibleModal, setVisibleModal] = useState(false);
@@ -180,6 +181,8 @@ function ProjectDetail() {
                                 visible={visibleModal}
                                 setVisible={setVisibleModal}
                                 setLstTaskDetail={setLstTaskDetail}
+                                creator={creator}
+                                userId={userId}
                             />
                         </div>
                     </>

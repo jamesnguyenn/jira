@@ -13,62 +13,70 @@ function ProjectDetailBody({
     visible,
     setVisible,
     setLstTaskDetail,
+    creator,
+    userId,
 }) {
     const dispatch = useDispatch();
 
     const handleOnDragEnd = useCallback(
         async (result) => {
-            const {
-                draggableId: taskId,
-                destination: { droppableId: statusIdDestination, index },
-                source: { index: indexFrom, droppableId: statusFrom },
-            } = result;
-            if (!statusIdDestination) return;
-            if (index === indexFrom && statusIdDestination === statusFrom)
-                return;
-            try {
-                let lstTaskPrevious = [...lstTask];
-                //Copy previous task
-                let taskCopy = {
-                    ...lstTaskPrevious[Number(statusFrom) - 1].lstTaskDeTail[
-                        indexFrom
-                    ],
-                    statusId: statusIdDestination,
-                };
-                //Delete previous task in existing status
-                let lstDetail = [
-                    ...lstTaskPrevious[Number(statusFrom) - 1].lstTaskDeTail,
-                ];
-                lstDetail.splice(indexFrom, 1);
-                lstTaskPrevious[Number(statusFrom) - 1] = {
-                    ...lstTaskPrevious[Number(statusFrom) - 1],
-                    lstTaskDeTail: lstDetail,
-                };
-                // Add previous task in destinations status
-                let lstDetailDestination = [
-                    ...lstTaskPrevious[Number(statusIdDestination) - 1]
-                        .lstTaskDeTail,
-                ];
-                lstDetailDestination.splice(index, 0, taskCopy);
-                lstTaskPrevious[Number(statusIdDestination) - 1] = {
-                    ...lstTaskPrevious[Number(statusIdDestination) - 1],
-                    lstTaskDeTail: lstDetailDestination,
-                };
-                setLstTaskDetail(lstTaskPrevious);
-                const response = await http.put(updateStatusURL, {
-                    taskId: Number(taskId),
-                    statusId: statusIdDestination,
-                });
-                toast.success('Update Task Successfully!', {
-                    autoClose: 1000,
-                });
-            } catch (e) {
-                toast.error('Cannot Update Status Of Task!', {
+            if (creator.id === userId) {
+                const {
+                    draggableId: taskId,
+                    destination: { droppableId: statusIdDestination, index },
+                    source: { index: indexFrom, droppableId: statusFrom },
+                } = result;
+                if (!statusIdDestination) return;
+                if (index === indexFrom && statusIdDestination === statusFrom)
+                    return;
+                try {
+                    let lstTaskPrevious = [...lstTask];
+                    //Copy previous task
+                    let taskCopy = {
+                        ...lstTaskPrevious[Number(statusFrom) - 1]
+                            .lstTaskDeTail[indexFrom],
+                        statusId: statusIdDestination,
+                    };
+                    //Delete previous task in existing status
+                    let lstDetail = [
+                        ...lstTaskPrevious[Number(statusFrom) - 1]
+                            .lstTaskDeTail,
+                    ];
+                    lstDetail.splice(indexFrom, 1);
+                    lstTaskPrevious[Number(statusFrom) - 1] = {
+                        ...lstTaskPrevious[Number(statusFrom) - 1],
+                        lstTaskDeTail: lstDetail,
+                    };
+                    // Add previous task in destinations status
+                    let lstDetailDestination = [
+                        ...lstTaskPrevious[Number(statusIdDestination) - 1]
+                            .lstTaskDeTail,
+                    ];
+                    lstDetailDestination.splice(index, 0, taskCopy);
+                    lstTaskPrevious[Number(statusIdDestination) - 1] = {
+                        ...lstTaskPrevious[Number(statusIdDestination) - 1],
+                        lstTaskDeTail: lstDetailDestination,
+                    };
+                    setLstTaskDetail(lstTaskPrevious);
+                    const response = await http.put(updateStatusURL, {
+                        taskId: Number(taskId),
+                        statusId: statusIdDestination,
+                    });
+                    toast.success('Update Task Successfully!', {
+                        autoClose: 1000,
+                    });
+                } catch (e) {
+                    toast.error('Cannot Update Status Of Task!', {
+                        autoClose: 1000,
+                    });
+                }
+            } else {
+                toast.error('You do not have permission to update this task!', {
                     autoClose: 1000,
                 });
             }
         },
-        [lstTask, setLstTaskDetail]
+        [creator?.id, lstTask, setLstTaskDetail, userId]
     );
 
     return (
