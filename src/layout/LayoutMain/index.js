@@ -4,7 +4,6 @@ import {
     UserOutlined,
     UnorderedListOutlined,
     FolderAddOutlined,
-    LogoutOutlined,
     SettingOutlined,
 } from '@ant-design/icons';
 import { Layout, Menu } from 'antd';
@@ -14,7 +13,7 @@ import { useNavigate, useLocation, Outlet } from 'react-router-dom';
 import { ACCESSTOKEN } from '../../axios';
 import { logOut } from '../../redux/reducer/userSlice';
 import { getUserInfo, getViewPort } from '../../redux/selectors';
-import { UploadOutlined, VideoCameraOutlined } from '@ant-design/icons';
+
 const { Header, Sider, Content } = Layout;
 
 function LayoutMain({ children }) {
@@ -25,7 +24,6 @@ function LayoutMain({ children }) {
 
     const viewPort = useSelector(getViewPort);
     const { width, height } = viewPort.data;
-    console.log('🚀 ~ width', width);
 
     const { avatar } = useSelector(getUserInfo);
 
@@ -37,7 +35,14 @@ function LayoutMain({ children }) {
     if (width <= 1023) {
         body = (
             <Layout>
-                <Sider breakpoint="xl" collapsedWidth="0">
+                <Sider
+                    breakpoint="xl"
+                    collapsedWidth="0"
+                    style={{
+                        position: 'fixed',
+                        zIndex: '9999',
+                    }}
+                >
                     <div className="logo">JIRA</div>
                     <Menu
                         theme="dark"
@@ -104,10 +109,20 @@ function LayoutMain({ children }) {
                     />
                     <Content
                         style={{
-                            margin: '24px 16px 0',
+                            margin: '20px 10px ',
                         }}
                     >
-                        <Outlet />
+                        <div
+                            style={{
+                                height: height,
+                                overflow: 'scroll',
+                                backgroundColor: '#fff',
+                                padding: '20px 15px',
+                                borderRadius: '10px',
+                            }}
+                        >
+                            <Outlet />
+                        </div>
                     </Content>
                 </Layout>
             </Layout>

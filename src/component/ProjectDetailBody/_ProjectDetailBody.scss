@@ -12,6 +12,7 @@
 
     .task {
         display: flex;
+        min-height: 200px;
         flex-direction: column;
         background-color: $bg-3;
         font-size: $fz-xs;

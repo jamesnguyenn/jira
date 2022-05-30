@@ -35,7 +35,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import ReactQuill from 'react-quill';
 import DebounceSelectMember from '../../component/DebounceSelectMember';
-import { getTaskDetail } from '../../redux/selectors';
+import { getTaskDetail, getViewPort } from '../../redux/selectors';
 import {
     updateStatusTaskProjectDetail,
     updateTaskProjectDetail,
@@ -46,6 +46,9 @@ const { Option } = Select;
 
 function TaskDetail({ isCreatorProject, projectId, setVisibleModal }) {
     const dispatch = useDispatch();
+    const viewPort = useSelector(getViewPort);
+    const { width, height } = viewPort.data;
+
     //Store Data Select Field from  API response
     const [dataField, setDataField] = useState({
         status: [],
@@ -186,7 +189,7 @@ function TaskDetail({ isCreatorProject, projectId, setVisibleModal }) {
                 callback
             );
             dispatch(updateTaskApi);
-        }, 800)
+        }, 300)
     );
 
     //Handle Update Status TaskDetail
@@ -290,9 +293,226 @@ function TaskDetail({ isCreatorProject, projectId, setVisibleModal }) {
             toast.error('Cannot load data user');
         }
     }
-
-    return (
-        <>
+    let body;
+    if (width <= 1023) {
+        body = (
+            <section className="taskDetail-responsive">
+                <div className="taskDetailHeader-responsive">
+                    <div className="taskDetailHeader__item-responsive">
+                        <div className="taskDetailHeader__leftItem-responsive">
+                            <div className="taskDetailHeader__leftItemIcon-responsive">
+                                {taskTypeUpdate === 1 ? (
+                                    <BugOutlined
+                                        style={{
+                                            color:
+                                                colorFlag[
+                                                    priorityTask?.priority
+                                                ] || '#000',
+                                        }}
+                                    />
+                                ) : (
+                                    <RocketOutlined
+                                        style={{
+                                            color:
+                                                colorFlag[
+                                                    priorityTask?.priority
+                                                ] || '#000',
+                                        }}
+                                    />
+                                )}
+                            </div>
+                            <div>
+                                <Select
+                                    style={{ width: 120 }}
+                                    defaultValue={taskTypeDetail.id}
+                                    onChange={handleChangeTypeTask}
+                                >
+                                    {dataField?.taskType.length > 0 &&
+                                        dataField?.taskType.map((item) => {
+                                            return (
+                                                <Option
+                                                    key={item.id}
+                                                    value={item.id}
+                                                    disabled={!isCreatorProject}
+                                                >
+                                                    {item.taskType}
+                                                </Option>
+                                            );
+                                        })}
+                                </Select>
+                            </div>
+                            <div>{taskName}</div>
+                        </div>
+                    </div>
+                    <div className="taskDetailHeader__item-responsive">
+                        <div className="taskDetailHeader__rightItem-responsive">
+                            <MessageOutlined />
+                            <LinkOutlined
+                                onClick={() => {
+                                    handleCopyLink();
+                                }}
+                            />
+                            {isCreatorProject && (
+                                <Popconfirm
+                                    placement="top"
+                                    title="Are you sure to delete this task?"
+                                    onConfirm={handleDeleteTask}
+                                    okText="Yes"
+                                    cancelText="No"
+                                >
+                                    <DeleteOutlined />
+                                </Popconfirm>
+                            )}
+                        </div>
+                    </div>
+                </div>
+                <div className="taskDetailBody-responsive">
+                    <div className="taskDetailBody_item-responsive">
+                        <h4>STATUS</h4>
+                        <Select
+                            style={{ width: '100%' }}
+                            defaultValue={statusId}
+                            onChange={handleChangeStatusTask}
+                        >
+                            {dataField?.status.length > 0 &&
+                                dataField?.status.map((item) => {
+                                    return (
+                                        <Option
+                                            key={item.statusId}
+                                            value={item.statusId}
+                                            disabled={!isCreatorProject}
+                                        >
+                                            {item.statusName}
+                                        </Option>
+                                    );
+                                })}
+                        </Select>
+                    </div>
+                    <div className="taskDetailBody_item-responsive">
+                        <h4>ASSIGNEES</h4>
+                        <DebounceSelectMember
+                            mode="multiple"
+                            value={members}
+                            placeholder="No member be assigned to this task..."
+                            fetchOptions={fetchUserList}
+                            onChange={(newValue) => {
+                                handleUpdateAssignees(newValue);
+                            }}
+                            style={{
+                                width: '100%',
+                            }}
+                            disabled={!isCreatorProject}
+                        />
+                    </div>
+                    <div className="taskDetailBody_item-responsive">
+                        <h4>PRIORITY</h4>
+                        <Select
+                            style={{
+                                width: '100%',
+                            }}
+                            defaultValue={priorityTask?.priorityId}
+                            onChange={handleChangePriorityTask}
+                        >
+                            {dataField?.priority.length > 0 &&
+                                dataField?.priority.map((item) => {
+                                    return (
+                                        <Option
+                                            key={item.priorityId}
+                                            value={item.priorityId}
+                                            style={{
+                                                color: !isCreatorProject
+                                                    ? '#ccc '
+                                                    : colorFlag[item.priority],
+                                            }}
+                                            disabled={!isCreatorProject}
+                                        >
+                                            {item.priority}
+                                        </Option>
+                                    );
+                                })}
+                        </Select>
+                    </div>
+                    <div className="taskDetailBody_item-responsive">
+                        <h4>ORIGINAL ESTIMATE (HOURS)</h4>
+                        <Input
+                            id="originalEstimate"
+                            type="number"
+                            defaultValue={originalEstimate}
+                            onChange={handleChangeEstimate}
+                            disabled={!isCreatorProject}
+                        />
+                    </div>
+                    <div className="taskDetailBody_item-responsive">
+                        <h4>
+                            <ClockCircleOutlined />
+                            TIME TRACKING
+                        </h4>
+                        <Slider
+                            max={
+                                Number(timeTrackingSpent) +
+                                Number(timeTrackingRemaining)
+                            }
+                            value={timeTrackingSpent}
+                            style={{
+                                margin: '0',
+                                pointerEvents: 'none',
+                            }}
+                            trackStyle={{
+                                backgroundColor: '#001529',
+                            }}
+                        />
+                        <div
+                            style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'space-between',
+                            }}
+                        >
+                            <div className="formCreateEditTask__fieldTitle">
+                                {timeTrackingSpent || 0}h logged
+                            </div>
+                            <div className="formCreateEditTask__fieldTitle">
+                                {timeTrackingRemaining || 0}h remaining
+                            </div>
+                        </div>
+                        <div
+                            style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'space-between',
+                                gap: '5px',
+                                marginTop: '10px',
+                            }}
+                        >
+                            <Input
+                                id="timeTrackingSpent"
+                                type="number"
+                                defaultValue={timeTrackingSpent}
+                                onChange={handleChangeTimeTrackingSpent}
+                                disabled={!isCreatorProject}
+                            />
+                            <Input
+                                id="timeTrackingRemaining"
+                                type="number"
+                                defaultValue={timeTrackingRemaining}
+                                onChange={handleChangeTimeTrackingRemaining}
+                                disabled={!isCreatorProject}
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div className="taskDetailFooter-responsive">
+                    <h4>COMMENT</h4>
+                    <CommentComponent
+                        dataField={dataField}
+                        taskIdDetail={taskId}
+                        setDataField={setDataField}
+                    />
+                </div>
+            </section>
+        );
+    } else {
+        body = (
             <section className="taskDetail">
                 {/* Header */}
                 <div className="taskDetailHeader">
@@ -547,8 +767,10 @@ function TaskDetail({ isCreatorProject, projectId, setVisibleModal }) {
                     </div>
                 </div>
             </section>
-        </>
-    );
+        );
+    }
+
+    return body;
 }
 
 export default memo(TaskDetail);

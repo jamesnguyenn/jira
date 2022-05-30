@@ -86,3 +86,66 @@
         }
     }
 }
+
+.taskDetail-responsive {
+    --margin-bottom-h4: 3px;
+    width: 100%;
+    height: 420px;
+    overflow: scroll;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: $gap-2;
+    .taskDetailHeader-responsive {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .taskDetailHeader__item-responsive {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: $fz-xxs;
+            svg {
+                font-size: $fz-sm;
+            }
+            .taskDetailHeader__leftItem-responsive {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 5px;
+                .taskDetailHeader__leftItemIcon-responsive {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+            }
+            .taskDetailHeader__rightItem-responsive {
+                cursor: pointer;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 5px;
+            }
+        }
+    }
+    .taskDetailBody-responsive {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        h4 {
+            margin-bottom: var(--margin-bottom-h4);
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 5px;
+            font-weight: $fw-medium;
+        }
+    }
+    .taskDetailFooter-responsive {
+        width: 100%;
+        h4 {
+            margin-bottom: var(--margin-bottom-h4);
+        }
+    }
+}
