@@ -10,7 +10,6 @@ import Select from '../../utils/Select';
 import { http } from '../../axios';
 import { toast } from 'react-toastify';
 import { Slider } from 'antd';
-import { ArrowUpOutlined } from '@ant-design/icons';
 
 import {
     getAllPriorityURL,

@@ -1,11 +1,10 @@
-import { ACCESSTOKEN, DOMAIN, http } from '../../axios/index';
+import { ACCESSTOKEN, http } from '../../axios/index';
 import {
     checkToken,
     getAllProject,
     getProjectDetailURL,
     register,
     signInURL,
-    signInWithFacebook,
     updateProject,
     deleteProject,
     createTaskURL,
@@ -31,7 +30,6 @@ import {
     deleteTaskProjectDetail,
     getProjectDetailFailure,
     getProjectDetailSuccess,
-    updateTaskProjectDetail,
 } from '../reducer/projectDetailSlice';
 import { delProject, gettAllProject } from '../reducer/projectSlice';
 import { closeModal } from '../reducer/modalAdjustSlice';
@@ -42,7 +40,7 @@ export const loginThunk = (userInfo, navigate) => {
     return async (dispatch) => {
         try {
             const response = await http.post(signInURL, userInfo);
-            const { content, message } = response.data;
+            const { content } = response.data;
 
             localStorage.setItem(ACCESSTOKEN, JSON.stringify(content));
             dispatch(loginSuccess(content));
@@ -72,27 +70,13 @@ export const loginThunk = (userInfo, navigate) => {
     };
 };
 
-//SignInFacebook
-export const signInFacebook = (facebookToken) => {
-    return async (dispatch) => {
-        try {
-            const getUser = await http.post(signInWithFacebook, {
-                facebookToken: facebookToken,
-            });
-            console.log(getUser);
-        } catch (err) {
-            console.log(err);
-        }
-    };
-};
-
 //Register Account
 export const registerThunk = (userInfo, onClick) => {
     return async (dispatch) => {
         try {
             const response = await http.post(register, userInfo);
-            console.log('🚀 ~ response', response);
-            const { content, message } = response.data;
+
+            const { content } = response.data;
 
             const { email } = content;
             dispatch(registerUserSuccess(email));
@@ -286,7 +270,6 @@ export const deleteTaskDetailThunk = (taskId, statusId, setVisibleModal) => {
             const response = await http.delete(
                 `${removeTaskURL}?taskId=${taskId}`
             );
-            console.log('🚀 ~ response', response);
             dispatch(deleteTaskProjectDetail({ taskId, statusId }));
             setVisibleModal(false);
             toast.success('Remove Task Successfully !');

@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, useMemo, useRef } from 'react';
+import React, {
+    useCallback,
+    useEffect,
+    useMemo,
+    useRef,
+    useState,
+} from 'react';
 import {
     getAllProject,
     getUserInfo,
@@ -11,17 +17,12 @@ import {
     Space,
     Table,
     Tag,
-    Divider,
     Avatar,
-    Tooltip,
     Modal,
-    Image,
     Popover,
     AutoComplete,
-    Select,
     Popconfirm,
 } from 'antd';
-import { useState } from 'react';
 import {
     EditOutlined,
     DeleteOutlined,
@@ -33,30 +34,22 @@ import {
 import {
     assignUserAction,
     deleteProjectAction,
-    delProjectAction,
     getListProjectAction,
-    getProjectDetailAction,
-    getProjectDetailThunk,
     getUserAction,
-    registerThunk,
     removeUserFromProjectAction,
-    updateProjectAction,
 } from '../../redux/thunk';
-import { delProject, updateProjects } from '../../redux/reducer/projectSlice';
 import ReactHtmlParser from 'react-html-parser';
 import { closeModal, openModal } from '../../redux/reducer/modalAdjustSlice';
-import { useNavigate, NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import LayoutModal from '../../layout/LayoutModal/LayoutModal';
 import FormCreateEditProject from '../../component/FormCreateEditProject';
-import HtmlParser from 'react-html-parser/lib/HtmlParser';
 import { http } from '../../axios';
-import { getUserAddProject, updateProject } from '../../axios/apiURL';
-import DebounceSelectMember from '../../component/DebounceSelectMember';
+import { updateProject } from '../../axios/apiURL';
 import { toast } from 'react-toastify';
-const { confirm } = Modal;
-const { Option } = Select;
 
-function HomeScreen(props) {
+const { confirm } = Modal;
+
+function HomeScreen() {
     const dispatch = useDispatch();
     const searchRef = useRef(null);
 
@@ -367,7 +360,7 @@ function HomeScreen(props) {
                                     {record.members.length > 2 ? (
                                         <Avatar
                                             style={{
-                                                backgroundColor: '#001529',
+                                                backgroundColor: '#f56a00',
                                                 color: '#fff',
                                                 display: 'flex',
                                                 justifyContent: 'center',
@@ -375,7 +368,7 @@ function HomeScreen(props) {
                                             }}
                                             size="default"
                                         >
-                                            <span style={{ fontSize: '10px' }}>
+                                            <span style={{ fontSize: '11px' }}>
                                                 +{record.members.length - 2}
                                             </span>
                                         </Avatar>

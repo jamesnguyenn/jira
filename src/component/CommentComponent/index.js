@@ -7,7 +7,6 @@ import { useSelector } from 'react-redux';
 import { http } from '../../axios';
 import {
     deleteCommentURL,
-    getAllCommentURL,
     insertCommentURL,
     updateCommentURL,
 } from '../../axios/apiURL';
@@ -198,7 +197,6 @@ function CommentComponent({ dataField, taskIdDetail, setDataField }) {
             <div className="comment__lists">
                 {commentLists.length > 0 &&
                     commentLists.map((comment) => {
-                        console.log();
                         return (
                             <Comment
                                 key={comment?.id}

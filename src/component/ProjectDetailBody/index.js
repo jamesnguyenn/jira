@@ -1,6 +1,5 @@
-import React, { memo, useCallback, useState } from 'react';
+import React, { memo, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 import { updateTaskDetail } from '../../redux/reducer/taskDetailSlice';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 

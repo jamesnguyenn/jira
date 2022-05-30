@@ -105,7 +105,6 @@ function ProjectDetail() {
             });
             setLstTaskDetail(taskOfMemberList);
         } else if (searchTask && taskOfMember) {
-            console.log('searchTask && taskOfMember');
             let newTaskList = lstTask.map((task) => {
                 return {
                     ...task,

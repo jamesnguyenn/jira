@@ -1,5 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
@@ -36,7 +35,6 @@ function Register({ onClick }) {
         confirmPassword: true,
     });
 
-    const navigate = useNavigate();
     const dispatch = useDispatch();
     const user = useSelector(getUserInfo);
     const { isLoading } = user;

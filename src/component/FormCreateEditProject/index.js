@@ -1,5 +1,5 @@
-import React, { memo, useEffect, useRef, useState } from 'react';
-import ReactQuill, { Quill } from 'react-quill';
+import React, { memo, useEffect, useState } from 'react';
+import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { http } from '../../axios';
 import { getProjectCategory } from '../../axios/apiURL';

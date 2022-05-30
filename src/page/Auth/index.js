@@ -1,6 +1,6 @@
-import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
+import React, { memo, useCallback, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import Login from '../../component/Login';
 import Register from '../../component/Register';
 
@@ -8,7 +8,6 @@ import { getUserInfo } from '../../redux/selectors';
 
 function Auth() {
     const [auth, setAuth] = useState(true);
-    console.log('🚀 ~ auth', auth);
 
     let location = useLocation();
     let from = location.state?.from?.pathname || '/';
@@ -17,7 +16,6 @@ function Auth() {
 
     const handleOnClick = useCallback(
         (e) => {
-            console.log(e.target);
             setAuth(!auth);
         },
         [auth]

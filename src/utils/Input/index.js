@@ -15,7 +15,7 @@ function Input({
     disabled,
 }) {
     const viewPort = useSelector(getViewPort);
-    const { width, height } = viewPort.data;
+    const { width } = viewPort.data;
     return (
         <div className="text-field" style={{ width: '100%' }}>
             <label htmlFor={id} style={{ fontSize: width <= 1023 && '9px' }}>
