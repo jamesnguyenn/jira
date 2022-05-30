@@ -20,6 +20,7 @@ import { checkTokenRequest } from './redux/reducer/userSlice';
 import { ACCESSTOKEN, http, TOKEN_CYBERSOFT } from './axios';
 import { useWindowResize } from './hooks/useWindowResize';
 import { updateViewPort } from './redux/reducer/viewPortSlice';
+import AccountSetting from './page/AccountSetting';
 
 function App() {
     const dispatch = useDispatch();
@@ -61,6 +62,10 @@ function App() {
                             <Route
                                 path="/user-management"
                                 element={<UserManagement />}
+                            />
+                            <Route
+                                path="/profile-setting"
+                                element={<AccountSetting />}
                             />
                             {/* Detail Screens */}
                             <Route

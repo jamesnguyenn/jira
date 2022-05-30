@@ -7,7 +7,7 @@ import {
     SettingOutlined,
 } from '@ant-design/icons';
 import { Layout, Menu } from 'antd';
-import React, { memo, useCallback, useState } from 'react';
+import React, { memo, useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useLocation, Outlet } from 'react-router-dom';
 import { ACCESSTOKEN } from '../../axios';
@@ -21,11 +21,25 @@ function LayoutMain() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const location = useLocation();
+    const [welcomeText, setWelcomeText] = useState('Good Morning!');
 
     const viewPort = useSelector(getViewPort);
     const { width, height } = viewPort.data;
 
-    const { avatar } = useSelector(getUserInfo);
+    const { avatar, name } = useSelector(getUserInfo);
+
+    // Update Welcome Text
+    useEffect(() => {
+        const today = new Date();
+        const curHr = today.getHours();
+        if (curHr < 12) {
+            setWelcomeText('Good morning!');
+        } else if (curHr < 18) {
+            setWelcomeText('Good afternoon!');
+        } else {
+            setWelcomeText('Good evening!');
+        }
+    }, []);
 
     const handleSignOut = useCallback(() => {
         dispatch(logOut());
@@ -79,9 +93,12 @@ function LayoutMain() {
                                 },
                             },
                             {
-                                key: '/setting',
+                                key: '/profile-setting',
                                 icon: <SettingOutlined />,
                                 label: 'Setting',
+                                onClick: () => {
+                                    navigate('/profile-setting');
+                                },
                             },
                             {
                                 key: '5',
@@ -116,12 +133,45 @@ function LayoutMain() {
                         ></div>
                     )}
                     <Header
-                        className="site-layout-sub-header-background"
+                        className="site-layout-background"
                         style={{
-                            padding: 0,
-                            marginBottom: '30px',
+                            padding: '10px 20px',
+                            fontSize: '30px',
                         }}
-                    />
+                    >
+                        <div
+                            style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'flex-end',
+                            }}
+                        >
+                            <div
+                                style={{
+                                    fontSize: '14px',
+                                    color: '#fff',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    gap: '10px',
+                                }}
+                            >
+                                <span>
+                                    {welcomeText.toUpperCase()}, {name}
+                                </span>
+                                <img
+                                    style={{
+                                        width: '30px',
+                                        borderRadius: '100%',
+                                        cursor: 'pointer',
+                                    }}
+                                    src={avatar}
+                                    alt="user-avatar"
+                                    onClick={() => navigate('/profile-setting')}
+                                />
+                            </div>
+                        </div>
+                    </Header>
                     <Content
                         style={{
                             margin: '20px 10px ',
@@ -225,17 +275,50 @@ function LayoutMain() {
                     <Header
                         className="site-layout-background"
                         style={{
-                            padding: '10px',
+                            padding: '10px 20px',
                             fontSize: '30px',
                         }}
                     >
-                        {React.createElement(
-                            collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
-                            {
-                                className: 'trigger',
-                                onClick: () => setCollapsed(!collapsed),
-                            }
-                        )}
+                        <div
+                            style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'space-between',
+                            }}
+                        >
+                            {React.createElement(
+                                collapsed
+                                    ? MenuUnfoldOutlined
+                                    : MenuFoldOutlined,
+                                {
+                                    className: 'trigger',
+                                    onClick: () => setCollapsed(!collapsed),
+                                }
+                            )}
+                            <div
+                                style={{
+                                    fontSize: '14px',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    gap: '10px',
+                                }}
+                            >
+                                <span>
+                                    {welcomeText.toUpperCase()}, {name}
+                                </span>
+                                <img
+                                    style={{
+                                        width: '30px',
+                                        borderRadius: '100%',
+                                        cursor: 'pointer',
+                                    }}
+                                    src={avatar}
+                                    alt="user-avatar"
+                                    onClick={() => navigate('/profile-setting')}
+                                />
+                            </div>
+                        </div>
                     </Header>
                     <Content
                         className="site-layout-background"
