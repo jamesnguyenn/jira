@@ -24,16 +24,9 @@ import LayoutModalPopUp from '../../layout/LayoutModalPopUp';
 import TaskDetail from '../TaskDetail';
 
 function ProjectDetail() {
-    const [isMemberInProject, setIsMemberInProject] = useState(false);
-    const [isCreatorProject, setIsCreatorProject] = useState(false);
-
-    const { id: userId } = useSelector(getUserInfo);
-    const { visible } = useSelector(getVisibleModal);
-
-    const { id: projectId } = useParams();
-
     const dispatch = useDispatch();
-
+    const { id: projectId } = useParams();
+    const { id: userId } = useSelector(getUserInfo);
     const { data, isLoading } = useSelector(getProjectDetail);
 
     const {
@@ -49,6 +42,11 @@ function ProjectDetail() {
     const [lstTaskDetail, setLstTaskDetail] = useState(lstTask);
 
     const [visibleModal, setVisibleModal] = useState(false);
+    const [isMemberInProject, setIsMemberInProject] = useState(false);
+    const [isCreatorProject, setIsCreatorProject] = useState(false);
+
+    const [searchTask, setSearchTask] = useState('');
+    const [taskOfMember, setTaskOfMember] = useState(0);
 
     //Load Api Project Detail
     useEffect(() => {
@@ -82,6 +80,62 @@ function ProjectDetail() {
             setIsCreatorProject(true);
         }
     }, [creator?.id, userId]);
+
+    //Filter Task List
+    useEffect(() => {
+        if (searchTask && !taskOfMember) {
+            let searchTaskList = lstTask.map((task) => {
+                return {
+                    ...task,
+                    lstTaskDeTail: task.lstTaskDeTail.filter((taskDetail) => {
+                        return taskDetail.taskName
+                            .toLowerCase()
+                            .includes(searchTask.toLowerCase());
+                    }),
+                };
+            });
+
+            setLstTaskDetail(searchTaskList);
+        } else if (taskOfMember && !searchTask) {
+            let taskOfMemberList = lstTask.map((task) => {
+                return {
+                    ...task,
+                    lstTaskDeTail: task.lstTaskDeTail.filter((taskDetail) => {
+                        return taskDetail.assigness.some((element) => {
+                            if (element.id === taskOfMember) {
+                                return true;
+                            }
+                            return false;
+                        });
+                    }),
+                };
+            });
+            setLstTaskDetail(taskOfMemberList);
+        } else if (searchTask && taskOfMember) {
+            console.log('searchTask && taskOfMember');
+            let newTaskList = lstTask.map((task) => {
+                return {
+                    ...task,
+                    lstTaskDeTail: task.lstTaskDeTail.filter((taskDetail) => {
+                        return (
+                            taskDetail.assigness.some((element) => {
+                                if (element.id === taskOfMember) {
+                                    return true;
+                                }
+                                return false;
+                            }) &&
+                            taskDetail.taskName
+                                .toLowerCase()
+                                .includes(searchTask.toLowerCase())
+                        );
+                    }),
+                };
+            });
+            setLstTaskDetail(newTaskList);
+        } else {
+            setLstTaskDetail(lstTask);
+        }
+    }, [searchTask, taskOfMember]);
 
     //Open Layout Modal to add Task
     const handleOpenLayoutModal = () => {
@@ -118,9 +172,13 @@ function ProjectDetail() {
                         <div className="projectDetail__header">
                             <ProjectDetailHeader
                                 listMember={members}
+                                userId={userId}
                                 id={id}
                                 isMemberInProject={isMemberInProject}
                                 creator={creator}
+                                setSearchTask={setSearchTask}
+                                taskOfMember={taskOfMember}
+                                setTaskOfMember={setTaskOfMember}
                             />
                         </div>
                         <div className="projectDetail__body">
