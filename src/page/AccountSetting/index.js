@@ -80,6 +80,9 @@ function AccountSetting() {
                 name,
             };
             await http.put(updateUserManage, newUserInfoUpdate);
+            toast.success('Update your profile successfully!', {
+                autoClose: 1000,
+            });
             localStorage.setItem(
                 ACCESSTOKEN,
                 JSON.stringify({
