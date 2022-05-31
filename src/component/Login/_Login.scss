@@ -4,7 +4,6 @@
     align-items: center;
     width: 100%;
     @media screen and (max-width: 1023.98px) {
-        width: 600px;
     }
 
     .login__container {
@@ -14,7 +13,9 @@
         justify-content: center;
         align-items: center;
         gap: 13px;
-
+        @media screen and (max-width: 1023.98px) {
+            width: 100%;
+        }
         h2 {
             @include render-text($fz-md, $fw-semiBold, $c-1);
             margin-bottom: $m-1;

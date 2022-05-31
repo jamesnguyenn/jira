@@ -515,6 +515,7 @@ function HomeScreen() {
 
     return (
         <>
+            <h2>Projects Management</h2>
             <Table
                 rowKey={'id'}
                 columns={columns}

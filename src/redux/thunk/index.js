@@ -109,7 +109,7 @@ export const registerThunk = (userInfo, onClick) => {
 export const checkTokenThunk = (userData) => {
     return async (dispatch) => {
         try {
-            const response = await http.post(checkToken);
+            await http.post(checkToken);
         } catch (err) {
             if (err.response?.data?.message === 'Đăng nhập thành công!') {
                 dispatch(loginSuccess(userData));
@@ -140,6 +140,7 @@ export const getProjectDetailThunk = (projectID) => {
             const response = await http.get(
                 getProjectDetailURL + `?id=${projectID}`
             );
+
             dispatch(getProjectDetailSuccess(response.data.content));
         } catch (err) {
             toast.error(err.response.data.message, {
@@ -184,9 +185,7 @@ export const updateProjectAction = (projectID) => {
 export const deleteProjectAction = (projectID) => {
     return async (dispatch) => {
         try {
-            const result = await http.delete(
-                `${deleteProject}?projectId=${projectID}`
-            );
+            await http.delete(`${deleteProject}?projectId=${projectID}`);
 
             const actionDelete = delProject(projectID);
             dispatch(actionDelete);
@@ -267,9 +266,7 @@ export const updateTaskDetailThunk = (taskInfo, actions, callback) => {
 export const deleteTaskDetailThunk = (taskId, statusId, setVisibleModal) => {
     return async (dispatch) => {
         try {
-            const response = await http.delete(
-                `${removeTaskURL}?taskId=${taskId}`
-            );
+            await http.delete(`${removeTaskURL}?taskId=${taskId}`);
             dispatch(deleteTaskProjectDetail({ taskId, statusId }));
             setVisibleModal(false);
             toast.success('Remove Task Successfully !');
@@ -323,9 +320,7 @@ export const getAllUserAction = () => {
 export const deleteUserManageAction = (userId) => {
     return async (dispatch) => {
         try {
-            const result = await http.delete(
-                `${deleteUserManage}?id=${userId}`
-            );
+            await http.delete(`${deleteUserManage}?id=${userId}`);
             dispatch({
                 type: 'DELETE_USER',
                 userId: userId,
@@ -348,7 +343,7 @@ export const deleteUserManageAction = (userId) => {
 export const assignUserAction = (userInfo) => {
     return async (dispatch) => {
         try {
-            const result = await http.post(assignUserProject, userInfo);
+            await http.post(assignUserProject, userInfo);
             const action = getListProjectAction();
             dispatch(action);
         } catch (error) {
@@ -368,7 +363,7 @@ export const assignUserAction = (userInfo) => {
 export const removeUserFromProjectAction = (userInfo) => {
     return async (dispatch) => {
         try {
-            const result = await http.post(removeUserFromProject, userInfo);
+            await http.post(removeUserFromProject, userInfo);
             const action = getListProjectAction();
             dispatch(action);
         } catch (error) {

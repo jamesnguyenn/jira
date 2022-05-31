@@ -26,7 +26,6 @@ function UserManagement() {
     const [searchText, setSearchText] = useState('');
     const [searchedColumn, setSearchedColumn] = useState('');
     const searchInput = useRef(null);
-    const [visible, setVisible] = useState(false);
 
     //------------------------------------
     const { userManagement } = useSelector(getAllUserManagement);

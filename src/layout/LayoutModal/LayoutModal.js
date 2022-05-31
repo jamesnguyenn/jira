@@ -11,7 +11,7 @@ function LayoutModal({ children }) {
         dispatch(closeModal());
     };
     const viewPort = useSelector(getViewPort);
-    const { width, height } = viewPort.data;
+    const { width } = viewPort.data;
     return (
         <>
             <Drawer

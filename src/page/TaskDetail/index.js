@@ -45,7 +45,7 @@ const { Option } = Select;
 function TaskDetail({ isCreatorProject, projectId, setVisibleModal }) {
     const dispatch = useDispatch();
     const viewPort = useSelector(getViewPort);
-    const { width, height } = viewPort.data;
+    const { width } = viewPort.data;
 
     //Store Data Select Field from  API response
     const [dataField, setDataField] = useState({
@@ -55,8 +55,7 @@ function TaskDetail({ isCreatorProject, projectId, setVisibleModal }) {
         comments: [],
     });
 
-    const { data: taskDetailData, isLoading: isLoadingTaskDetail } =
-        useSelector(getTaskDetail);
+    const { data: taskDetailData } = useSelector(getTaskDetail);
     //Task Detail
     const {
         taskTypeDetail,

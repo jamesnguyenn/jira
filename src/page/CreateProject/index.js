@@ -19,7 +19,7 @@ function CreateProject() {
                     categoryId: Number(categoryId),
                     alias: '',
                 };
-                const response = await http.post(createProject, dataSubmit);
+                await http.post(createProject, dataSubmit);
                 toast.success('Create Project Successfully');
                 navigate('/');
             } catch (e) {

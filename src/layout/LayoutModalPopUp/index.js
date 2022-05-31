@@ -1,5 +1,5 @@
-import React, { memo, useState } from 'react';
-import { Modal, Button } from 'antd';
+import React, { memo } from 'react';
+import { Modal } from 'antd';
 
 function LayoutModalPopUp({ title, visible, setVisible, children }) {
     return (

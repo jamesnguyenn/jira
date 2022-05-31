@@ -24,7 +24,7 @@ function LayoutMain() {
     const [welcomeText, setWelcomeText] = useState('Good Morning!');
 
     const viewPort = useSelector(getViewPort);
-    const { width, height } = viewPort.data;
+    const { width } = viewPort.data;
 
     const { avatar, name } = useSelector(getUserInfo);
 
@@ -33,11 +33,11 @@ function LayoutMain() {
         const today = new Date();
         const curHr = today.getHours();
         if (curHr < 12) {
-            setWelcomeText('Good morning!');
+            setWelcomeText('Good morning! ');
         } else if (curHr < 18) {
-            setWelcomeText('Good afternoon!');
+            setWelcomeText('Good afternoon! ');
         } else {
-            setWelcomeText('Good evening!');
+            setWelcomeText('Good evening! ');
         }
     }, []);
 
@@ -148,7 +148,8 @@ function LayoutMain() {
                         >
                             <div
                                 style={{
-                                    fontSize: '14px',
+                                    fontSize: '15px',
+                                    fontWeight: '600',
                                     color: '#fff',
                                     display: 'flex',
                                     alignItems: 'center',
@@ -300,7 +301,8 @@ function LayoutMain() {
                             )}
                             <div
                                 style={{
-                                    fontSize: '14px',
+                                    fontSize: '15px',
+                                    fontWeight: '600',
                                     display: 'flex',
                                     alignItems: 'center',
                                     justifyContent: 'center',

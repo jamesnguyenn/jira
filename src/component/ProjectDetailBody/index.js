@@ -58,7 +58,7 @@ function ProjectDetailBody({
                         lstTaskDeTail: lstDetailDestination,
                     };
                     setLstTaskDetail(lstTaskPrevious);
-                    const response = await http.put(updateStatusURL, {
+                    await http.put(updateStatusURL, {
                         taskId: Number(taskId),
                         statusId: statusIdDestination,
                     });

@@ -46,6 +46,5 @@ export const userSearchReducer = (state = stateDefault, action) => {
 
         default:
             return state;
-            break;
     }
 };
