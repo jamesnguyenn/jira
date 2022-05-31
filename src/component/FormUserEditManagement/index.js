@@ -1,16 +1,12 @@
 import React, { memo, useState } from 'react';
-
-import { Modal, Col, Form, Select, Input } from 'antd';
-import Highlighter from 'react-highlight-words';
-import { deleteUserManageAction, getAllUserAction } from '../../redux/thunk';
+import { Modal, Col, Form, Input, Button } from 'antd';
+import { getAllUserAction } from '../../redux/thunk';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllUserManagement, getVisibleModal } from '../../redux/selectors';
-import { http } from '../../axios';
-import { getAllUsersManagement, updateUserManage } from '../../axios/apiURL';
-import { openModal } from '../../redux/reducer/modalAdjustSlice';
+import { getUserInfo } from '../../redux/selectors';
+import { ACCESSTOKEN, http } from '../../axios';
+import { updateUserManage } from '../../axios/apiURL';
 import { toast } from 'react-toastify';
-const { confirm } = Modal;
-const { Option } = Select;
+import { logOut } from '../../redux/reducer/userSlice';
 
 function FormUseEditManagement({
     modal,
@@ -21,13 +17,15 @@ function FormUseEditManagement({
     userId,
 }) {
     const dispatch = useDispatch();
+
     const [values, setValues] = useState({
         id: userId,
         name: name,
-        email: email,
-        phoneNumber: phoneNumber,
+        editUser_email: email,
+        editUser_phoneNumber: phoneNumber,
     });
 
+    const { id: currentUserID } = useSelector(getUserInfo);
     const handleChangeInput = (event) => {
         let { id, value } = event.target;
         setValues({
@@ -37,25 +35,54 @@ function FormUseEditManagement({
     };
 
     async function submitInfo() {
-        try {
-            const result = await http.put(updateUserManage, values);
-
-            console.log(result);
-
-            const action = getAllUserAction();
-            dispatch(action);
-
-            toast.success('Update Information Successfully !', {
-                position: 'top-right',
-                autoClose: 1000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
-        } catch (error) {
-            toast.error('Cannot Update Information !');
+        if (
+            values.editUser_email
+                .toLowerCase()
+                .match(
+                    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+                ) &&
+            !isNaN(values.editUser_phoneNumber)
+        ) {
+            const {
+                id,
+                name,
+                editUser_email: email,
+                editUser_phoneNumber: phoneNumber,
+            } = values;
+            const newUserInfoUpdate = {
+                id,
+                name,
+                email,
+                phoneNumber,
+            };
+            try {
+                const result = await http.put(
+                    updateUserManage,
+                    newUserInfoUpdate
+                );
+                if (values.id === currentUserID) {
+                    dispatch(logOut());
+                    localStorage.removeItem(ACCESSTOKEN);
+                    toast.success(
+                        'Update Information Successfully!. Please help us re-login to update your information!',
+                        {
+                            autoClose: 2000,
+                        }
+                    );
+                } else {
+                    toast.success('Update Information Successfully !', {
+                        autoClose: 1000,
+                    });
+                    const action = getAllUserAction();
+                    dispatch(action);
+                }
+            } catch (error) {
+                toast.error('Cannot Update Information !');
+            }
+        } else {
+            toast.error(
+                'Cannot Update Information. Your email or your phone number not valid type'
+            );
         }
     }
 
@@ -70,7 +97,17 @@ function FormUseEditManagement({
             }}
             onCancel={() => closeModal(false)}
         >
-            <Form layout="vertical" hideRequiredMark>
+            <Form
+                name="editUser"
+                layout="vertical"
+                hideRequiredMark
+                scrollToFirstError
+                initialValues={{
+                    ['email']: email,
+                    ['name']: name,
+                    ['phoneNumber']: phoneNumber,
+                }}
+            >
                 <Form.Item
                     label="Name"
                     rules={[
@@ -81,7 +118,6 @@ function FormUseEditManagement({
                     ]}
                 >
                     <Input
-                        defaultValue={name}
                         value={values.name}
                         onChange={handleChangeInput}
                         id="name"
@@ -93,29 +129,38 @@ function FormUseEditManagement({
 
                 <Col>
                     <Form.Item
-                        label="Email"
+                        value={values.editUser_email}
+                        onChange={handleChangeInput}
+                        id="email"
+                        name="email"
+                        colon="yes"
+                        size="large"
+                        placeholder="Please enter your email"
                         rules={[
                             {
+                                type: 'email',
+                                message: 'The input is not valid e-mail!',
+                            },
+                            {
                                 required: true,
-                                message: 'Please enter email',
+                                message: 'Please input your e-mail!',
                             },
                         ]}
                     >
-                        <Input
-                            defaultValue={email}
-                            value={values.email}
-                            onChange={handleChangeInput}
-                            id="email"
-                            name="email"
-                            size="large"
-                            placeholder="Please enter your email"
-                        />
+                        <Input />
                     </Form.Item>
                 </Col>
 
                 <Col>
                     <Form.Item
+                        value={values.editUser_phoneNumber}
+                        onChange={handleChangeInput}
+                        id="phoneNumber"
+                        name="phoneNumber"
                         label="Phone Number"
+                        colon="yes"
+                        size="large"
+                        placeholder="Please enter your phone number"
                         rules={[
                             {
                                 required: true,
@@ -123,15 +168,7 @@ function FormUseEditManagement({
                             },
                         ]}
                     >
-                        <Input
-                            defaultValue={phoneNumber}
-                            value={values.phoneNumber}
-                            onChange={handleChangeInput}
-                            id="phoneNumber"
-                            name="phoneNumber"
-                            size="large"
-                            placeholder="Please enter your phone number"
-                        />
+                        <Input />
                     </Form.Item>
                 </Col>
             </Form>

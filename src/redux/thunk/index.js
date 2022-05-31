@@ -312,7 +312,9 @@ export const getAllUserAction = () => {
                 users: result.data.content,
             });
         } catch (error) {
-            toast.error('Cannot load users !');
+            toast.error('Cannot load users !', {
+                autoClose: 1000,
+            });
         }
     };
 };
@@ -328,8 +330,6 @@ export const deleteUserManageAction = (userId) => {
                 type: 'DELETE_USER',
                 userId: userId,
             });
-            // const action = getAllUserAction();
-            // dispatch(action);
             toast.success('Delete User Successfully!', {
                 position: 'top-right',
                 autoClose: 1000,
@@ -339,7 +339,7 @@ export const deleteUserManageAction = (userId) => {
                 progress: undefined,
             });
         } catch (error) {
-            console.log(error);
+            toast.error('Cannot delete user!');
         }
     };
 };

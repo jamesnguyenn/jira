@@ -487,7 +487,7 @@ function HomeScreen() {
                                 minWidth: '30px',
                                 borderRadius: '2px',
                             }}
-                        ></Button>
+                        />
                         <Button
                             onClick={() => {
                                 showDeleteConfirm.current(
@@ -504,7 +504,7 @@ function HomeScreen() {
                                 borderRadius: '2px',
                                 backgroundColor: 'red',
                             }}
-                        ></Button>
+                        />
                     </Space>
                 ),
             },
