@@ -1,12 +1,30 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { SearchOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
-import { Button, Input, Space, Table, Modal, Select } from 'antd';
+import {
+    Button,
+    Input,
+    Space,
+    Table,
+    Tag,
+    Modal,
+    Col,
+    Drawer,
+    Form,
+    Row,
+    Select,
+    DatePicker,
+} from 'antd';
 import Highlighter from 'react-highlight-words';
 import { deleteUserManageAction, getAllUserAction } from '../../redux/thunk';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllUserManagement } from '../../redux/selectors';
+import { getAllUserManagement, getVisibleModal } from '../../redux/selectors';
+import { http } from '../../axios';
+import { getAllUsersManagement, updateUserManage } from '../../axios/apiURL';
+import { openModal } from '../../redux/reducer/modalAdjustSlice';
 import FormUseEditManagement from '../../component/FormUserEditManagement';
+import { toast } from 'react-toastify';
 const { confirm } = Modal;
+const { Option } = Select;
 
 function UserManagement() {
     // --------------------- ANT DESIGN ----------------
@@ -15,6 +33,13 @@ function UserManagement() {
     const searchInput = useRef(null);
     const [visible, setVisible] = useState(false);
 
+    const showDrawer = () => {
+        setVisible(true);
+    };
+
+    const onClose = () => {
+        setVisible(false);
+    };
     const handleSearch = (selectedKeys, confirm, dataIndex) => {
         confirm();
         setSearchText(selectedKeys[0]);
@@ -34,7 +59,9 @@ function UserManagement() {
                 deleteUser(userId);
             },
 
-            onCancel() {},
+            onCancel() {
+                console.log('Cancel');
+            },
         });
     };
 
@@ -50,6 +77,17 @@ function UserManagement() {
                     padding: 8,
                 }}
             >
+                {/* <Input
+          placeholder={'Search here'}
+          onChange={(event) => {
+            let { value } = event.target;
+            setSearchInput(value);
+          }}
+          style={{
+            marginBottom: 8,
+            display: 'block',
+          }}
+        /> */}
                 <Input
                     ref={searchInput}
                     placeholder={`Search ${dataIndex}`}
@@ -226,6 +264,7 @@ function UserManagement() {
         const action = getAllUserAction();
         dispatch(action);
     }, [dispatch]);
+
     return (
         <div>
             <h2 className="mb-3">User Management</h2>
@@ -234,7 +273,7 @@ function UserManagement() {
                 columns={columns}
                 dataSource={userManagement}
             />
-            {
+            {modal && (
                 <FormUseEditManagement
                     modal={modal}
                     closeModal={setModal}
@@ -242,9 +281,8 @@ function UserManagement() {
                     name={name}
                     email={email}
                     phoneNumber={phoneNumber}
-                    // submitInfo={submitInfo}
                 />
-            }
+            )}
             {/* <Modal
         okText="Submit"
         title="Edit User Information"
@@ -268,7 +306,6 @@ function UserManagement() {
               <Input placeholder="Please enter your name" />
             </Form.Item>
           </Col>
-
           <Col>
             <Form.Item
               name="email"
@@ -283,7 +320,6 @@ function UserManagement() {
               <Input placeholder="Please enter your email" />
             </Form.Item>
           </Col>
-
           <Col>
             <Form.Item
               name="phoneNumber"
@@ -333,7 +369,6 @@ function UserManagement() {
               <Input placeholder="Please enter user name" />
             </Form.Item>
           </Col>
-
           <Col>
             <Form.Item
               name="email"
@@ -348,7 +383,6 @@ function UserManagement() {
               <Input placeholder="Please enter your email" />
             </Form.Item>
           </Col>
-
           <Col>
             <Form.Item
               name="email"
