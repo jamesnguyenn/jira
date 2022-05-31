@@ -27,7 +27,7 @@ h2 {
 
 .btn {
     &.btn-primary {
-        @include render-button($ptb: 8px, $plr: 7px);
+        @include render-button($bg-1, $c-3, $c-3, $ptb: 7px, $plr: 7px);
     }
     &.btn-secondary {
         @include render-button(transparent, $c-1, $c-1, $ptb: 7px, $plr: 7px);
