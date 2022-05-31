@@ -1,6 +1,5 @@
 import { ACCESSTOKEN, DOMAIN, http } from '../../axios/index';
 import {
-<<<<<<< HEAD
   checkToken,
   getAllProject,
   getProjectDetailURL,
@@ -17,22 +16,8 @@ import {
   getAllUserManagement,
   getAllUsersManagement,
   deleteUserManage,
-=======
-    checkToken,
-    getAllProject,
-    getProjectDetailURL,
-    register,
-    signInURL,
-    signInWithFacebook,
-    updateProject,
-    deleteProject,
-    createTaskURL,
-    getTaskDetailURL,
-    assignUserProject,
-    getUserAddProject,
-    updateTaskURL,
-    removeTaskURL,
->>>>>>> 2ebd08eb0e9ce3035ab851c0ba27fb6e5064dcf2
+  updateTaskURL,
+  removeTaskURL,
 } from '../../axios/apiURL';
 import { toast } from 'react-toastify';
 import {
@@ -43,17 +28,12 @@ import {
 } from '../reducer/userSlice';
 
 import {
-<<<<<<< HEAD
   getProjectDetailFailure,
   getProjectDetailSuccess,
   updateProjectDetail,
-=======
-    createTaskProjectDetail,
-    deleteTaskProjectDetail,
-    getProjectDetailFailure,
-    getProjectDetailSuccess,
-    updateTaskProjectDetail,
->>>>>>> 2ebd08eb0e9ce3035ab851c0ba27fb6e5064dcf2
+  createTaskProjectDetail,
+  deleteTaskProjectDetail,
+  updateTaskProjectDetail,
 } from '../reducer/projectDetailSlice';
 import { delProject, gettAllProject } from '../reducer/projectSlice';
 import { closeModal } from '../reducer/modalAdjustSlice';
@@ -66,7 +46,6 @@ export const loginThunk = (userInfo, navigate) => {
       const response = await http.post(signInURL, userInfo);
       const { content, message } = response.data;
 
-<<<<<<< HEAD
       localStorage.setItem(ACCESSTOKEN, JSON.stringify(content));
       dispatch(loginSuccess(content));
       toast.success('Login Successfully', {
@@ -92,34 +71,6 @@ export const loginThunk = (userInfo, navigate) => {
       });
     }
   };
-=======
-            localStorage.setItem(ACCESSTOKEN, JSON.stringify(content));
-            dispatch(loginSuccess(content));
-            toast.success('Login Successfully', {
-                position: 'top-right',
-                autoClose: 1000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
-
-            navigate('/');
-        } catch (err) {
-            dispatch(loginFailed());
-            toast.error('Email/Password Not Correct!', {
-                position: 'top-right',
-                autoClose: 2000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
-        }
-    };
->>>>>>> 2ebd08eb0e9ce3035ab851c0ba27fb6e5064dcf2
 };
 
 //SignInFacebook
@@ -138,10 +89,10 @@ export const signInFacebook = (facebookToken) => {
 
 //Register Account
 export const registerThunk = (userInfo, onClick) => {
-<<<<<<< HEAD
   return async (dispatch) => {
     try {
       const response = await http.post(register, userInfo);
+      console.log('🚀 ~ response', response);
       const { content, message } = response.data;
 
       const { email } = content;
@@ -158,7 +109,7 @@ export const registerThunk = (userInfo, onClick) => {
       onClick();
     } catch (err) {
       dispatch(registerUserFailed());
-      toast.error(err.response.data.message, {
+      toast.error('Cannot Register Account ', {
         position: 'top-right',
         autoClose: 2000,
         hideProgressBar: false,
@@ -169,39 +120,6 @@ export const registerThunk = (userInfo, onClick) => {
       });
     }
   };
-=======
-    return async (dispatch) => {
-        try {
-            const response = await http.post(register, userInfo);
-            console.log('🚀 ~ response', response);
-            const { content, message } = response.data;
-
-            const { email } = content;
-            dispatch(registerUserSuccess(email));
-            toast.success('Register Successfully', {
-                position: 'top-right',
-                autoClose: 2000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
-            onClick();
-        } catch (err) {
-            dispatch(registerUserFailed());
-            toast.error('Cannot Register Account ', {
-                position: 'top-right',
-                autoClose: 2000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
-        }
-    };
->>>>>>> 2ebd08eb0e9ce3035ab851c0ba27fb6e5064dcf2
 };
 
 //Check if user is logged in
@@ -225,6 +143,39 @@ export const getListProjectAction = () => {
     try {
       let result = await http.get(getAllProject);
       const action = gettAllProject(result.data.content);
+      dispatch(action);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+//Asign User to project
+export const assignUserAction = (userInfo) => {
+  return async (dispatch) => {
+    try {
+      const result = http.post(assignUserProject, userInfo);
+      console.log('result', result);
+      const action = getListProjectAction();
+      dispatch(action);
+    } catch (error) {
+      toast.error(error.response.data.message, {
+        position: 'top-right',
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
+  };
+};
+//Remove user from project
+export const removeUserFromProjectAction = (userInfo) => {
+  return async (dispatch) => {
+    try {
+      const result = await http.post(removeUserFromProject, userInfo);
+      const action = getListProjectAction();
       dispatch(action);
     } catch (error) {
       console.log(error);
@@ -256,56 +207,40 @@ export const getProjectDetailThunk = (projectID) => {
 };
 //Update project
 export const updateProjectAction = (projectID) => {
-<<<<<<< HEAD
   return async (dispatch) => {
     try {
       const result = await http.put(
         updateProject + `?projectId=${projectID}`
       );
+      dispatch({
+        type: 'UPDATE_PROJECT',
+        data: result.data.content,
+      });
     } catch (error) {
-      console.log(error);
+      toast.error('Cannot update project. Please try again later !', {
+        position: 'top-right',
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     }
   };
-=======
-    return async (dispatch) => {
-        try {
-            const result = await http.put(
-                updateProject + `?projectId=${projectID}`
-            );
-            dispatch({
-                type: 'UPDATE_PROJECT',
-                data: result.data.content,
-            });
-        } catch (error) {
-            toast.error('Cannot update project. Please try again later !', {
-                position: 'top-right',
-                autoClose: 2000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
-        }
-    };
->>>>>>> 2ebd08eb0e9ce3035ab851c0ba27fb6e5064dcf2
 };
 
 //Delete project in project management
 export const deleteProjectAction = (projectID) => {
-<<<<<<< HEAD
   return async (dispatch) => {
     try {
       const result = await http.delete(
-        deleteProject + `?projectId=${projectID}`
+        `${deleteProject}?projectId=${projectID}`
       );
-      // dispatch({
-      //   type: 'DELETE_PROJECT',
-      //   id: projectID,
-      // });
+
       const actionDelete = delProject(projectID);
       dispatch(actionDelete);
-      toast.success('Delete Project Successfully!', {
+      toast.success('Delete Project Successfully', {
         position: 'top-right',
         autoClose: 1000,
         hideProgressBar: false,
@@ -315,7 +250,15 @@ export const deleteProjectAction = (projectID) => {
         progress: undefined,
       });
     } catch (error) {
-      toast.error(error.response.data.content);
+      toast.error('Cannot delete project. Please try again later !', {
+        position: 'top-right',
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     }
   };
 };
@@ -387,164 +330,8 @@ export const deleteUserManageAction = (userId) => {
       console.log(error);
     }
   };
-=======
-    return async (dispatch) => {
-        try {
-            const result = await http.delete(
-                `${deleteProject}?projectId=${projectID}`
-            );
-
-            const actionDelete = delProject(projectID);
-            dispatch(actionDelete);
-            toast.success('Delete Project Successfully', {
-                position: 'top-right',
-                autoClose: 1000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
-        } catch (error) {
-            toast.error('Cannot delete project. Please try again later !', {
-                position: 'top-right',
-                autoClose: 1000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
-        }
-    };
-};
-//Create Task Thunk
-export const createTaskThunk = (taskInfo) => {
-    return async (dispatch) => {
-        try {
-            const response = await http.post(createTaskURL, taskInfo);
-
-            const getTaskDetail = await http.get(
-                `${getTaskDetailURL}?taskId=${response.data.content.taskId}`
-            );
-
-            dispatch(createTaskProjectDetail(getTaskDetail.data.content));
-            dispatch(closeModal());
-            toast.success('Create Task Successfully', {
-                position: 'top-right',
-                autoClose: 1000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
-        } catch (err) {
-            toast.error(err.response.data.content, {
-                position: 'top-right',
-                autoClose: 2000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
-        }
-    };
 };
 
-//Update Task Detail
-export const updateTaskDetailThunk = (taskInfo, actions, callback) => {
-    return async (dispatch) => {
-        try {
-            const response = await http.post(`${updateTaskURL}`, taskInfo);
-            const getTaskDetail = await http.get(
-                `${getTaskDetailURL}?taskId=${response.data.content.taskId}`
-            );
-            dispatch(actions(getTaskDetail.data.content));
-            dispatch(updateTaskDetail(getTaskDetail.data.content));
-            if (callback) callback(getTaskDetail.data.content);
-        } catch (err) {
-            toast.error('Cannot Update Task Detail !');
-        }
-    };
-};
-
-//Update Task Detail
-export const deleteTaskDetailThunk = (taskId, statusId, setVisibleModal) => {
-    return async (dispatch) => {
-        try {
-            const response = await http.delete(
-                `${removeTaskURL}?taskId=${taskId}`
-            );
-            console.log('🚀 ~ response', response);
-            dispatch(deleteTaskProjectDetail({ taskId, statusId }));
-            setVisibleModal(false);
-            toast.success('Remove Task Successfully !');
-        } catch (err) {
-            toast.error('Cannot Remove Task !');
-        }
-    };
-};
-
-//Get user to add to project
-export const getUserAction = (user) => {
-    return async (dispatch) => {
-        const result = await http.get(`${getUserAddProject}?keyword=${user}`);
-        dispatch({
-            type: 'ADD_SEARCH_USER',
-            user: result.data.content,
-        });
-        try {
-        } catch (error) {
-            toast.error(error.response.data.message, {
-                position: 'top-right',
-                autoClose: 1000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
-        }
-    };
->>>>>>> 2ebd08eb0e9ce3035ab851c0ba27fb6e5064dcf2
-};
-
-//Asign User to project
-export const assignUserAction = (userInfo) => {
-<<<<<<< HEAD
-  return async (dispatch) => {
-    try {
-      const result = http.post(assignUserProject, userInfo);
-      console.log('result', result);
-      const action = getListProjectAction();
-      dispatch(action);
-    } catch (error) {
-      toast.error(error.response.data.message, {
-        position: 'top-right',
-        autoClose: 1000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-    }
-  };
-};
-//Remove user from project
-export const removeUserFromProjectAction = (userInfo) => {
-  return async (dispatch) => {
-    try {
-      const result = await http.post(removeUserFromProject, userInfo);
-      const action = getListProjectAction();
-      dispatch(action);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-};
 //Create Task Thunk
 export const createTaskThunk = (taskInfo) => {
   return async (dispatch) => {
@@ -555,11 +342,11 @@ export const createTaskThunk = (taskInfo) => {
         `${getTaskDetailURL}?taskId=${response.data.content.taskId}`
       );
 
-      dispatch(updateProjectDetail(getTaskDetail.data.content));
+      dispatch(createTaskProjectDetail(getTaskDetail.data.content));
       dispatch(closeModal());
       toast.success('Create Task Successfully', {
         position: 'top-right',
-        autoClose: 2000,
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -578,24 +365,46 @@ export const createTaskThunk = (taskInfo) => {
       });
     }
   };
-=======
-    return async (dispatch) => {
-        try {
-            const result = http.post(assignUserProject, userInfo);
-            console.log('result', result);
-            const action = getListProjectAction();
-            dispatch(action);
-        } catch (error) {
-            toast.error(error.response.data.message, {
-                position: 'top-right',
-                autoClose: 1000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
-        }
-    };
->>>>>>> 2ebd08eb0e9ce3035ab851c0ba27fb6e5064dcf2
+};
+
+//Update Task Detail
+export const updateTaskDetailThunk = (
+  taskInfo,
+  actions,
+  callback
+) => {
+  return async (dispatch) => {
+    try {
+      const response = await http.post(`${updateTaskURL}`, taskInfo);
+      const getTaskDetail = await http.get(
+        `${getTaskDetailURL}?taskId=${response.data.content.taskId}`
+      );
+      dispatch(actions(getTaskDetail.data.content));
+      dispatch(updateTaskDetail(getTaskDetail.data.content));
+      if (callback) callback(getTaskDetail.data.content);
+    } catch (err) {
+      toast.error('Cannot Update Task Detail !');
+    }
+  };
+};
+
+//Update Task Detail
+export const deleteTaskDetailThunk = (
+  taskId,
+  statusId,
+  setVisibleModal
+) => {
+  return async (dispatch) => {
+    try {
+      const response = await http.delete(
+        `${removeTaskURL}?taskId=${taskId}`
+      );
+      console.log('🚀 ~ response', response);
+      dispatch(deleteTaskProjectDetail({ taskId, statusId }));
+      setVisibleModal(false);
+      toast.success('Remove Task Successfully !');
+    } catch (err) {
+      toast.error('Cannot Remove Task !');
+    }
+  };
 };

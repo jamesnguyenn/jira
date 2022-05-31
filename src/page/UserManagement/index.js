@@ -121,20 +121,6 @@ function UserManagement() {
           }}
         />
         <Space>
-          {/* <Button
-            type="primary"
-            // onClick={() =>
-            //   handleSearch(selectedKeys, confirm, dataIndex)
-            // }
-            icon={<SearchOutlined />}
-            size="small"
-            style={{
-              width: 90,
-            }}
-            onClick={handleSearch}
-          >
-            Search
-          </Button> */}
           <Button
             type="primary"
             onClick={() =>
@@ -293,6 +279,7 @@ function UserManagement() {
     const action = getAllUserAction();
     dispatch(action);
   }, [dispatch]);
+
   return (
     <div>
       <h2 className="mb-3">User Management</h2>
@@ -301,7 +288,7 @@ function UserManagement() {
         columns={columns}
         dataSource={userManagement}
       />
-      {
+      {modal && (
         <FormUseEditManagement
           modal={modal}
           closeModal={setModal}
@@ -309,9 +296,8 @@ function UserManagement() {
           name={name}
           email={email}
           phoneNumber={phoneNumber}
-          // submitInfo={submitInfo}
         />
-      }
+      )}
       {/* <Modal
         okText="Submit"
         title="Edit User Information"
