@@ -26,9 +26,20 @@ function AccountSetting() {
 
     const onSubmiting = () => {};
     return (
-        <section className="formCreateEditProject">
+        <section
+            className="formCreateEditProject"
+            style={{
+                marginRight: 'auto',
+            }}
+        >
             <form className="register" onSubmit={handleSubmit(onSubmiting)}>
-                <div className="register__container">
+                <div
+                    className="register__container"
+                    style={{
+                        justifyContent: 'flex-start ',
+                        alignItems: 'flex-start',
+                    }}
+                >
                     <h2>Account Setting</h2>
 
                     <div className="register__field">
@@ -138,7 +149,7 @@ function AccountSetting() {
                     </div>
 
                     <button type="submit" className="btn btn-primary">
-                        Edit
+                        Edit Account
                     </button>
                 </div>
             </form>

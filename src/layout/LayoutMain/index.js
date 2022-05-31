@@ -240,9 +240,12 @@ function LayoutMain() {
                                 },
                             },
                             {
-                                key: '/setting',
+                                key: '/profile-setting',
                                 icon: <SettingOutlined />,
                                 label: 'Setting',
+                                onClick: () => {
+                                    navigate('/profile-setting');
+                                },
                             },
                             {
                                 key: '5',
