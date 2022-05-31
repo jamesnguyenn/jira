@@ -17,7 +17,7 @@ import Loading from './component/Loading';
 import { checkTokenThunk } from './redux/thunk';
 import { getUserInfo } from './redux/selectors';
 import { checkTokenRequest } from './redux/reducer/userSlice';
-import { ACCESSTOKEN, http, TOKEN_CYBERSOFT } from './axios';
+import { ACCESSTOKEN } from './axios';
 import { useWindowResize } from './hooks/useWindowResize';
 import { updateViewPort } from './redux/reducer/viewPortSlice';
 import AccountSetting from './page/AccountSetting';

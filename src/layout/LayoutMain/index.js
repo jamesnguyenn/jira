@@ -61,7 +61,15 @@ function LayoutMain() {
                         zIndex: '99',
                     }}
                 >
-                    <div className="logo">JIRA</div>
+                    <div
+                        className="logo"
+                        onClick={() => navigate('/')}
+                        style={{
+                            cursor: 'pointer',
+                        }}
+                    >
+                        JIRA
+                    </div>
                     <Menu
                         theme="dark"
                         mode="inline"
@@ -148,7 +156,7 @@ function LayoutMain() {
                         >
                             <div
                                 style={{
-                                    fontSize: '15px',
+                                    fontSize: '12px',
                                     fontWeight: '600',
                                     color: '#fff',
                                     display: 'flex',
@@ -162,7 +170,7 @@ function LayoutMain() {
                                 </span>
                                 <img
                                     style={{
-                                        width: '30px',
+                                        width: '25px',
                                         borderRadius: '100%',
                                         cursor: 'pointer',
                                     }}
@@ -182,7 +190,7 @@ function LayoutMain() {
                             style={{
                                 overflow: 'scroll',
                                 backgroundColor: '#fff',
-                                padding: '20px 15px',
+                                padding: '30px 15px',
                                 borderRadius: '10px',
                             }}
                         >
@@ -209,7 +217,15 @@ function LayoutMain() {
                         bottom: 0,
                     }}
                 >
-                    <div className="logo">JIRA</div>
+                    <div
+                        className="logo"
+                        onClick={() => navigate('/')}
+                        style={{
+                            cursor: 'pointer',
+                        }}
+                    >
+                        JIRA
+                    </div>
                     <Menu
                         theme="dark"
                         mode="inline"

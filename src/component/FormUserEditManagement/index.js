@@ -1,5 +1,5 @@
 import React, { memo, useState } from 'react';
-import { Modal, Col, Form, Input, Button } from 'antd';
+import { Modal, Col, Form, Input } from 'antd';
 import { getAllUserAction } from '../../redux/thunk';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserInfo } from '../../redux/selectors';
@@ -56,10 +56,7 @@ function FormUseEditManagement({
                 phoneNumber,
             };
             try {
-                const result = await http.put(
-                    updateUserManage,
-                    newUserInfoUpdate
-                );
+                await http.put(updateUserManage, newUserInfoUpdate);
                 if (values.id === currentUserID) {
                     dispatch(logOut());
                     localStorage.removeItem(ACCESSTOKEN);

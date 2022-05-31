@@ -18,6 +18,25 @@
     font-size: 1.6rem;
 }
 
+.ant-layout-sider-zero-width-trigger {
+    background: $bg-1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: $fz-xl;
+    span {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    &:hover:after {
+        background: none;
+    }
+}
+
 .site-layout .site-layout-background {
     background: #fff;
     font-size: 1.6rem;
