@@ -4,6 +4,12 @@ Author: Nguyen Quang Thien & Hoang Minh Khoa
 (CyberSoft)
 </p>
 
+<p>
+Account to test: 
+    -username: test@gmail.com
+    -password: Abcd@123
+</p>
+
 [View Demo](https://bug-jira.surge.sh/)
 
 <img src="./src/assets/img/readme-login.png" title="readme-login">
